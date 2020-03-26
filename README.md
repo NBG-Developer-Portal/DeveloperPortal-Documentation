@@ -13,9 +13,9 @@ Below you will find easy steps on how to perform Fork function.
 
 When you want to make a change or enrich a current file, you have two alternatives in order to make changes:
 
-* By clicking  *EDIT*  button (![PictureEDIT]( images/PictureEDIT.png))  you create a working copy of the file in your local repository. 
+* By clicking  *EDIT*  button ![PictureEDIT]( images/PictureEDIT.png)  you create a working copy of the file in your local repository. 
 
-* By clicking the *FORK* button (![PictureFORK]( images/PictureFORK.png)) at the top right of the github page in order to fork your own copy of the project into your repo-account.
+* By clicking the *FORK* button ![PictureFORK]( images/PictureFORK.png) at the top right of the github page in order to fork your own copy of the project into your repo-account.
 
 **Git pull command** is used to fetch and download content from a remote repository and immediately update the local repository to match that content.
 
