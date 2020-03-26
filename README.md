@@ -59,7 +59,7 @@ When you are done with your changes, all you have to do is to request a "pull". 
 
 2. **Navigate** to the cloned directory with the cd command
 
-Example: cd README (pou einai to example)
+Example: cd README 
 
 3. Assign the original repo to a remote called "upstream". 
 
@@ -67,7 +67,7 @@ Example: cd README (pou einai to example)
 
 ***Upstream** is from where you clone the repository*
 
-***Downstream** is any project that integrates your work with other works.* (DEN TO KATALAVAINW)
+***Downstream** is any project that integrates your work with other works.*
 
 [git remote add upstream](https://https://github.com/myNBGcode/DeveloperPortal-Documentation/edit/master/README.md)
 
