@@ -1,0 +1,3174 @@
+swagger: '2.0'
+info:
+  title: iBankPay eCommerce Sandbox API
+  description: >
+    ## Functionality at a glance
+
+
+
+    Start integrating your application with NBG Bank and be able to:
+
+    Integrate the **i-bank Pay payment method** into your selling website in order to:
+
+      1.  Authorize a payment
+      
+      2.  Complete a payment
+
+
+    This documentation will help you embed the checkout button into your website in order to
+    integrate the i-bank Pay payment method. A non-critical part of the process happens in
+    the client's side (your customer's web browser) and the final and critical part takes
+    place in your server's side. Respectively, this document addresses those two parts of
+    the process, one for using the checkout button to create payment tokens and another
+    for using our REST API to finalize the payments and retrieve data.
+
+
+     **Embedding checkout button in your site**
+
+
+
+    To get started, add &lt;script src=&quot;https://files.nbg.gr/ecommerce/Checkout.js
+    &quot; &gt; &lt;/script&gt; at the bottom of your page inside the &lt;body&gt; tag.
+
+
+
+    Then add to your payment page the following code, as shown in the scenarios below,
+    making sure that the form has a correct &lt;span&gt; element with class=\"trw-button\".
+
+
+    The data-sandbox and data-client should be filled with sandboxId and clientId respectively.
+
+
+    The data-key is your unique public key and it's value must be replaced in production
+    environment with the one we will generate for you.
+
+
+
+    Example html code for the button is shown below:
+
+
+    **Scenario 1: Submit the returned token with your form**
+
+
+
+    In this scenario Checkout will automatically create a hidden field with name \"checkout-token\"
+    inside your form and then submit it on your server side.
+
+     &lt;span class=\"trw-button\"
+
+     data-form-id=\"yourUniqueFormId\"
+
+     data-key=\"pk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"
+
+     data-amount=\"222\"
+
+     data-name=\"Eshop name\"
+
+     data-description=\"Payment for shopping cart id\"
+
+     data-locale=\"en\"
+
+     data-ibankpay=\"true\"
+
+     data-sandbox=\"yourSandboxId\"
+
+     data-client=\"yourClientId\"&gt;
+
+     &lt;/span&gt;
+
+
+    **Scenario 2: Use the returned token in a callback function**
+
+
+
+    In this scenario Checkout will call your function passing the token as
+    parameter i.e yourCallbackFunction(token).
+
+     &lt;span class=\"trw-button\"
+
+     data-key=\"pk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"
+
+     data-amount=\"222\"
+
+     data-name=\"Eshop name\"
+
+     data-description=\"Payment for shopping cart id\"
+
+     data-locale=\"en\"
+     
+     data-ibankpay=\"true\"
+
+     data-callback=\"yourCallbackFunction\"
+
+     data-error-callback=\"yourErrorCallbackFunction\"
+
+     data-sandbox=\"yourSandboxId\"
+     
+     data-client=\"yourClientId\"&gt;
+
+     &lt;/span&gt;
+
+
+    **Authorize a payment**
+
+     When the i-frame is opened and the QR code is generated, a payment request is automatically registered.
+
+     In order to simulate the action of scanning the QR code as an i-bank Pay user, you can call the AuthorizePayment action from your sandbox.
+
+
+    **Complete a payment**
+
+     When the payment is authorized, a token is returned. Use this token to complete the payment with CompletePayment action.
+
+
+    **Manually generated buttons**
+
+     There will be cases that you might need to generate buttons after your page has been loaded. For example in a multi-step single page checkout process. In order to do that, you can create an instance of the CheckoutIFrame() object, which is exposed in global object of your browser. Then you can run generateButtons() function in order to create buttons in all trw-button occurencies. Existing buttons won't be affected.
+
+
+
+    ## Quick Getting Started
+    
+    
+    1. **Login/Register** to the NBG Technology HUB
+    
+    2. Go to **"APPS"**
+    
+    3. Select your Organization and go to step 4. If you want to create a new Organization click **\"CREATE AN ORGANIZATION\"** and follow the steps below:
+        1. Enter the title of your Organization
+        2. Enter a short description of your Organization (optional)
+        3. Click **"SUBMIT"**
+        
+    4. Select the Organization of choice and click **"ADD AN APPLICATION"** 
+          1. Fill in the forms (title and short description)
+          2. Check **\"Authorization Code\" and \"Client Credentials\"** 
+          3. Enter the **OAuth Redirect and Post Logout URIs** (these are the URIs that we will redirect the user upon logging in and logging out respectively)
+              
+              You can use the following redirect URL to easily test the API through the portal: *https://developer.nbg.gr/oauth2/redoc-callback*
+          4. Click **"SUBMIT"**
+          5. Store the APPs **"Client ID"** and **"Client Secret"**
+    5. Go to **"API PRODUCTS"** and select the **I-BANK PAY ECOMMERCE PLATFORM API**
+    
+    6. Click **\"START USING THIS API\"**, choose your app and click
+    **"SUBSCRIBE"**
+    
+    7. Create a Sandbox
+    
+    8. Play with the API
+
+
+
+    ## Create your Sandbox
+
+    Sandboxes are self - contained testing environments that provide a simple
+    way of testing the API without any real impact, meaning that no personal or
+    financial data is used.
+
+
+    You can create **your Sandbox** by invoking the **POST** /api/sandbox call.
+    This call will generate a new Sandbox with a **unique sandbox_id**.
+
+
+    **_Important!_** Don't lose your sandbox_id, since you will need it for all the
+    API calls. Sandbox endpoints are not included in the production version API.
+
+
+    When you create a sandbox, users and sandbox specific data are generated as sample data.
+
+
+    The following HTTP **header parameters** are required for every call (except
+    for sandbox operations):
+    
+
+    1.  sandbox_id 
+
+
+
+    ## Start Testing
+
+    Once you have your sandbox_id, you can start invoking the rest of the
+    operations by providing all the mandatory information in the http header.
+    
+    
+    
+    ## Important notes
+
+    Request headers
+
+    Each request MUST have the following info:
+
+
+    *sandbox_id*
+
+
+
+    ## Error Codes:
+
+    * SBX-70001: Invalid Amount. Please enter a number
+
+    * SBX-70002: Wrong Amount
+
+    * SBX-70003: Invalid Guid Format. Please enter a Guid
+
+    * SBX-70004: Payment Not Found
+
+    * SBX-70005: Mismatching Amounts
+
+    * SBX-60000: Cannot Create Sandbox
+
+    * SBX-60001: Cannot Update Sandbox
+
+    * SBX-60002: Cannot Delete Sandbox
+
+    * SBX-40000: Sandbox with the same sandboxId already exists!
+
+    * SBX-30000: Sandbox Not Found
+
+    * SBX-20000: Invalid sandboxId
+
+    * SBX-20001: Concurrency exception.Please try again
+
+    * SBX-20002: Incorrect json format
+
+    * SBX-20003: Token is already used
+
+
+    ## Feedback and Questions
+
+    We would love to hear your feedback and answer your questions. Send us at
+    [developer@nbg.gr](developer@nbg.gr)
+
+
+    Check out our [Sandbox Postman
+    Collection](https://github.com/myNBGcode/PostmanCollections/tree/master/i-bank%20Pay%20e-commerce%20API/i-bank%20Pay%20e-commerce%20API%20v1.2)!
+
+
+    ------------------------------------------------------------------------------------------ 
+
+
+    Created by [**NBG**](https://www.nbg.gr/).
+
+
+    ------------------------------------------------------------------------------------------ 
+
+    ------------------------------------------------------------------------------------------
+
+  contact: {}
+  version: v1.2
+host: apis.nbg.gr
+basePath: /sandbox/ecommercepay/headers/v1.2
+schemes:
+  - https
+paths:
+  '/PaymentMethods/{sandboxid}':
+    get:
+      tags:
+        - Ecommerce
+      summary: Get Payment Methods
+      description: 'There is no need to use this service, i-frame does it for you.'
+      operationId: Ecommerce_GetPaymentMethods
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+      parameters:
+        - name: sandboxid
+          in: path
+          description: Sandbox ID
+          required: true
+          type: string
+        - name: sandbox_id
+          in: header
+          description: Sandbox Identifier
+          required: true
+          type: string
+          default: ''
+        - name: application_id
+          in: header
+          description: Application ID
+          required: false
+          type: string
+          default: ''
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PaymentMethods'
+        '404':
+          description: '- SBX-30000: Sandbox Not Found'
+      x-code-samples:
+        - lang: C
+          source: >-
+            CURL *hnd = curl_easy_init();
+
+
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
+
+            curl_easy_setopt(hnd, CURLOPT_URL,
+            "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentMethods/%7Bsandboxid%7D");
+
+
+            struct curl_slist *headers = NULL;
+
+            headers = curl_slist_append(headers, "client-id:
+            SOME_APIKEY_VALUE");
+
+            headers = curl_slist_append(headers, "application_id:
+            SOME_STRING_VALUE");
+
+            headers = curl_slist_append(headers, "sandbox_id:
+            SOME_STRING_VALUE");
+
+            headers = curl_slist_append(headers, "content-type:
+            application/json");
+
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+
+            CURLcode ret = curl_easy_perform(hnd);
+        - lang: 'C#'
+          source: >-
+            var client = new
+            RestClient("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentMethods/%7Bsandboxid%7D");
+
+            var request = new RestRequest(Method.GET);
+
+            request.AddHeader("client-id", "SOME_APIKEY_VALUE");
+
+            request.AddHeader("application_id", "SOME_STRING_VALUE");
+
+            request.AddHeader("sandbox_id", "SOME_STRING_VALUE");
+
+            request.AddHeader("content-type", "application/json");
+
+            IRestResponse response = client.Execute(request);
+        - lang: Go
+          source: "package main
+
+
+
+import (
+
+  \"fmt\"
+
+  \"net/http\"
+
+  \"io/ioutil\"
+
+)
+
+
+
+func main() {
+
+
+
+  url := \"https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentMethods/%7Bsandboxid%7D\"
+
+
+
+  req, _ := http.NewRequest(\"GET\", url, nil)
+
+
+
+  req.Header.Add(\"content-type\", \"application/json\")
+
+  req.Header.Add(\"sandbox_id\", \"SOME_STRING_VALUE\")
+
+  req.Header.Add(\"application_id\", \"SOME_STRING_VALUE\")
+
+  req.Header.Add(\"client-id\", \"SOME_APIKEY_VALUE\")
+
+
+
+  res, _ := http.DefaultClient.Do(req)
+
+
+
+  defer res.Body.Close()
+
+  body, _ := ioutil.ReadAll(res.Body)
+
+
+
+  fmt.Println(res)
+
+  fmt.Println(string(body))
+
+
+
+}"
+        - lang: Java
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentMethods/%7Bsandboxid%7D")
+              .get()
+              .addHeader("content-type", "application/json")
+              .addHeader("sandbox_id", "SOME_STRING_VALUE")
+              .addHeader("application_id", "SOME_STRING_VALUE")
+              .addHeader("client-id", "SOME_APIKEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = { method: 'GET',
+              url:
+               'https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentMethods/%7Bsandboxid%7D',
+              headers:
+               { 'client-id': 'SOME_APIKEY_VALUE',
+                 application_id: 'SOME_STRING_VALUE',
+                 sandbox_id: 'SOME_STRING_VALUE',
+                 'content-type': 'application/json' } };
+
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+
+              console.log(body);
+            });
+        - lang: PHP
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentMethods/%7Bsandboxid%7D",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => array(
+                "application_id: SOME_STRING_VALUE",
+                "client-id: SOME_APIKEY_VALUE",
+                "content-type: application/json",
+                "sandbox_id: SOME_STRING_VALUE"
+              ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("apis.nbg.gr")
+
+
+            headers = {
+                'content-type': "application/json",
+                'sandbox_id': "SOME_STRING_VALUE",
+                'application_id': "SOME_STRING_VALUE",
+                'client-id': "SOME_APIKEY_VALUE"
+                }
+
+            conn.request("GET",
+            "/sandbox/ecommercepay/headers/v1.2/PaymentMethods/%7Bsandboxid%7D",
+            headers=headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Ruby
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentMethods/%7Bsandboxid%7D")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+            request = Net::HTTP::Get.new(url)
+
+            request["content-type"] = 'application/json'
+
+            request["sandbox_id"] = 'SOME_STRING_VALUE'
+
+            request["application_id"] = 'SOME_STRING_VALUE'
+
+            request["client-id"] = 'SOME_APIKEY_VALUE'
+
+
+            response = http.request(request)
+
+            puts response.read_body
+        - lang: cUrl
+          source: |-
+            curl --request GET \
+              --url https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentMethods/%7Bsandboxid%7D \
+              --header 'application_id: SOME_STRING_VALUE' \
+              --header 'client-id: SOME_APIKEY_VALUE' \
+              --header 'content-type: application/json' \
+              --header 'sandbox_id: SOME_STRING_VALUE'
+  /CreatePayment:
+    post:
+      tags:
+        - Ecommerce
+      summary: Create Payment
+      description: "There is no need to use this service, i-frame does it for you.
+
+            
+
+
+
+Sample request:
+
+            
+
+    POST /CreatePayment
+
+    {
+
+        \"amount\": \"222\"
+
+    }"
+      operationId: Ecommerce_CreatePayment
+      consumes:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+      parameters:
+        - name: request
+          in: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/definitions/CreatePaymentRequest'
+        - name: sandbox_id
+          in: header
+          description: Sandbox Identifier
+          required: true
+          type: string
+          default: ''
+        - name: application_id
+          in: header
+          description: Application ID
+          required: false
+          type: string
+          default: ''
+      responses:
+        '200':
+          description: Created
+          schema:
+            $ref: '#/definitions/Payment'
+        '400':
+          description: "- SBX-70001: Invalid Amount. Please enter a number
+
+- SBX-70002: Wrong Amount"
+        '404':
+          description: '- SBX-30000: Sandbox Not Found'
+      x-code-samples:
+        - lang: C
+          source: >-
+            CURL *hnd = curl_easy_init();
+
+
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+
+            curl_easy_setopt(hnd, CURLOPT_URL,
+            "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CreatePayment");
+
+
+            struct curl_slist *headers = NULL;
+
+            headers = curl_slist_append(headers, "client-id:
+            SOME_APIKEY_VALUE");
+
+            headers = curl_slist_append(headers, "application_id:
+            SOME_STRING_VALUE");
+
+            headers = curl_slist_append(headers, "sandbox_id:
+            SOME_STRING_VALUE");
+
+            headers = curl_slist_append(headers, "content-type:
+            application/json");
+
+            headers = curl_slist_append(headers, "accept: application/json");
+
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+
+            curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "{\"amount\":\"<ADD STRING
+            VALUE>\"}");
+
+
+            CURLcode ret = curl_easy_perform(hnd);
+        - lang: 'C#'
+          source: >-
+            var client = new
+            RestClient("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CreatePayment");
+
+            var request = new RestRequest(Method.POST);
+
+            request.AddHeader("client-id", "SOME_APIKEY_VALUE");
+
+            request.AddHeader("application_id", "SOME_STRING_VALUE");
+
+            request.AddHeader("sandbox_id", "SOME_STRING_VALUE");
+
+            request.AddHeader("content-type", "application/json");
+
+            request.AddHeader("accept", "application/json");
+
+            request.AddParameter("application/json", "{\"amount\":\"<ADD STRING
+            VALUE>\"}", ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+        - lang: Go
+          source: "package main
+
+
+
+import (
+
+  \"fmt\"
+
+  \"strings\"
+
+  \"net/http\"
+
+  \"io/ioutil\"
+
+)
+
+
+
+func main() {
+
+
+
+  url := \"https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CreatePayment\"
+
+
+
+  payload := strings.NewReader(\"{\\\"amount\\\":\\\"<ADD STRING VALUE>\\\"}\")
+
+
+
+  req, _ := http.NewRequest(\"POST\", url, payload)
+
+
+
+  req.Header.Add(\"accept\", \"application/json\")
+
+  req.Header.Add(\"content-type\", \"application/json\")
+
+  req.Header.Add(\"sandbox_id\", \"SOME_STRING_VALUE\")
+
+  req.Header.Add(\"application_id\", \"SOME_STRING_VALUE\")
+
+  req.Header.Add(\"client-id\", \"SOME_APIKEY_VALUE\")
+
+
+
+  res, _ := http.DefaultClient.Do(req)
+
+
+
+  defer res.Body.Close()
+
+  body, _ := ioutil.ReadAll(res.Body)
+
+
+
+  fmt.Println(res)
+
+  fmt.Println(string(body))
+
+
+
+}"
+        - lang: Java
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType, "{\"amount\":\"<ADD
+            STRING VALUE>\"}");
+
+            Request request = new Request.Builder()
+              .url("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CreatePayment")
+              .post(body)
+              .addHeader("accept", "application/json")
+              .addHeader("content-type", "application/json")
+              .addHeader("sandbox_id", "SOME_STRING_VALUE")
+              .addHeader("application_id", "SOME_STRING_VALUE")
+              .addHeader("client-id", "SOME_APIKEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = { method: 'POST',
+              url:
+               'https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CreatePayment',
+              headers:
+               { 'client-id': 'SOME_APIKEY_VALUE',
+                 application_id: 'SOME_STRING_VALUE',
+                 sandbox_id: 'SOME_STRING_VALUE',
+                 'content-type': 'application/json',
+                 accept: 'application/json' },
+              body: { amount: '<ADD STRING VALUE>' },
+              json: true };
+
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+
+              console.log(body);
+            });
+        - lang: PHP
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CreatePayment",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => "{\"amount\":\"<ADD STRING VALUE>\"}",
+              CURLOPT_HTTPHEADER => array(
+                "accept: application/json",
+                "application_id: SOME_STRING_VALUE",
+                "client-id: SOME_APIKEY_VALUE",
+                "content-type: application/json",
+                "sandbox_id: SOME_STRING_VALUE"
+              ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("apis.nbg.gr")
+
+
+            payload = "{\"amount\":\"<ADD STRING VALUE>\"}"
+
+
+            headers = {
+                'accept': "application/json",
+                'content-type': "application/json",
+                'sandbox_id': "SOME_STRING_VALUE",
+                'application_id': "SOME_STRING_VALUE",
+                'client-id': "SOME_APIKEY_VALUE"
+                }
+
+            conn.request("POST",
+            "/sandbox/ecommercepay/headers/v1.2/CreatePayment", payload,
+            headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Ruby
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CreatePayment")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["accept"] = 'application/json'
+
+            request["content-type"] = 'application/json'
+
+            request["sandbox_id"] = 'SOME_STRING_VALUE'
+
+            request["application_id"] = 'SOME_STRING_VALUE'
+
+            request["client-id"] = 'SOME_APIKEY_VALUE'
+
+            request.body = "{\"amount\":\"<ADD STRING VALUE>\"}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
+        - lang: cUrl
+          source: |-
+            curl --request POST \
+              --url https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CreatePayment \
+              --header 'accept: application/json' \
+              --header 'application_id: SOME_STRING_VALUE' \
+              --header 'client-id: SOME_APIKEY_VALUE' \
+              --header 'content-type: application/json' \
+              --header 'sandbox_id: SOME_STRING_VALUE' \
+              --data '{"amount":"<ADD STRING VALUE>"}'
+  /AuthorizePayment:
+    get:
+      tags:
+        - Ecommerce
+      summary: Authorize Payment
+      description: This service is called to authorize a payment.
+      operationId: Ecommerce_AuthorizePayment
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+      parameters:
+        - name: sandbox_id
+          in: header
+          description: Sandbox Identifier
+          required: true
+          type: string
+          default: ''
+        - name: application_id
+          in: header
+          description: Application ID
+          required: false
+          type: string
+          default: ''
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '404':
+          description: "- SBX-30000: Sandbox Not Found
+
+- SBX-70004: Payment Not Found"
+      x-code-samples:
+        - lang: C
+          source: >-
+            CURL *hnd = curl_easy_init();
+
+
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
+
+            curl_easy_setopt(hnd, CURLOPT_URL,
+            "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/AuthorizePayment");
+
+
+            struct curl_slist *headers = NULL;
+
+            headers = curl_slist_append(headers, "client-id:
+            SOME_APIKEY_VALUE");
+
+            headers = curl_slist_append(headers, "application_id:
+            SOME_STRING_VALUE");
+
+            headers = curl_slist_append(headers, "sandbox_id:
+            SOME_STRING_VALUE");
+
+            headers = curl_slist_append(headers, "content-type:
+            application/json");
+
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+
+            CURLcode ret = curl_easy_perform(hnd);
+        - lang: 'C#'
+          source: >-
+            var client = new
+            RestClient("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/AuthorizePayment");
+
+            var request = new RestRequest(Method.GET);
+
+            request.AddHeader("client-id", "SOME_APIKEY_VALUE");
+
+            request.AddHeader("application_id", "SOME_STRING_VALUE");
+
+            request.AddHeader("sandbox_id", "SOME_STRING_VALUE");
+
+            request.AddHeader("content-type", "application/json");
+
+            IRestResponse response = client.Execute(request);
+        - lang: Go
+          source: "package main
+
+
+
+import (
+
+  \"fmt\"
+
+  \"net/http\"
+
+  \"io/ioutil\"
+
+)
+
+
+
+func main() {
+
+
+
+  url := \"https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/AuthorizePayment\"
+
+
+
+  req, _ := http.NewRequest(\"GET\", url, nil)
+
+
+
+  req.Header.Add(\"content-type\", \"application/json\")
+
+  req.Header.Add(\"sandbox_id\", \"SOME_STRING_VALUE\")
+
+  req.Header.Add(\"application_id\", \"SOME_STRING_VALUE\")
+
+  req.Header.Add(\"client-id\", \"SOME_APIKEY_VALUE\")
+
+
+
+  res, _ := http.DefaultClient.Do(req)
+
+
+
+  defer res.Body.Close()
+
+  body, _ := ioutil.ReadAll(res.Body)
+
+
+
+  fmt.Println(res)
+
+  fmt.Println(string(body))
+
+
+
+}"
+        - lang: Java
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/AuthorizePayment")
+              .get()
+              .addHeader("content-type", "application/json")
+              .addHeader("sandbox_id", "SOME_STRING_VALUE")
+              .addHeader("application_id", "SOME_STRING_VALUE")
+              .addHeader("client-id", "SOME_APIKEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = { method: 'GET',
+              url:
+               'https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/AuthorizePayment',
+              headers:
+               { 'client-id': 'SOME_APIKEY_VALUE',
+                 application_id: 'SOME_STRING_VALUE',
+                 sandbox_id: 'SOME_STRING_VALUE',
+                 'content-type': 'application/json' } };
+
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+
+              console.log(body);
+            });
+        - lang: PHP
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/AuthorizePayment",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => array(
+                "application_id: SOME_STRING_VALUE",
+                "client-id: SOME_APIKEY_VALUE",
+                "content-type: application/json",
+                "sandbox_id: SOME_STRING_VALUE"
+              ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("apis.nbg.gr")
+
+
+            headers = {
+                'content-type': "application/json",
+                'sandbox_id': "SOME_STRING_VALUE",
+                'application_id': "SOME_STRING_VALUE",
+                'client-id': "SOME_APIKEY_VALUE"
+                }
+
+            conn.request("GET",
+            "/sandbox/ecommercepay/headers/v1.2/AuthorizePayment",
+            headers=headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Ruby
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/AuthorizePayment")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+            request = Net::HTTP::Get.new(url)
+
+            request["content-type"] = 'application/json'
+
+            request["sandbox_id"] = 'SOME_STRING_VALUE'
+
+            request["application_id"] = 'SOME_STRING_VALUE'
+
+            request["client-id"] = 'SOME_APIKEY_VALUE'
+
+
+            response = http.request(request)
+
+            puts response.read_body
+        - lang: cUrl
+          source: |-
+            curl --request GET \
+              --url https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/AuthorizePayment \
+              --header 'application_id: SOME_STRING_VALUE' \
+              --header 'client-id: SOME_APIKEY_VALUE' \
+              --header 'content-type: application/json' \
+              --header 'sandbox_id: SOME_STRING_VALUE'
+  '/PaymentStatus/{id}':
+    get:
+      tags:
+        - Ecommerce
+      summary: Get Payment Status
+      description: 'There is no need to use this service, i-frame does it for you.'
+      operationId: Ecommerce_GetPaymentStatus
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+      parameters:
+        - name: id
+          in: path
+          description: Payment ID
+          required: true
+          type: string
+        - name: sandbox_id
+          in: header
+          description: Sandbox Identifier
+          required: true
+          type: string
+          default: ''
+        - name: application_id
+          in: header
+          description: Application ID
+          required: false
+          type: string
+          default: ''
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Payment'
+        '400':
+          description: '- SBX-70003: Invalid Guid Format. Please enter a Guid'
+        '404':
+          description: "- SBX-30000: Sandbox Not Found
+
+- SBX-70004: Payment Not Found"
+      x-code-samples:
+        - lang: C
+          source: >-
+            CURL *hnd = curl_easy_init();
+
+
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
+
+            curl_easy_setopt(hnd, CURLOPT_URL,
+            "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentStatus/%7Bid%7D");
+
+
+            struct curl_slist *headers = NULL;
+
+            headers = curl_slist_append(headers, "client-id:
+            SOME_APIKEY_VALUE");
+
+            headers = curl_slist_append(headers, "application_id:
+            SOME_STRING_VALUE");
+
+            headers = curl_slist_append(headers, "sandbox_id:
+            SOME_STRING_VALUE");
+
+            headers = curl_slist_append(headers, "content-type:
+            application/json");
+
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+
+            CURLcode ret = curl_easy_perform(hnd);
+        - lang: 'C#'
+          source: >-
+            var client = new
+            RestClient("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentStatus/%7Bid%7D");
+
+            var request = new RestRequest(Method.GET);
+
+            request.AddHeader("client-id", "SOME_APIKEY_VALUE");
+
+            request.AddHeader("application_id", "SOME_STRING_VALUE");
+
+            request.AddHeader("sandbox_id", "SOME_STRING_VALUE");
+
+            request.AddHeader("content-type", "application/json");
+
+            IRestResponse response = client.Execute(request);
+        - lang: Go
+          source: "package main
+
+
+
+import (
+
+  \"fmt\"
+
+  \"net/http\"
+
+  \"io/ioutil\"
+
+)
+
+
+
+func main() {
+
+
+
+  url := \"https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentStatus/%7Bid%7D\"
+
+
+
+  req, _ := http.NewRequest(\"GET\", url, nil)
+
+
+
+  req.Header.Add(\"content-type\", \"application/json\")
+
+  req.Header.Add(\"sandbox_id\", \"SOME_STRING_VALUE\")
+
+  req.Header.Add(\"application_id\", \"SOME_STRING_VALUE\")
+
+  req.Header.Add(\"client-id\", \"SOME_APIKEY_VALUE\")
+
+
+
+  res, _ := http.DefaultClient.Do(req)
+
+
+
+  defer res.Body.Close()
+
+  body, _ := ioutil.ReadAll(res.Body)
+
+
+
+  fmt.Println(res)
+
+  fmt.Println(string(body))
+
+
+
+}"
+        - lang: Java
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentStatus/%7Bid%7D")
+              .get()
+              .addHeader("content-type", "application/json")
+              .addHeader("sandbox_id", "SOME_STRING_VALUE")
+              .addHeader("application_id", "SOME_STRING_VALUE")
+              .addHeader("client-id", "SOME_APIKEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = { method: 'GET',
+              url:
+               'https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentStatus/%7Bid%7D',
+              headers:
+               { 'client-id': 'SOME_APIKEY_VALUE',
+                 application_id: 'SOME_STRING_VALUE',
+                 sandbox_id: 'SOME_STRING_VALUE',
+                 'content-type': 'application/json' } };
+
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+
+              console.log(body);
+            });
+        - lang: PHP
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentStatus/%7Bid%7D",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => array(
+                "application_id: SOME_STRING_VALUE",
+                "client-id: SOME_APIKEY_VALUE",
+                "content-type: application/json",
+                "sandbox_id: SOME_STRING_VALUE"
+              ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("apis.nbg.gr")
+
+
+            headers = {
+                'content-type': "application/json",
+                'sandbox_id': "SOME_STRING_VALUE",
+                'application_id': "SOME_STRING_VALUE",
+                'client-id': "SOME_APIKEY_VALUE"
+                }
+
+            conn.request("GET",
+            "/sandbox/ecommercepay/headers/v1.2/PaymentStatus/%7Bid%7D",
+            headers=headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Ruby
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentStatus/%7Bid%7D")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+            request = Net::HTTP::Get.new(url)
+
+            request["content-type"] = 'application/json'
+
+            request["sandbox_id"] = 'SOME_STRING_VALUE'
+
+            request["application_id"] = 'SOME_STRING_VALUE'
+
+            request["client-id"] = 'SOME_APIKEY_VALUE'
+
+
+            response = http.request(request)
+
+            puts response.read_body
+        - lang: cUrl
+          source: |-
+            curl --request GET \
+              --url https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/PaymentStatus/%7Bid%7D \
+              --header 'application_id: SOME_STRING_VALUE' \
+              --header 'client-id: SOME_APIKEY_VALUE' \
+              --header 'content-type: application/json' \
+              --header 'sandbox_id: SOME_STRING_VALUE'
+  /CompletePayment:
+    post:
+      tags:
+        - Ecommerce
+      summary: Complete Payment
+      description: >-
+        This service is called to complete a payment. Source field is payment's
+        token.
+      operationId: Ecommerce_CompletePayment
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+      parameters:
+        - name: amount
+          in: query
+          description: Payment Amount
+          required: true
+          type: string
+        - name: source
+          in: query
+          description: Payment Token
+          required: true
+          type: string
+        - name: merchant_reference
+          in: query
+          description: Payment Merchant Reference
+          required: true
+          type: string
+        - name: sandbox_id
+          in: header
+          description: Sandbox Identifier
+          required: true
+          type: string
+          default: ''
+        - name: application_id
+          in: header
+          description: Application ID
+          required: false
+          type: string
+          default: ''
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PaymentResponse'
+        '400':
+          description: "- SBX-20003: Token is already used
+
+- SBX-70001: Invalid Amount. Please enter a number
+
+- SBX-70002: Wrong Amount
+
+- SBX-70005: Mismatching Amounts"
+        '404':
+          description: "- SBX-30000: Sandbox Not Found
+
+- SBX-70004: Payment Not Found"
+      x-code-samples:
+        - lang: C
+          source: >-
+            CURL *hnd = curl_easy_init();
+
+
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+
+            curl_easy_setopt(hnd, CURLOPT_URL,
+            "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CompletePayment?amount=SOME_STRING_VALUE&source=SOME_STRING_VALUE&merchant_reference=SOME_STRING_VALUE");
+
+
+            struct curl_slist *headers = NULL;
+
+            headers = curl_slist_append(headers, "client-id:
+            SOME_APIKEY_VALUE");
+
+            headers = curl_slist_append(headers, "application_id:
+            SOME_STRING_VALUE");
+
+            headers = curl_slist_append(headers, "sandbox_id:
+            SOME_STRING_VALUE");
+
+            headers = curl_slist_append(headers, "content-type:
+            application/json");
+
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+
+            CURLcode ret = curl_easy_perform(hnd);
+        - lang: 'C#'
+          source: >-
+            var client = new
+            RestClient("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CompletePayment?amount=SOME_STRING_VALUE&source=SOME_STRING_VALUE&merchant_reference=SOME_STRING_VALUE");
+
+            var request = new RestRequest(Method.POST);
+
+            request.AddHeader("client-id", "SOME_APIKEY_VALUE");
+
+            request.AddHeader("application_id", "SOME_STRING_VALUE");
+
+            request.AddHeader("sandbox_id", "SOME_STRING_VALUE");
+
+            request.AddHeader("content-type", "application/json");
+
+            IRestResponse response = client.Execute(request);
+        - lang: Go
+          source: "package main
+
+
+
+import (
+
+  \"fmt\"
+
+  \"net/http\"
+
+  \"io/ioutil\"
+
+)
+
+
+
+func main() {
+
+
+
+  url := \"https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CompletePayment?amount=SOME_STRING_VALUE&source=SOME_STRING_VALUE&merchant_reference=SOME_STRING_VALUE\"
+
+
+
+  req, _ := http.NewRequest(\"POST\", url, nil)
+
+
+
+  req.Header.Add(\"content-type\", \"application/json\")
+
+  req.Header.Add(\"sandbox_id\", \"SOME_STRING_VALUE\")
+
+  req.Header.Add(\"application_id\", \"SOME_STRING_VALUE\")
+
+  req.Header.Add(\"client-id\", \"SOME_APIKEY_VALUE\")
+
+
+
+  res, _ := http.DefaultClient.Do(req)
+
+
+
+  defer res.Body.Close()
+
+  body, _ := ioutil.ReadAll(res.Body)
+
+
+
+  fmt.Println(res)
+
+  fmt.Println(string(body))
+
+
+
+}"
+        - lang: Java
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CompletePayment?amount=SOME_STRING_VALUE&source=SOME_STRING_VALUE&merchant_reference=SOME_STRING_VALUE")
+              .post(null)
+              .addHeader("content-type", "application/json")
+              .addHeader("sandbox_id", "SOME_STRING_VALUE")
+              .addHeader("application_id", "SOME_STRING_VALUE")
+              .addHeader("client-id", "SOME_APIKEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = { method: 'POST',
+              url:
+               'https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CompletePayment',
+              qs:
+               { amount: 'SOME_STRING_VALUE',
+                 source: 'SOME_STRING_VALUE',
+                 merchant_reference: 'SOME_STRING_VALUE' },
+              headers:
+               { 'client-id': 'SOME_APIKEY_VALUE',
+                 application_id: 'SOME_STRING_VALUE',
+                 sandbox_id: 'SOME_STRING_VALUE',
+                 'content-type': 'application/json' } };
+
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+
+              console.log(body);
+            });
+        - lang: PHP
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CompletePayment?amount=SOME_STRING_VALUE&source=SOME_STRING_VALUE&merchant_reference=SOME_STRING_VALUE",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_HTTPHEADER => array(
+                "application_id: SOME_STRING_VALUE",
+                "client-id: SOME_APIKEY_VALUE",
+                "content-type: application/json",
+                "sandbox_id: SOME_STRING_VALUE"
+              ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("apis.nbg.gr")
+
+
+            headers = {
+                'content-type': "application/json",
+                'sandbox_id': "SOME_STRING_VALUE",
+                'application_id': "SOME_STRING_VALUE",
+                'client-id': "SOME_APIKEY_VALUE"
+                }
+
+            conn.request("POST",
+            "/sandbox/ecommercepay/headers/v1.2/CompletePayment?amount=SOME_STRING_VALUE&source=SOME_STRING_VALUE&merchant_reference=SOME_STRING_VALUE",
+            headers=headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Ruby
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CompletePayment?amount=SOME_STRING_VALUE&source=SOME_STRING_VALUE&merchant_reference=SOME_STRING_VALUE")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["content-type"] = 'application/json'
+
+            request["sandbox_id"] = 'SOME_STRING_VALUE'
+
+            request["application_id"] = 'SOME_STRING_VALUE'
+
+            request["client-id"] = 'SOME_APIKEY_VALUE'
+
+
+            response = http.request(request)
+
+            puts response.read_body
+        - lang: cUrl
+          source: |-
+            curl --request POST \
+              --url 'https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/CompletePayment?amount=SOME_STRING_VALUE&source=SOME_STRING_VALUE&merchant_reference=SOME_STRING_VALUE' \
+              --header 'application_id: SOME_STRING_VALUE' \
+              --header 'client-id: SOME_APIKEY_VALUE' \
+              --header 'content-type: application/json' \
+              --header 'sandbox_id: SOME_STRING_VALUE'
+  /sandbox:
+    post:
+      tags:
+        - Sandbox
+      summary: Create Sandbox
+      description: "Creates a sandbox with unique sandbox id. This call can also be used to create users, accounts etc.
+
+            
+
+            
+
+Sample request:
+
+            
+
+    POST /sandbox
+
+    {
+
+        \"sandboxId\": \"TestSandbox\"
+
+    }"
+      operationId: Sandbox_CreateSandbox
+      consumes:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+      parameters:
+        - name: request
+          in: body
+          description: Sandbox identifier
+          required: true
+          schema:
+            $ref: '#/definitions/SandboxRequest'
+      responses:
+        '201':
+          description: '- Created'
+          schema:
+            $ref: '#/definitions/SandboxDataModel'
+        '400':
+          description: "- SBX-20000: Invalid sandboxId
+
+- SBX-20002: Incorrect json format
+
+- SBX-40000: Sandbox with the same sandboxId already exists!
+
+- SBX-60000: Cannot Create Sandbox"
+      x-code-samples:
+        - lang: C
+          source: >-
+            CURL *hnd = curl_easy_init();
+
+
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+
+            curl_easy_setopt(hnd, CURLOPT_URL,
+            "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox");
+
+
+            struct curl_slist *headers = NULL;
+
+            headers = curl_slist_append(headers, "client-id:
+            SOME_APIKEY_VALUE");
+
+            headers = curl_slist_append(headers, "content-type:
+            application/json");
+
+            headers = curl_slist_append(headers, "accept: application/json");
+
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+
+            curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "{\"sandboxId\":\"<ADD
+            STRING VALUE>\"}");
+
+
+            CURLcode ret = curl_easy_perform(hnd);
+        - lang: 'C#'
+          source: >-
+            var client = new
+            RestClient("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox");
+
+            var request = new RestRequest(Method.POST);
+
+            request.AddHeader("client-id", "SOME_APIKEY_VALUE");
+
+            request.AddHeader("content-type", "application/json");
+
+            request.AddHeader("accept", "application/json");
+
+            request.AddParameter("application/json", "{\"sandboxId\":\"<ADD
+            STRING VALUE>\"}", ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+        - lang: Go
+          source: "package main
+
+
+
+import (
+
+  \"fmt\"
+
+  \"strings\"
+
+  \"net/http\"
+
+  \"io/ioutil\"
+
+)
+
+
+
+func main() {
+
+
+
+  url := \"https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox\"
+
+
+
+  payload := strings.NewReader(\"{\\\"sandboxId\\\":\\\"<ADD STRING VALUE>\\\"}\")
+
+
+
+  req, _ := http.NewRequest(\"POST\", url, payload)
+
+
+
+  req.Header.Add(\"accept\", \"application/json\")
+
+  req.Header.Add(\"content-type\", \"application/json\")
+
+  req.Header.Add(\"client-id\", \"SOME_APIKEY_VALUE\")
+
+
+
+  res, _ := http.DefaultClient.Do(req)
+
+
+
+  defer res.Body.Close()
+
+  body, _ := ioutil.ReadAll(res.Body)
+
+
+
+  fmt.Println(res)
+
+  fmt.Println(string(body))
+
+
+
+}"
+        - lang: Java
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType,
+            "{\"sandboxId\":\"<ADD STRING VALUE>\"}");
+
+            Request request = new Request.Builder()
+              .url("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox")
+              .post(body)
+              .addHeader("accept", "application/json")
+              .addHeader("content-type", "application/json")
+              .addHeader("client-id", "SOME_APIKEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = { method: 'POST',
+              url:
+               'https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox',
+              headers:
+               { 'client-id': 'SOME_APIKEY_VALUE',
+                 'content-type': 'application/json',
+                 accept: 'application/json' },
+              body: { sandboxId: '<ADD STRING VALUE>' },
+              json: true };
+
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+
+              console.log(body);
+            });
+        - lang: PHP
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => "{\"sandboxId\":\"<ADD STRING VALUE>\"}",
+              CURLOPT_HTTPHEADER => array(
+                "accept: application/json",
+                "client-id: SOME_APIKEY_VALUE",
+                "content-type: application/json"
+              ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("apis.nbg.gr")
+
+
+            payload = "{\"sandboxId\":\"<ADD STRING VALUE>\"}"
+
+
+            headers = {
+                'accept': "application/json",
+                'content-type': "application/json",
+                'client-id': "SOME_APIKEY_VALUE"
+                }
+
+            conn.request("POST", "/sandbox/ecommercepay/headers/v1.2/sandbox",
+            payload, headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Ruby
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+            request = Net::HTTP::Post.new(url)
+
+            request["accept"] = 'application/json'
+
+            request["content-type"] = 'application/json'
+
+            request["client-id"] = 'SOME_APIKEY_VALUE'
+
+            request.body = "{\"sandboxId\":\"<ADD STRING VALUE>\"}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
+        - lang: cUrl
+          source: |-
+            curl --request POST \
+              --url https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox \
+              --header 'accept: application/json' \
+              --header 'client-id: SOME_APIKEY_VALUE' \
+              --header 'content-type: application/json' \
+              --data '{"sandboxId":"<ADD STRING VALUE>"}'
+  '/sandbox/{sandbox_id}':
+    get:
+      tags:
+        - Sandbox
+      summary: Export Sandbox
+      description: Export Sandbox data specified by sandbox id.
+      operationId: Sandbox_ExportSandbox
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+      parameters:
+        - name: sandbox_id
+          in: path
+          description: Sandbox ID
+          required: true
+          type: string
+      responses:
+        '200':
+          description: '- OK'
+          schema:
+            $ref: '#/definitions/SandboxDataModel'
+        '400':
+          description: '- SBX-20000: Invalid sandboxId'
+        '404':
+          description: '- SBX-30000: Sandbox Not Found'
+      x-code-samples:
+        - lang: C
+          source: >-
+            CURL *hnd = curl_easy_init();
+
+
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
+
+            curl_easy_setopt(hnd, CURLOPT_URL,
+            "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D");
+
+
+            struct curl_slist *headers = NULL;
+
+            headers = curl_slist_append(headers, "client-id:
+            SOME_APIKEY_VALUE");
+
+            headers = curl_slist_append(headers, "content-type:
+            application/json");
+
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+
+            CURLcode ret = curl_easy_perform(hnd);
+        - lang: 'C#'
+          source: >-
+            var client = new
+            RestClient("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D");
+
+            var request = new RestRequest(Method.GET);
+
+            request.AddHeader("client-id", "SOME_APIKEY_VALUE");
+
+            request.AddHeader("content-type", "application/json");
+
+            IRestResponse response = client.Execute(request);
+        - lang: Go
+          source: "package main
+
+
+
+import (
+
+  \"fmt\"
+
+  \"net/http\"
+
+  \"io/ioutil\"
+
+)
+
+
+
+func main() {
+
+
+
+  url := \"https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D\"
+
+
+
+  req, _ := http.NewRequest(\"GET\", url, nil)
+
+
+
+  req.Header.Add(\"content-type\", \"application/json\")
+
+  req.Header.Add(\"client-id\", \"SOME_APIKEY_VALUE\")
+
+
+
+  res, _ := http.DefaultClient.Do(req)
+
+
+
+  defer res.Body.Close()
+
+  body, _ := ioutil.ReadAll(res.Body)
+
+
+
+  fmt.Println(res)
+
+  fmt.Println(string(body))
+
+
+
+}"
+        - lang: Java
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D")
+              .get()
+              .addHeader("content-type", "application/json")
+              .addHeader("client-id", "SOME_APIKEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = { method: 'GET',
+              url:
+               'https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D',
+              headers:
+               { 'client-id': 'SOME_APIKEY_VALUE',
+                 'content-type': 'application/json' } };
+
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+
+              console.log(body);
+            });
+        - lang: PHP
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => array(
+                "client-id: SOME_APIKEY_VALUE",
+                "content-type: application/json"
+              ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("apis.nbg.gr")
+
+
+            headers = {
+                'content-type': "application/json",
+                'client-id': "SOME_APIKEY_VALUE"
+                }
+
+            conn.request("GET",
+            "/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D",
+            headers=headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Ruby
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+            request = Net::HTTP::Get.new(url)
+
+            request["content-type"] = 'application/json'
+
+            request["client-id"] = 'SOME_APIKEY_VALUE'
+
+
+            response = http.request(request)
+
+            puts response.read_body
+        - lang: cUrl
+          source: |-
+            curl --request GET \
+              --url https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D \
+              --header 'client-id: SOME_APIKEY_VALUE' \
+              --header 'content-type: application/json'
+    put:
+      tags:
+        - Sandbox
+      summary: Import Sandbox
+      description: "Imports sandbox data specified by sandbox id.
+
+            
+
+            
+
+Sample request:
+
+            
+
+    PUT /sandbox/{sandbox_id}
+
+    {
+
+      \"SandboxID\": \"string\",
+
+      \"Users\": [
+
+        {
+
+          \"UserId\": \"88f9431d-834e-486a-910a-25b308a460cb\",
+
+          \"Username\": \"User1\",
+
+          \"ProviderId\": \"NBG.gr\",
+
+          \"Provider\": \"NBG\"
+
+        },
+
+        {
+
+          \"UserId\": \"ddc8e902-7645-4124-ad61-a62cf1e58267\",
+
+          \"Username\": \"User2\",
+
+          \"ProviderId\": \"NBG.gr\",
+
+          \"Provider\": \"NBG\"
+
+        }
+
+      ],
+
+      \"Accounts\": [
+
+        {
+
+          \"userId\": \"88f9431d-834e-486a-910a-25b308a460cb\",
+
+          \"accountId\": \"1234\",
+
+          \"accountType\": \"Account\",
+
+          \"accountNumber\": \"1234567890\",
+
+          \"accountDescription\": \"My Account\",
+
+          \"accountBalance\": 1000
+
+        },
+
+        {
+
+          \"userId\": \"88f9431d-834e-486a-910a-25b308a460cb\",
+
+          \"accountId\": \"1111\",
+
+          \"accountType\": \"Card\",
+
+          \"accountNumber\": \"987654321012\",
+
+          \"accountDescription\": \"My Card\",
+
+          \"accountBalance\": 1000
+
+        },
+
+        {
+
+          \"userId\": \"ddc8e902-7645-4124-ad61-a62cf1e58267\",
+
+          \"accountId\": \"9874\",
+
+          \"accountType\": \"Account\",
+
+          \"accountNumber\": \"9873210654\",
+
+          \"accountDescription\": \"Account!!\",
+
+          \"accountBalance\": 20000
+
+        },
+
+        {
+
+          \"userId\": \"ddc8e902-7645-4124-ad61-a62cf1e58267\",
+
+          \"accountId\": \"4444\",
+
+          \"accountType\": \"Card\",
+
+          \"accountNumber\": \"778899445566\",
+
+          \"accountDescription\": \"Card!!\",
+
+          \"accountBalance\": 3000
+
+        }
+
+      ]
+
+    }"
+      operationId: Sandbox_ImportSandbox
+      consumes:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+      parameters:
+        - name: sandbox_id
+          in: path
+          description: Sandbox Id
+          required: true
+          type: string
+        - name: request
+          in: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/definitions/SandboxDataModel'
+      responses:
+        '200':
+          description: '- OK'
+          schema:
+            $ref: '#/definitions/SandboxDataModel'
+        '400':
+          description: "- SBX-20000: Invalid sandboxId
+
+- SBX-20001: Concurrency exception.Please try again
+
+- SBX-20002: Incorrect json format
+
+- SBX-60001: Cannot Update Sandbox"
+        '404':
+          description: '- SBX-30000: Sandbox Not Found'
+      x-code-samples:
+        - lang: C
+          source: >-
+            CURL *hnd = curl_easy_init();
+
+
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "PUT");
+
+            curl_easy_setopt(hnd, CURLOPT_URL,
+            "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D");
+
+
+            struct curl_slist *headers = NULL;
+
+            headers = curl_slist_append(headers, "client-id:
+            SOME_APIKEY_VALUE");
+
+            headers = curl_slist_append(headers, "content-type:
+            application/json");
+
+            headers = curl_slist_append(headers, "accept: application/json");
+
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+
+            curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "{\"SandboxID\":\"<ADD
+            STRING VALUE>\",\"Users\":[{\"Username\":\"<ADD STRING
+            VALUE>\",\"ProviderId\":\"<ADD STRING VALUE>\",\"Provider\":\"<ADD
+            STRING VALUE>\"}],\"Payments\":[{\"amount\":\"<ADD STRING
+            VALUE>\",\"createdOn\":\"<ADD STRING VALUE>\",\"updatedOn\":\"<ADD
+            STRING VALUE>\",\"id\":\"<ADD STRING VALUE>\",\"ref_id\":\"<ADD
+            STRING VALUE>\",\"status\":\"<ADD STRING VALUE>\",\"token\":\"<ADD
+            STRING VALUE>\"}]}");
+
+
+            CURLcode ret = curl_easy_perform(hnd);
+        - lang: 'C#'
+          source: >-
+            var client = new
+            RestClient("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D");
+
+            var request = new RestRequest(Method.PUT);
+
+            request.AddHeader("client-id", "SOME_APIKEY_VALUE");
+
+            request.AddHeader("content-type", "application/json");
+
+            request.AddHeader("accept", "application/json");
+
+            request.AddParameter("application/json", "{\"SandboxID\":\"<ADD
+            STRING VALUE>\",\"Users\":[{\"Username\":\"<ADD STRING
+            VALUE>\",\"ProviderId\":\"<ADD STRING VALUE>\",\"Provider\":\"<ADD
+            STRING VALUE>\"}],\"Payments\":[{\"amount\":\"<ADD STRING
+            VALUE>\",\"createdOn\":\"<ADD STRING VALUE>\",\"updatedOn\":\"<ADD
+            STRING VALUE>\",\"id\":\"<ADD STRING VALUE>\",\"ref_id\":\"<ADD
+            STRING VALUE>\",\"status\":\"<ADD STRING VALUE>\",\"token\":\"<ADD
+            STRING VALUE>\"}]}", ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+        - lang: Go
+          source: "package main
+
+
+
+import (
+
+  \"fmt\"
+
+  \"strings\"
+
+  \"net/http\"
+
+  \"io/ioutil\"
+
+)
+
+
+
+func main() {
+
+
+
+  url := \"https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D\"
+
+
+
+  payload := strings.NewReader(\"{\\\"SandboxID\\\":\\\"<ADD STRING VALUE>\\\",\\\"Users\\\":[{\\\"Username\\\":\\\"<ADD STRING VALUE>\\\",\\\"ProviderId\\\":\\\"<ADD STRING VALUE>\\\",\\\"Provider\\\":\\\"<ADD STRING VALUE>\\\"}],\\\"Payments\\\":[{\\\"amount\\\":\\\"<ADD STRING VALUE>\\\",\\\"createdOn\\\":\\\"<ADD STRING VALUE>\\\",\\\"updatedOn\\\":\\\"<ADD STRING VALUE>\\\",\\\"id\\\":\\\"<ADD STRING VALUE>\\\",\\\"ref_id\\\":\\\"<ADD STRING VALUE>\\\",\\\"status\\\":\\\"<ADD STRING VALUE>\\\",\\\"token\\\":\\\"<ADD STRING VALUE>\\\"}]}\")
+
+
+
+  req, _ := http.NewRequest(\"PUT\", url, payload)
+
+
+
+  req.Header.Add(\"accept\", \"application/json\")
+
+  req.Header.Add(\"content-type\", \"application/json\")
+
+  req.Header.Add(\"client-id\", \"SOME_APIKEY_VALUE\")
+
+
+
+  res, _ := http.DefaultClient.Do(req)
+
+
+
+  defer res.Body.Close()
+
+  body, _ := ioutil.ReadAll(res.Body)
+
+
+
+  fmt.Println(res)
+
+  fmt.Println(string(body))
+
+
+
+}"
+        - lang: Java
+          source: >-
+            OkHttpClient client = new OkHttpClient();
+
+
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType,
+            "{\"SandboxID\":\"<ADD STRING
+            VALUE>\",\"Users\":[{\"Username\":\"<ADD STRING
+            VALUE>\",\"ProviderId\":\"<ADD STRING VALUE>\",\"Provider\":\"<ADD
+            STRING VALUE>\"}],\"Payments\":[{\"amount\":\"<ADD STRING
+            VALUE>\",\"createdOn\":\"<ADD STRING VALUE>\",\"updatedOn\":\"<ADD
+            STRING VALUE>\",\"id\":\"<ADD STRING VALUE>\",\"ref_id\":\"<ADD
+            STRING VALUE>\",\"status\":\"<ADD STRING VALUE>\",\"token\":\"<ADD
+            STRING VALUE>\"}]}");
+
+            Request request = new Request.Builder()
+              .url("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D")
+              .put(body)
+              .addHeader("accept", "application/json")
+              .addHeader("content-type", "application/json")
+              .addHeader("client-id", "SOME_APIKEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = { method: 'PUT',
+              url:
+               'https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D',
+              headers:
+               { 'client-id': 'SOME_APIKEY_VALUE',
+                 'content-type': 'application/json',
+                 accept: 'application/json' },
+              body:
+               { SandboxID: '<ADD STRING VALUE>',
+                 Users:
+                  [ { Username: '<ADD STRING VALUE>',
+                      ProviderId: '<ADD STRING VALUE>',
+                      Provider: '<ADD STRING VALUE>' } ],
+                 Payments:
+                  [ { amount: '<ADD STRING VALUE>',
+                      createdOn: '<ADD STRING VALUE>',
+                      updatedOn: '<ADD STRING VALUE>',
+                      id: '<ADD STRING VALUE>',
+                      ref_id: '<ADD STRING VALUE>',
+                      status: '<ADD STRING VALUE>',
+                      token: '<ADD STRING VALUE>' } ] },
+              json: true };
+
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+
+              console.log(body);
+            });
+        - lang: PHP
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "PUT",
+              CURLOPT_POSTFIELDS => "{\"SandboxID\":\"<ADD STRING VALUE>\",\"Users\":[{\"Username\":\"<ADD STRING VALUE>\",\"ProviderId\":\"<ADD STRING VALUE>\",\"Provider\":\"<ADD STRING VALUE>\"}],\"Payments\":[{\"amount\":\"<ADD STRING VALUE>\",\"createdOn\":\"<ADD STRING VALUE>\",\"updatedOn\":\"<ADD STRING VALUE>\",\"id\":\"<ADD STRING VALUE>\",\"ref_id\":\"<ADD STRING VALUE>\",\"status\":\"<ADD STRING VALUE>\",\"token\":\"<ADD STRING VALUE>\"}]}",
+              CURLOPT_HTTPHEADER => array(
+                "accept: application/json",
+                "client-id: SOME_APIKEY_VALUE",
+                "content-type: application/json"
+              ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("apis.nbg.gr")
+
+
+            payload = "{\"SandboxID\":\"<ADD STRING
+            VALUE>\",\"Users\":[{\"Username\":\"<ADD STRING
+            VALUE>\",\"ProviderId\":\"<ADD STRING VALUE>\",\"Provider\":\"<ADD
+            STRING VALUE>\"}],\"Payments\":[{\"amount\":\"<ADD STRING
+            VALUE>\",\"createdOn\":\"<ADD STRING VALUE>\",\"updatedOn\":\"<ADD
+            STRING VALUE>\",\"id\":\"<ADD STRING VALUE>\",\"ref_id\":\"<ADD
+            STRING VALUE>\",\"status\":\"<ADD STRING VALUE>\",\"token\":\"<ADD
+            STRING VALUE>\"}]}"
+
+
+            headers = {
+                'accept': "application/json",
+                'content-type': "application/json",
+                'client-id': "SOME_APIKEY_VALUE"
+                }
+
+            conn.request("PUT",
+            "/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D",
+            payload, headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Ruby
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+            request = Net::HTTP::Put.new(url)
+
+            request["accept"] = 'application/json'
+
+            request["content-type"] = 'application/json'
+
+            request["client-id"] = 'SOME_APIKEY_VALUE'
+
+            request.body = "{\"SandboxID\":\"<ADD STRING
+            VALUE>\",\"Users\":[{\"Username\":\"<ADD STRING
+            VALUE>\",\"ProviderId\":\"<ADD STRING VALUE>\",\"Provider\":\"<ADD
+            STRING VALUE>\"}],\"Payments\":[{\"amount\":\"<ADD STRING
+            VALUE>\",\"createdOn\":\"<ADD STRING VALUE>\",\"updatedOn\":\"<ADD
+            STRING VALUE>\",\"id\":\"<ADD STRING VALUE>\",\"ref_id\":\"<ADD
+            STRING VALUE>\",\"status\":\"<ADD STRING VALUE>\",\"token\":\"<ADD
+            STRING VALUE>\"}]}"
+
+
+            response = http.request(request)
+
+            puts response.read_body
+        - lang: cUrl
+          source: |-
+            curl --request PUT \
+              --url https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D \
+              --header 'accept: application/json' \
+              --header 'client-id: SOME_APIKEY_VALUE' \
+              --header 'content-type: application/json' \
+              --data '{"SandboxID":"<ADD STRING VALUE>","Users":[{"Username":"<ADD STRING VALUE>","ProviderId":"<ADD STRING VALUE>","Provider":"<ADD STRING VALUE>"}],"Payments":[{"amount":"<ADD STRING VALUE>","createdOn":"<ADD STRING VALUE>","updatedOn":"<ADD STRING VALUE>","id":"<ADD STRING VALUE>","ref_id":"<ADD STRING VALUE>","status":"<ADD STRING VALUE>","token":"<ADD STRING VALUE>"}]}'
+    delete:
+      tags:
+        - Sandbox
+      summary: Delete Sandbox
+      description: Delete the Sandbox specified by sandbox id.
+      operationId: Sandbox_DeleteSandbox
+      consumes: []
+      produces: []
+      parameters:
+        - name: sandbox_id
+          in: path
+          description: Sandbox ID
+          required: true
+          type: string
+      responses:
+        '204':
+          description: '- NoContent'
+        '400':
+          description: "- SBX-20000: Invalid sandboxId
+
+- SBX-60002: Cannot Delete Sandbox"
+        '404':
+          description: '- SBX-30000: Sandbox Not Found'
+      x-code-samples:
+        - lang: C
+          source: >-
+            CURL *hnd = curl_easy_init();
+
+
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "DELETE");
+
+            curl_easy_setopt(hnd, CURLOPT_URL,
+            "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D");
+
+
+            struct curl_slist *headers = NULL;
+
+            headers = curl_slist_append(headers, "client-id:
+            SOME_APIKEY_VALUE");
+
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+
+            CURLcode ret = curl_easy_perform(hnd);
+        - lang: 'C#'
+          source: >-
+            var client = new
+            RestClient("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D");
+
+            var request = new RestRequest(Method.DELETE);
+
+            request.AddHeader("client-id", "SOME_APIKEY_VALUE");
+
+            IRestResponse response = client.Execute(request);
+        - lang: Go
+          source: "package main
+
+
+
+import (
+
+  \"fmt\"
+
+  \"net/http\"
+
+  \"io/ioutil\"
+
+)
+
+
+
+func main() {
+
+
+
+  url := \"https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D\"
+
+
+
+  req, _ := http.NewRequest(\"DELETE\", url, nil)
+
+
+
+  req.Header.Add(\"client-id\", \"SOME_APIKEY_VALUE\")
+
+
+
+  res, _ := http.DefaultClient.Do(req)
+
+
+
+  defer res.Body.Close()
+
+  body, _ := ioutil.ReadAll(res.Body)
+
+
+
+  fmt.Println(res)
+
+  fmt.Println(string(body))
+
+
+
+}"
+        - lang: Java
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D")
+              .delete(null)
+              .addHeader("client-id", "SOME_APIKEY_VALUE")
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = { method: 'DELETE',
+              url:
+               'https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D',
+              headers: { 'client-id': 'SOME_APIKEY_VALUE' } };
+
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+
+              console.log(body);
+            });
+        - lang: PHP
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "DELETE",
+              CURLOPT_HTTPHEADER => array(
+                "client-id: SOME_APIKEY_VALUE"
+              ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("apis.nbg.gr")
+
+
+            headers = { 'client-id': "SOME_APIKEY_VALUE" }
+
+
+            conn.request("DELETE",
+            "/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D",
+            headers=headers)
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Ruby
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+            request = Net::HTTP::Delete.new(url)
+
+            request["client-id"] = 'SOME_APIKEY_VALUE'
+
+
+            response = http.request(request)
+
+            puts response.read_body
+        - lang: cUrl
+          source: |-
+            curl --request DELETE \
+              --url https://apis.nbg.gr/sandbox/ecommercepay/headers/v1.2/sandbox/%7Bsandbox_id%7D \
+              --header 'client-id: SOME_APIKEY_VALUE'
+definitions:
+  PaymentMethods:
+    description: Payments Methods
+    type: object
+    properties:
+      is_authorized:
+        description: Authorization Flag
+        type: boolean
+      skrill:
+        description: Skrill Flag
+        type: boolean
+      paysafecard:
+        description: Paysafecard Flag
+        type: boolean
+      ibank:
+        description: Ibank Flag
+        type: boolean
+      credit_card:
+        description: Credit Card Flag
+        type: boolean
+      design_key:
+        description: Design Key Flag
+        type: boolean
+  CreatePaymentRequest:
+    description: Create Payment Request
+    type: object
+    properties:
+      amount:
+        description: Amount
+        type: string
+  Payment:
+    description: Payment Status
+    type: object
+    properties:
+      id:
+        format: uuid
+        description: Identifier
+        type: string
+        example: 00000000-0000-0000-0000-000000000000
+      ref_id:
+        format: uuid
+        description: Reference Identifier
+        type: string
+        example: 00000000-0000-0000-0000-000000000000
+      status:
+        description: Payment Status
+        type: string
+      token:
+        description: Payment Token
+        type: string
+  PaymentResponse:
+    description: Payment Response
+    type: object
+    properties:
+      id:
+        description: Identifier
+        type: string
+      object:
+        description: Object
+        type: string
+      captured:
+        description: Captured Flag
+        type: boolean
+      amount:
+        format: double
+        description: Amount
+        type: number
+      currency:
+        description: Currency
+        type: string
+      description:
+        description: Description
+        type: string
+      meta:
+        description: Meta
+        type: string
+      status:
+        description: Status
+        type: string
+      MerchantReference:
+        description: Merchant Reference
+        type: string
+      customer:
+        description: Customer
+        type: string
+      method:
+        description: Method
+        type: string
+      method_info:
+        $ref: '#/definitions/MethodInfo'
+        description: Method Info
+      created_at:
+        format: date-time
+        description: Creation Date
+        type: string
+      updated_at:
+        format: date-time
+        description: Update Date
+        type: string
+      captured_at:
+        format: date-time
+        description: Capture Date
+        type: string
+      refunded:
+        description: Refunded Flag
+        type: boolean
+      refunds:
+        description: Refunds
+        type: array
+        items:
+          type: string
+      refunded_amount:
+        description: Refunded Amount
+        type: string
+      fee_amount:
+        format: double
+        description: Fee Amount
+        type: number
+      error_code:
+        description: Error Code
+        type: string
+      error_message:
+        description: Error Message
+        type: string
+  MethodInfo:
+    description: Method Info
+    type: object
+    properties:
+      Payload:
+        $ref: '#/definitions/Payload'
+        description: Payment Payload
+      exception:
+        description: Exception
+        type: string
+      messages:
+        description: Messages
+        type: string
+      executionTime:
+        format: int32
+        description: Execution Time
+        type: integer
+  Payload:
+    description: Payment Payload
+    type: object
+    properties:
+      refId:
+        format: uuid
+        description: Reference Identifier
+        type: string
+        example: 00000000-0000-0000-0000-000000000000
+      paymentRequestNumber:
+        format: int32
+        description: Payment Request Number
+        type: integer
+      amount:
+        format: double
+        description: Payment Amount
+        type: number
+      paymentRequestExpirationDate:
+        format: date-time
+        description: Payment Request Expiration Date
+        type: string
+  SandboxRequest:
+    description: Sandbox Request
+    required:
+      - sandboxId
+    type: object
+    properties:
+      sandboxId:
+        description: Sandbox unique identifier. E.g MySandbox
+        type: string
+  SandboxDataModel:
+    description: Sandbox Data Model
+    type: object
+    properties:
+      SandboxID:
+        description: Sandbox unique identifier. E.g MySandbox
+        type: string
+      Users:
+        description: Sandbox users.
+        type: array
+        items:
+          description: Sandbox User
+          type: object
+          properties:
+            Username:
+              description: Sandbox username
+              type: string
+            ProviderId:
+              description: Sandbox provider identifier (e.g NBG.gr)
+              type: string
+            Provider:
+              description: Sandbox provider (e.g NBG)
+              type: string
+      Payments:
+        description: Sandbox payments.
+        type: array
+        items:
+          description: Payment Status
+          type: object
+          properties:
+            amount:
+              description: Payment Amount
+              type: string
+            createdOn:
+              format: date-time
+              description: Creation Date
+              type: string
+            updatedOn:
+              format: date-time
+              description: Update Date
+              type: string
+            id:
+              format: uuid
+              description: Identifier
+              type: string
+              example: 00000000-0000-0000-0000-000000000000
+            ref_id:
+              format: uuid
+              description: Reference Identifier
+              type: string
+              example: 00000000-0000-0000-0000-000000000000
+            status:
+              description: Payment Status
+              type: string
+            token:
+              description: Payment Token
+              type: string
+  SandboxUser:
+    description: Sandbox User
+    type: object
+    properties:
+      Username:
+        description: Sandbox username
+        type: string
+      ProviderId:
+        description: Sandbox provider identifier (e.g NBG.gr)
+        type: string
+      Provider:
+        description: Sandbox provider (e.g NBG)
+        type: string
+  SandboxPayment:
+    description: Payment Status
+    type: object
+    properties:
+      amount:
+        description: Payment Amount
+        type: string
+      createdOn:
+        format: date-time
+        description: Creation Date
+        type: string
+      updatedOn:
+        format: date-time
+        description: Update Date
+        type: string
+      id:
+        format: uuid
+        description: Identifier
+        type: string
+        example: 00000000-0000-0000-0000-000000000000
+      ref_id:
+        format: uuid
+        description: Reference Identifier
+        type: string
+        example: 00000000-0000-0000-0000-000000000000
+      status:
+        description: Payment Status
+        type: string
+      token:
+        description: Payment Token
+        type: string
+securityDefinitions:
+  Client-Id:
+    type: apiKey
+    description: Application's Id
+    name: Client-Id
+    in: header
+security:
+  - Client-Id: []
