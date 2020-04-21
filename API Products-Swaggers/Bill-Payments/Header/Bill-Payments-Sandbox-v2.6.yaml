@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: "2.6"
-  title: Bill Payments Sandbox
+  title: Bill Payments Sandbox API
   description: >
     ## Functionality at a glance
 
