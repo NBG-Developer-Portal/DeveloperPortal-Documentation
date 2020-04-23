@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: v2.1
-  title: File Sandbox API
+  title: File Sandbox OAuth2 API
   description: >
     Start integrating your application with our Bank and give your clients the
     options upload and download files without any restriction, neither size nor
