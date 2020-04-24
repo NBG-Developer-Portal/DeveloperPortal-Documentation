@@ -2921,6 +2921,7 @@ components:
                     - Credit
                     - Debit
                     - Prepaid
+                    - Virtual
                     example: "Credit"
                 status:
                     description: Credit Card Status
