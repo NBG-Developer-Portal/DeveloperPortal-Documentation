@@ -1,0 +1,1055 @@
+openapi: 3.0.0
+info:
+  description:  >
+    # Introduction
+
+
+    Welcome to the Get Token API documentation. This API facilitates an easy
+    execution of the Authorization Code Flow required by the OAuth 2.0 standard.
+    By using the Get Token API you can obtain an Access Token that you can use
+    when calling endpoints requiring OAuth authentication. Before using the Get
+    Token API make sure that you have created an App that meets the following
+    requirements: 
+
+
+    1.  The App is subscribed to a plan that requires authentication with OAuth 
+
+    2. You have set an HTTPS OAuth redirect URI in your App's settings 
+
+     Follow the instructions of the descriptions in the following endpoints in order to get an Authoraization Code and exchange it for an Access Token. 
+
+    Created by **NBG** 
+
+
+    See more at https://developer.nbg.gr/
+
+     # Entities 
+
+     Below, the main entities are documented.
+     <a name=authorization_code></a> 
+    ## authorization_code 
+
+    Authorization Code schema 
+
+
+    ### Attributes 
+
+
+    | Name| Description| Values|
+
+    | -----| -----| -----|
+
+    | client_id| App client ID - can be provided in formData or using HTTP Basic
+    Authentication| string|
+
+    | client_secret| App client secret - must be provided in formData or using
+    HTTP Basic Authentication| string|
+
+    | grant_type| Type of grant| string|
+
+    | code| Authorization code - obtained using the /authorize endpoint| string|
+
+    | redirect_uri| The App Redirect URI where the user is redirected to upon
+    authorization| string|
+
+     <a name=client_credentials></a> 
+    ## client_credentials 
+
+    Client Credentials schema 
+
+
+    ### Attributes 
+
+
+    | Name| Description| Values|
+
+    | -----| -----| -----|
+
+    | client_id| App client ID - can be provided in formData or using HTTP Basic
+    Authentication| string|
+
+    | client_secret| App client secret - must be provided in formData or using
+    HTTP Basic Authentication| string|
+
+    | grant_type| Type of grant| string|
+
+    | scope| Scope of the APIs| string|
+
+     <a name=refresh_token></a> 
+    ## refresh_token 
+
+    Refresh Token schema 
+
+
+    ### Attributes 
+
+
+    | Name| Description| Values|
+
+    | -----| -----| -----|
+
+    | client_id| App client ID - can be provided in formData or using HTTP Basic
+    Authentication| string|
+
+    | client_secret| App client secret - must be provided in formData or using
+    HTTP Basic Authentication| string|
+
+    | grant_type| Type of grant| string|
+
+    | refresh_token| Refresh Token| string|
+
+     <a name=Token></a> 
+    ## Token 
+
+
+
+    ### Attributes 
+
+
+    | Name| Description| Values|
+
+    | -----| -----| -----|
+
+    | client_id| App client ID - can be provided in formData or using HTTP Basic
+    Authentication| string|
+
+    | client_secret| App client secret - must be provided in formData or using
+    HTTP Basic Authentication| string|
+
+    | grant_type| Type of grant| string|
+  version: v1
+  title: Get Token API
+  contact:
+    email: developer@nbg.gr
+paths:
+  /authorize:
+    get:
+      responses:
+        200:
+          description: 200 OK
+      tags:
+        - Authorization Code
+      summary: Get an Authorization Code
+      description: "Use this endpoint to obtain an Authorization Code. You can call
+        the operation by filling the required fields as follows:\n\n - client_id:
+        The client_id of your App \n - scope: The scope of the API you want access
+        to (check the documentation of the API to find the required scope) (to be able to use the refresh_token grant_type at the token endpoint, you need to ask for **offline_access** scope) \n - redirect_uri:
+        The redirect URI that you have defined in your App's settings. \n\n You can use the following redirect URL 
+        to easily test an API through the portal: https://developer.nbg.gr/oauth2/redoc-callback
+        \n\n Upon hitting
+        the 'Send' button, you will see the login page and authorize your App using your credentials. 
+        When you finish
+        you will be redirected to the App Redirect URI and you should copy the code
+        that you see in the browser's URL. This is your Auth Code. \n\n
+        In case you have used the NBG Developer Portal’s callback URL(https://developer.nbg.gr/oauth2/redoc-callback) 
+        as the Redirect URI and you were already logged in to the Portal, then you should see the Auth Code in the Response window automatically. 
+        \n\nNow continue with the /token endpoint."
+      parameters:
+      - name: client_id
+        schema:
+          type: string
+        required: true
+        in: query
+        description: App client ID - can be provided in formData or using HTTP Basic Authentication
+      - name: response_type
+        schema:
+          type: string
+          default: code
+        required: true
+        in: query
+        description: Request an authorization code
+      - name: scope
+        schema:
+          type: string
+        required: true
+        in: query
+        description: Scope being requested - Check the documentation of the API you want access to
+      - name: redirect_uri
+        schema:
+          type: string
+        required: true
+        in: query
+        description: The App Redirect URI where the user is redirected to upon authorization
+      x-code-samples:
+        - lang: C
+          source: >-
+            CURL *hnd = curl_easy_init();
+
+
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
+
+            curl_easy_setopt(hnd, CURLOPT_URL,
+            "https://my.nbg.gr/identity/connect/authorize?client_id=SOME_STRING_VALUE&response_type=code&scope=SOME_STRING_VALUE&redirect_uri=SOME_STRING_VALUE");
+
+
+            CURLcode ret = curl_easy_perform(hnd);
+        - lang: 'C#'
+          source: >-
+            var client = new
+            RestClient("https://my.nbg.gr/identity/connect/authorize?client_id=SOME_STRING_VALUE&response_type=code&scope=SOME_STRING_VALUE&redirect_uri=SOME_STRING_VALUE");
+
+            var request = new RestRequest(Method.GET);
+
+            IRestResponse response = client.Execute(request);
+        - lang: Go
+          source: "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://my.nbg.gr/identity/connect/authorize?client_id=SOME_STRING_VALUE&response_type=code&scope=SOME_STRING_VALUE&redirect_uri=SOME_STRING_VALUE\"\n\n\treq, _ := http.NewRequest(\"GET\", url, nil)\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+        - lang: Java
+          source: |-
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+              .url("https://my.nbg.gr/identity/connect/authorize?client_id=SOME_STRING_VALUE&response_type=code&scope=SOME_STRING_VALUE&redirect_uri=SOME_STRING_VALUE")
+              .get()
+              .build();
+
+            Response response = client.newCall(request).execute();
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = { method: 'GET',
+              url: 'https://my.nbg.gr/identity/connect/authorize',
+              qs:
+               { client_id: 'SOME_STRING_VALUE',
+                 response_type: 'code',
+                 scope: 'SOME_STRING_VALUE',
+                 redirect_uri: 'SOME_STRING_VALUE' } };
+
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+
+              console.log(body);
+            });
+        - lang: PHP
+          source: |-
+            <?php
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://my.nbg.gr/identity/connect/authorize?client_id=SOME_STRING_VALUE&response_type=code&scope=SOME_STRING_VALUE&redirect_uri=SOME_STRING_VALUE",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              echo "cURL Error #:" . $err;
+            } else {
+              echo $response;
+            }
+        - lang: Python
+          source: >-
+            import http.client
+
+
+            conn = http.client.HTTPSConnection("my.nbg.gr")
+
+
+            conn.request("GET",
+            "/identity/connect/authorize?client_id=SOME_STRING_VALUE&response_type=code&scope=SOME_STRING_VALUE&redirect_uri=SOME_STRING_VALUE")
+
+
+            res = conn.getresponse()
+
+            data = res.read()
+
+
+            print(data.decode("utf-8"))
+        - lang: Ruby
+          source: >-
+            require 'uri'
+
+            require 'net/http'
+
+
+            url =
+            URI("https://my.nbg.gr/identity/connect/authorize?client_id=SOME_STRING_VALUE&response_type=code&scope=SOME_STRING_VALUE&redirect_uri=SOME_STRING_VALUE")
+
+
+            http = Net::HTTP.new(url.host, url.port)
+
+            http.use_ssl = true
+
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+
+            request = Net::HTTP::Get.new(url)
+
+
+            response = http.request(request)
+
+            puts response.read_body
+        - lang: cUrl
+          source: |-
+            curl --request GET \
+              --url 'https://my.nbg.gr/identity/connect/authorize?client_id=SOME_STRING_VALUE&response_type=code&scope=SOME_STRING_VALUE&redirect_uri=SOME_STRING_VALUE'        
+  /token:
+    post:
+      tags:
+        - Access Token
+      summary: Request Access Tokens
+      description: "This endpoint allows requesting an access token following one
+        of the flows below: \n - Authorization Code (exchange the Authorization code
+        for an Access token) \n - Client Credentials (2-legged, without resource owner
+        information) \n - Refresh Token (exchange the refresh token of your previous authorization code call for a new access token) \n\nDepending on the **access token** type, copy the **request body** from the payload in the **request samples** section. Then, by filling the requested values, you will be eligible to get a token for your flow of preference. \n\n Hit the ‘Try out’ button and fill the required fields. In the response window you will see the Access token."
+      responses:
+        200:
+          description: 200 OK
+      requestBody:
+        $ref: '#/components/requestBodies/Token'
+      x-code-samples:
+        - lang: Payload
+          source: >-
+            //For the authorization_code flow use this Body Request:
+            
+            
+            {
+              "client_id": "00000000-0000-0000-0000-000000000000",
+              "client_secret": "00000000-0000-0000-0000-000000000000",
+              "grant_type": "authorization_code",
+              "code": "code_from_authorization_endpoint",
+              "redirect_uri": "https://my_applications_redirect_uri/"
+            }
+            
+            
+            //For the client_credentials flow use this Body Request:
+            
+            
+            {
+              "client_id": "00000000-0000-0000-0000-000000000000",
+              "client_secret": "00000000-0000-0000-0000-000000000000",
+              "grant_type": "client_credentials",
+              "scope": "scope-1 scope-2"
+            }
+            
+            
+            //For the refresh_token flow use this Body Request:    
+            
+            
+            {
+              "client_id": "00000000-0000-0000-0000-000000000000",
+              "client_secret": "00000000-0000-0000-0000-000000000000",
+              "grant_type": "refresh_token",
+              "refresh_token": "refresh_token_from_previous_refresh_token_request"
+            }           
+            
+        - lang: C
+          source: >-
+            //For the authorization_code flow use this piece of Code:
+            
+            
+            CURL *hnd = curl_easy_init();
+            
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+            
+            curl_easy_setopt(hnd, CURLOPT_URL, "https://my.nbg.gr/identity/connect/token");
+            
+            struct curl_slist *headers = NULL;
+            
+            headers = curl_slist_append(headers, "cache-control: no-cache");
+            
+            headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
+            
+            headers = curl_slist_append(headers, "accept: application/json");
+            
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+            
+            curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F");
+            
+            CURLcode ret = curl_easy_perform(hnd);
+            
+            
+            //For the client_credentials flow use this Body Request:
+            
+            
+            CURL *hnd = curl_easy_init();
+            
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+            
+            curl_easy_setopt(hnd, CURLOPT_URL, "https://my.nbg.gr/identity/connect/token");
+            
+            struct curl_slist *headers = NULL;          
+            
+            headers = curl_slist_append(headers, "cache-control: no-cache");
+            
+            headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
+            
+            headers = curl_slist_append(headers, "accept: application/json");
+            
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+            
+            curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=client_credentials&scope=scope-1%20scope-2");
+            
+            CURLcode ret = curl_easy_perform(hnd);
+            
+            
+            //For the refresh_token flow use this Body Request:
+            
+            
+            CURL *hnd = curl_easy_init();
+            
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+            
+            curl_easy_setopt(hnd, CURLOPT_URL, "https://my.nbg.gr/identity/connect/token");
+            
+            struct curl_slist *headers = NULL;            
+            
+            headers = curl_slist_append(headers, "cache-control: no-cache");
+            
+            headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
+            
+            headers = curl_slist_append(headers, "accept: application/json");
+            
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+            
+            curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request");
+            
+            CURLcode ret = curl_easy_perform(hnd);            
+        - lang: 'C#'
+          source: >-
+            //For the authorization_code flow use this piece of Code:
+            
+            
+            var client = new RestClient("https://my.nbg.gr/identity/connect/token");
+            
+            var request = new RestRequest(Method.POST);
+            
+            request.AddHeader("cache-control", "no-cache");
+            
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            
+            request.AddHeader("accept", "application/json");
+            
+            request.AddParameter("application/x-www-form-urlencoded", "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F", ParameterType.RequestBody);
+            
+            IRestResponse response = client.Execute(request);            
+            
+            
+            //For the client_credentials flow use this Body Request:
+            
+            
+            var client = new RestClient("https://my.nbg.gr/identity/connect/token");
+            
+            var request = new RestRequest(Method.POST);
+            
+            request.AddHeader("cache-control", "no-cache");
+            
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            
+            request.AddHeader("accept", "application/json");
+            
+            request.AddParameter("application/x-www-form-urlencoded", "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=client_credentials&scope=scope-1%20scope-2", ParameterType.RequestBody);
+            
+            IRestResponse response = client.Execute(request);
+            
+            
+            //For the refresh_token flow use this Body Request:
+            
+            
+            var client = new RestClient("https://my.nbg.gr/identity/connect/token");
+            
+            var request = new RestRequest(Method.POST);
+            
+            request.AddHeader("cache-control", "no-cache");
+            
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            
+            request.AddHeader("accept", "application/json");
+            
+            request.AddParameter("application/x-www-form-urlencoded", "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request", ParameterType.RequestBody);
+            
+            IRestResponse response = client.Execute(request);                        
+        - lang: Go
+          source: >-
+            //For the authorization_code flow use this piece of Code:
+            
+            
+            package main
+            
+            import (
+            	"fmt"
+            	"strings"
+            	"net/http"
+            	"io/ioutil"
+            )
+            
+            func main() {
+            	url := "https://my.nbg.gr/identity/connect/token"
+            	payload := strings.NewReader("client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F")
+            	req, _ := http.NewRequest("POST", url, payload)
+            	req.Header.Add("accept", "application/json")
+            	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+            	req.Header.Add("cache-control", "no-cache")
+            	res, _ := http.DefaultClient.Do(req)
+            	defer res.Body.Close()
+            	body, _ := ioutil.ReadAll(res.Body)
+            	fmt.Println(res)
+            	fmt.Println(string(body))
+            }
+            
+            
+            //For the client_credentials flow use this Body Request:    
+            
+            
+            package main
+            
+            import (
+            	"fmt"
+            	"strings"
+            	"net/http"
+            	"io/ioutil"
+            )
+            
+            func main() {
+            	url := "https://my.nbg.gr/identity/connect/token"
+            	payload := strings.NewReader("client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=client_credentials&scope=scope-1%20scope-2")
+            	req, _ := http.NewRequest("POST", url, payload) 
+            	req.Header.Add("accept", "application/json")
+            	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+            	req.Header.Add("cache-control", "no-cache")
+            	res, _ := http.DefaultClient.Do(req)
+            	defer res.Body.Close()
+            	body, _ := ioutil.ReadAll(res.Body)
+            	fmt.Println(res)
+            	fmt.Println(string(body))
+            }         
+            
+            
+            //For the refresh_token flow use this Body Request:
+            
+            
+            package main
+            
+            import (
+            	"fmt"
+            	"strings"
+            	"net/http"
+            	"io/ioutil"
+            )
+            
+            func main() {
+            	url := "https://my.nbg.gr/identity/connect/token"
+            	payload := strings.NewReader("client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request")
+            	req, _ := http.NewRequest("POST", url, payload)
+            	req.Header.Add("accept", "application/json")
+            	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+            	req.Header.Add("cache-control", "no-cache")
+            	res, _ := http.DefaultClient.Do(req)  
+            	defer res.Body.Close()
+            	body, _ := ioutil.ReadAll(res.Body) 
+            	fmt.Println(res)
+            	fmt.Println(string(body))
+            }                           
+        - lang: Java
+          source: >-
+            //For the authorization_code flow use this piece of Code:
+            
+            
+            kHttpClient client = new OkHttpClient();
+            
+            ediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+            equestBody body = RequestBody.create(mediaType, "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F");
+            equest request = new Request.Builder()
+             .url("https://my.nbg.gr/identity/connect/token")
+             .post(body)
+             .addHeader("accept", "application/json")
+             .addHeader("content-type", "application/x-www-form-urlencoded")
+             .addHeader("cache-control", "no-cache")
+             .build();
+            esponse response = client.newCall(request).execute();
+                        
+            
+            //For the client_credentials flow use this Body Request:    
+            
+            
+            OkHttpClient client = new OkHttpClient();
+            
+            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+            RequestBody body = RequestBody.create(mediaType, "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=client_credentials&scope=scope-1%20scope-2");
+            Request request = new Request.Builder()
+              .url("https://my.nbg.gr/identity/connect/token")
+              .post(body)
+              .addHeader("accept", "application/json")
+              .addHeader("content-type", "application/x-www-form-urlencoded")
+              .addHeader("cache-control", "no-cache")
+              .build();
+            Response response = client.newCall(request).execute();    
+            
+            
+            //For the refresh_token flow use this Body Request:
+            
+            
+            OkHttpClient client = new OkHttpClient();
+            
+            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+            RequestBody body = RequestBody.create(mediaType, "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request");
+            Request request = new Request.Builder()
+              .url("https://my.nbg.gr/identity/connect/token")
+              .post(body)
+              .addHeader("accept", "application/json")
+              .addHeader("content-type", "application/x-www-form-urlencoded")
+              .addHeader("cache-control", "no-cache")
+              .build();
+            Response response = client.newCall(request).execute();                      
+        - lang: Node
+          source: >-
+            //For the authorization_code flow use this piece of Code: 
+            
+            
+            var request = require("request");
+            
+            var options = { method: 'POST',
+              url: 'https://my.nbg.gr/identity/connect/token',
+              headers: 
+               { 'cache-control': 'no-cache',
+                 'content-type': 'application/x-www-form-urlencoded',
+                 'accept': 'application/json' },
+              form: 
+               { client_id: '00000000-0000-0000-0000-000000000000',
+                 client_secret: '00000000-0000-0000-0000-000000000000',
+                 grant_type: 'authorization_code',
+                 redirect_uri: 'https://my_applications_redirect_uri/' } };
+            
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+              console.log(body);
+            });       
+                        
+            
+            //For the client_credentials flow use this Body Request:    
+            
+            
+            var request = require("request");
+            
+            var options = { method: 'POST',
+              url: 'https://my.nbg.gr/identity/connect/token',
+              headers: 
+               { 'cache-control': 'no-cache',
+                 'content-type': 'application/x-www-form-urlencoded',
+                 'accept': 'application/json' },
+              form: 
+               { client_id: '00000000-0000-0000-0000-000000000000',
+                 client_secret: '00000000-0000-0000-0000-000000000000',
+                 grant_type: 'client_credentials',
+                 scope: 'scope-1 scope-2' } };
+            
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+              console.log(body);
+            });
+                                  
+            
+            //For the refresh_token flow use this Body Request:
+            
+                        
+            var request = require("request");
+            
+            var options = { method: 'POST',
+              url: 'https://my.nbg.gr/identity/connect/token',
+              headers: 
+               { 'cache-control': 'no-cache',
+                 'content-type': 'application/x-www-form-urlencoded',
+                 'accept': 'application/json' },
+              form: 
+               { client_id: '00000000-0000-0000-0000-000000000000',
+                 client_secret: '00000000-0000-0000-0000-000000000000',
+                 grant_type: 'refresh_token',
+                 refresh_token: 'refresh_token_from_previous_refresh_token_request' } };
+            
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+              console.log(body);
+            });                           
+        - lang: PHP
+          source: >-
+            //For the authorization_code flow use this piece of Code:
+            
+            
+            <?php
+            
+            $request = new HttpRequest();
+            $request->setUrl('https://my.nbg.gr/identity/connect/token');
+            $request->setMethod(HTTP_METH_POST);
+            
+            $request->setHeaders(array(
+              'cache-control' => 'no-cache',
+              'content-type' => 'application/x-www-form-urlencoded',
+              'accept' => 'application/json'
+            ));
+            
+            $request->setContentType('application/x-www-form-urlencoded');
+            $request->setPostFields(array(
+              'client_id' => '00000000-0000-0000-0000-000000000000',
+              'client_secret' => '00000000-0000-0000-0000-000000000000',
+              'grant_type' => 'authorization_code',
+              'redirect_uri' => 'https://my_applications_redirect_uri/'
+            ));
+            
+            try {
+              $response = $request->send();
+              echo $response->getBody();
+            } catch (HttpException $ex) {
+              echo $ex;
+            }
+                        
+            
+            //For the client_credentials flow use this Body Request:    
+            
+            
+            <?php
+            
+            $request = new HttpRequest();
+            $request->setUrl('https://my.nbg.gr/identity/connect/token');
+            $request->setMethod(HTTP_METH_POST);
+            
+            $request->setHeaders(array(
+              'cache-control' => 'no-cache',
+              'content-type' => 'application/x-www-form-urlencoded',
+              'accept' => 'application/json'
+            ));
+            
+            $request->setContentType('application/x-www-form-urlencoded');
+            $request->setPostFields(array(
+              'client_id' => '00000000-0000-0000-0000-000000000000',
+              'client_secret' => '00000000-0000-0000-0000-000000000000',
+              'grant_type' => 'client_credentials',
+              'scope' => 'scope-1 scope-2'
+            ));
+            
+            try {
+              $response = $request->send();
+              echo $response->getBody();
+            } catch (HttpException $ex) {
+              echo $ex;
+            }              
+            
+            
+            //For the refresh_token flow use this Body Request:
+            
+                        
+            <?php
+            
+            $request = new HttpRequest();
+            $request->setUrl('https://my.nbg.gr/identity/connect/token');
+            $request->setMethod(HTTP_METH_POST);
+            
+            $request->setHeaders(array(
+              'cache-control' => 'no-cache',
+              'content-type' => 'application/x-www-form-urlencoded',
+              'accept' => 'application/json'
+            ));
+            
+            $request->setContentType('application/x-www-form-urlencoded');
+            $request->setPostFields(array(
+              'client_id' => '00000000-0000-0000-0000-000000000000',
+              'client_secret' => '00000000-0000-0000-0000-000000000000',
+              'grant_type' => 'refresh_token',
+              'refresh_token' => 'refresh_token_from_previous_refresh_token_request'
+            ));
+            
+            try {
+              $response = $request->send();
+              echo $response->getBody();
+            } catch (HttpException $ex) {
+              echo $ex;
+            }            
+        - lang: Python
+          source: >-
+            #For the authorization_code flow use this piece of Code:
+            
+            
+            import http.client
+            
+            conn = http.client.HTTPSConnection("my.nbg.gr")
+            
+            payload = "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F"
+            
+            headers = {
+                'accept': "application/json",
+                'content-type': "application/x-www-form-urlencoded",
+                'cache-control': "no-cache",
+                }
+            
+            conn.request("POST", "/identity/connect/token", payload, headers)
+            
+            res = conn.getresponse()
+            data = res.read()
+            
+            print(data.decode("utf-8"))
+                        
+            
+            #For the client_credentials flow use this Body Request:    
+            
+                        
+            import http.client
+            
+            conn = http.client.HTTPSConnection("my.nbg.gr")
+            
+            payload = "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=client_credentials&scope=scope-1%20scope-2"
+            
+            headers = {
+                'accept': "application/json",
+                'content-type': "application/x-www-form-urlencoded",
+                'cache-control': "no-cache",
+                }
+            
+            conn.request("POST", "/identity/connect/token", payload, headers)
+            
+            res = conn.getresponse()
+            data = res.read()
+            
+            print(data.decode("utf-8"))    
+            
+            
+            
+            #For the refresh_token flow use this Body Request:
+            
+                        
+            import http.client
+            
+            conn = http.client.HTTPSConnection("my.nbg.gr")
+            
+            payload = "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request"
+            
+            headers = {
+                'accept': "application/json",
+                'content-type': "application/x-www-form-urlencoded",
+                'cache-control': "no-cache",
+                }
+            
+            conn.request("POST", "/identity/connect/token", payload, headers)
+            
+            res = conn.getresponse()
+            data = res.read()
+            
+            print(data.decode("utf-8"))                      
+        - lang: Ruby
+          source: >-
+            #For the authorization_code flow use this piece of Code:
+            
+            
+            require 'uri'
+            
+            require 'net/http'
+            
+            url = URI("https://my.nbg.gr/identity/connect/token")
+            
+            http = Net::HTTP.new(url.host, url.port)
+            
+            http.use_ssl = true
+            
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            
+            request = Net::HTTP::Post.new(url)
+            
+            request["accept"] = 'application/json'
+            
+            request["content-type"] = 'application/x-www-form-urlencoded'
+            
+            request["cache-control"] = 'no-cache'
+            
+            request.body = "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F"
+            
+            response = http.request(request)
+            
+            puts response.read_body
+                        
+            
+            #For the client_credentials flow use this Body Request:    
+            
+                        
+            require 'uri'
+            
+            require 'net/http'
+            
+            url = URI("https://my.nbg.gr/identity/connect/token")
+            
+            http = Net::HTTP.new(url.host, url.port)
+            
+            http.use_ssl = true
+            
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            
+            request = Net::HTTP::Post.new(url)
+            
+            request["accept"] = 'application/json'
+            
+            request["content-type"] = 'application/x-www-form-urlencoded'
+            
+            request["cache-control"] = 'no-cache'
+            
+            request.body = "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=client_credentials&scope=scope-1%20scope-2"
+            
+            response = http.request(request)
+            
+            puts response.read_body    
+            
+            
+            
+            #For the refresh_token flow use this Body Request:
+            
+            
+            
+            require 'uri'
+            
+            require 'net/http'
+            
+            url = URI("https://my.nbg.gr/identity/connect/token")
+            
+            http = Net::HTTP.new(url.host, url.port)
+            
+            http.use_ssl = true
+            
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            
+            
+            request = Net::HTTP::Post.new(url)
+            
+            request["accept"] = 'application/json'
+            
+            request["content-type"] = 'application/x-www-form-urlencoded'
+            
+            request["cache-control"] = 'no-cache'
+            
+            request.body = "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request"
+            
+            response = http.request(request)
+            
+            puts response.read_body                      
+        - lang: cUrl
+          source: |-
+            //For the authorization_code flow use this piece of Code:
+            
+            
+            curl -X POST \
+              https://my.nbg.gr/identity/connect/token \
+              -H 'accept: application/json' \
+              -H 'cache-control: no-cache' \
+              -H 'content-type: application/x-www-form-urlencoded' \
+              -d 'client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F'  
+            
+            
+            //For the client_credentials flow use this Body Request:    
+            
+                        
+            curl -X POST \
+              https://my.nbg.gr/identity/connect/token \
+              -H 'accept: application/json' \
+              -H 'cache-control: no-cache' \
+              -H 'content-type: application/x-www-form-urlencoded' \
+              -d 'client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=client_credentials&scope=scope-1%20scope-2'   
+            
+            
+            //For the refresh_token flow use this Body Request:
+            
+            
+            curl -X POST \
+              https://my.nbg.gr/identity/connect/token \
+              -H 'accept: application/json' \
+              -H 'cache-control: no-cache' \
+              -H 'content-type: application/x-www-form-urlencoded' \
+              -d 'client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request'                                     
+components:
+  schemas:
+    authorization_code:
+      description: Authorization Code schema
+      allOf:
+        - $ref: '#/components/schemas/Token'
+        - type: object
+          properties:
+            grant_type:
+              type: string
+              description: grant type
+              example: authorization_code
+            code:
+              type: string
+              description: Authorization code - obtained using the /authorize endpoint
+              example: 'code_from_authorization_endpoint'
+            redirect_uri:
+              type: string
+              description: The App Redirect URI where the user is redirected to upon authorization
+              example: https://my_applications_redirect_uri/
+          required:
+            - code
+            - redirect_uri
+    client_credentials:
+      description: Client Credentials schema
+      allOf:
+        - $ref: '#/components/schemas/Token'
+        - type: object
+          properties:
+            grant_type:
+              type: string
+              description: grant type
+              example: authorization_code
+            scope:
+              type: string
+              description: Scope of the APIs 
+              example: scope-1 scope-2
+          required:
+            - scope
+    refresh_token:
+      description: Refresh Token schema
+      allOf:
+        - $ref: '#/components/schemas/Token'
+        - type: object
+          properties:
+            grant_type:
+              type: string
+              description: grant type
+              example: authorization_code
+            refresh_token:
+              type: string
+              description: Refresh Token   
+              example: refresh_token_from_previous_refresh_token_request
+          required:
+            - refresh_token      
+    Token:
+      type: object
+      required:
+        - client_id
+        - client_secret
+        - grant_type
+      properties:
+        client_id:
+          type: string
+          description: App client ID - can be provided in formData or using HTTP Basic Authentication
+          example: 00000000-0000-0000-0000-000000000000
+        client_secret:
+          type: string
+          description: App client secret - must be provided in formData or using HTTP Basic Authentication
+          example: 00000000-0000-0000-0000-000000000000
+        grant_type:
+          type: string
+          description: Type of grant
+          enum:
+            - client_credentials
+            - authorization_code 
+            - refresh_token
+  requestBodies:
+    Token:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/authorization_code'
+              - $ref: '#/components/schemas/client_credentials'
+              - $ref: '#/components/schemas/refresh_token'
+            discriminator:
+              propertyName: grant_type
+              mapping:
+                authorization_code: '#/components/schemas/authorization_code'
+                client_credentials: '#/components/schemas/client_credentials'  
+                refresh_token: '#/components/schemas/refresh_token'
+      description: Token object depending on grant_type              
+servers:
+  - url: 'https://my.nbg.gr/identity/connect'
