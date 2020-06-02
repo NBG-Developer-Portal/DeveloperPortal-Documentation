@@ -170,6 +170,12 @@ paths:
         required: true
         in: query
         description: The App Redirect URI where the user is redirected to upon authorization
+      - name: consent_id
+        schema:
+          type: string
+        required: false
+        in: query
+        description: bogdos
       x-code-samples:
         - lang: C
           source: >-
@@ -476,24 +482,24 @@ paths:
             package main
             
             import (
-            	"fmt"
-            	"strings"
-            	"net/http"
-            	"io/ioutil"
+              "fmt"
+              "strings"
+              "net/http"
+              "io/ioutil"
             )
             
             func main() {
-            	url := "https://my.nbg.gr/identity/connect/token"
-            	payload := strings.NewReader("client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F")
-            	req, _ := http.NewRequest("POST", url, payload)
-            	req.Header.Add("accept", "application/json")
-            	req.Header.Add("content-type", "application/x-www-form-urlencoded")
-            	req.Header.Add("cache-control", "no-cache")
-            	res, _ := http.DefaultClient.Do(req)
-            	defer res.Body.Close()
-            	body, _ := ioutil.ReadAll(res.Body)
-            	fmt.Println(res)
-            	fmt.Println(string(body))
+              url := "https://my.nbg.gr/identity/connect/token"
+              payload := strings.NewReader("client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F")
+              req, _ := http.NewRequest("POST", url, payload)
+              req.Header.Add("accept", "application/json")
+              req.Header.Add("content-type", "application/x-www-form-urlencoded")
+              req.Header.Add("cache-control", "no-cache")
+              res, _ := http.DefaultClient.Do(req)
+              defer res.Body.Close()
+              body, _ := ioutil.ReadAll(res.Body)
+              fmt.Println(res)
+              fmt.Println(string(body))
             }
             
             
@@ -503,24 +509,24 @@ paths:
             package main
             
             import (
-            	"fmt"
-            	"strings"
-            	"net/http"
-            	"io/ioutil"
+              "fmt"
+              "strings"
+              "net/http"
+              "io/ioutil"
             )
             
             func main() {
-            	url := "https://my.nbg.gr/identity/connect/token"
-            	payload := strings.NewReader("client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=client_credentials&scope=scope-1%20scope-2")
-            	req, _ := http.NewRequest("POST", url, payload) 
-            	req.Header.Add("accept", "application/json")
-            	req.Header.Add("content-type", "application/x-www-form-urlencoded")
-            	req.Header.Add("cache-control", "no-cache")
-            	res, _ := http.DefaultClient.Do(req)
-            	defer res.Body.Close()
-            	body, _ := ioutil.ReadAll(res.Body)
-            	fmt.Println(res)
-            	fmt.Println(string(body))
+              url := "https://my.nbg.gr/identity/connect/token"
+              payload := strings.NewReader("client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=client_credentials&scope=scope-1%20scope-2")
+              req, _ := http.NewRequest("POST", url, payload) 
+              req.Header.Add("accept", "application/json")
+              req.Header.Add("content-type", "application/x-www-form-urlencoded")
+              req.Header.Add("cache-control", "no-cache")
+              res, _ := http.DefaultClient.Do(req)
+              defer res.Body.Close()
+              body, _ := ioutil.ReadAll(res.Body)
+              fmt.Println(res)
+              fmt.Println(string(body))
             }         
             
             
@@ -530,24 +536,24 @@ paths:
             package main
             
             import (
-            	"fmt"
-            	"strings"
-            	"net/http"
-            	"io/ioutil"
+              "fmt"
+              "strings"
+              "net/http"
+              "io/ioutil"
             )
             
             func main() {
-            	url := "https://my.nbg.gr/identity/connect/token"
-            	payload := strings.NewReader("client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request")
-            	req, _ := http.NewRequest("POST", url, payload)
-            	req.Header.Add("accept", "application/json")
-            	req.Header.Add("content-type", "application/x-www-form-urlencoded")
-            	req.Header.Add("cache-control", "no-cache")
-            	res, _ := http.DefaultClient.Do(req)  
-            	defer res.Body.Close()
-            	body, _ := ioutil.ReadAll(res.Body) 
-            	fmt.Println(res)
-            	fmt.Println(string(body))
+              url := "https://my.nbg.gr/identity/connect/token"
+              payload := strings.NewReader("client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request")
+              req, _ := http.NewRequest("POST", url, payload)
+              req.Header.Add("accept", "application/json")
+              req.Header.Add("content-type", "application/x-www-form-urlencoded")
+              req.Header.Add("cache-control", "no-cache")
+              res, _ := http.DefaultClient.Do(req)  
+              defer res.Body.Close()
+              body, _ := ioutil.ReadAll(res.Body) 
+              fmt.Println(res)
+              fmt.Println(string(body))
             }                           
         - lang: Java
           source: >-
