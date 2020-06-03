@@ -51,6 +51,8 @@ info:
 
     | redirect_uri| The App Redirect URI where the user is redirected to upon
     authorization| string|
+    
+    | consent_id| The consent id of the created consent (Optional - APIs with consent support only; e.g. PSD2)| string|
 
      <a name=client_credentials></a> 
     ## client_credentials 
@@ -117,6 +119,7 @@ info:
     HTTP Basic Authentication| string|
 
     | grant_type| Type of grant| string|
+    
   version: v1
   title: Get Token API
   contact:
@@ -134,7 +137,7 @@ paths:
         the operation by filling the required fields as follows:\n\n - client_id:
         The client_id of your App \n - scope: The scope of the API you want access
         to (check the documentation of the API to find the required scope) (to be able to use the refresh_token grant_type at the token endpoint, you need to ask for **offline_access** scope) \n - redirect_uri:
-        The redirect URI that you have defined in your App's settings. \n\n You can use the following redirect URL 
+        The redirect URI that you have defined in your App's settings. \n - consent_id: The consent id of the created consent (Optional - APIs with consent support only; e.g. PSD2). \n\n You can use the following redirect URL 
         to easily test an API through the portal: https://developer.nbg.gr/oauth2/redoc-callback
         \n\n Upon hitting
         the 'Send' button, you will see the login page and authorize your App using your credentials. 
@@ -175,7 +178,7 @@ paths:
           type: string
         required: false
         in: query
-        description: bogdos
+        description: The id of the consent to be authorized by the user (APIs with consent support only; e.g. PSD2)
       x-code-samples:
         - lang: C
           source: >-
@@ -984,6 +987,10 @@ components:
               type: string
               description: The App Redirect URI where the user is redirected to upon authorization
               example: https://my_applications_redirect_uri/
+            consent_id:
+              type: string
+              description: The consent id of the created consent (Optional - APIs with consent support only; e.g. PSD2)
+              example: a4d81037-89db-4bc1-8ac8-0fe3aed1b1a0
           required:
             - code
             - redirect_uri
