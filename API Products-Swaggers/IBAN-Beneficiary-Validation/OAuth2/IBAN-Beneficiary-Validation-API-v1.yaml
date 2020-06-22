@@ -1,0 +1,1246 @@
+openapi: 3.0.2
+info:
+    title: IBAN Beneficiary Validation
+    version: v1
+    description: "# Functionality at a glance\nThe NBG **IBAN Beneficiary Validation** API aims to enable End Customers of the Bank's ecosystem to validate an IBAN for antifraud and security cases.\n\nOne using the API is able to (1) retrieve an NBG account's beneficiaries, (2) calculate the confidence of a third bank's IBAN where the most likely beneficiaries names are returned, and finally (3) validate an NBG Iban against certain criteria and calculate the results confidence level.\n\nThe supported Endpoints are:\n\n* validateNbgIban : Validate an NBG Iban and view the account's beneficiaries\n* validateOtherIban : Calculate a third bank's confidence and view the account's most likely beneficiaries\n* validateNbgIbanConfidence : Validate an NBG Iban against certain criteria.\n\n<br/>\n\n# Sandbox Operations & Sandbox Data Model\nBelow you may find a short description of the Sadnbox API Calls and the auto generated Sandbox Model.\n\n## Sandbox Operations\nBelow you may find a short description of the supported Sandbox Operations\n\n#### Create Sandbox\nCreate a new Sandbox application by invoking the POST /sandbox. This call will generate a new Sandbox with a unique sandbox-id.\n\nImportant! Before proceeding save the sandbox id you just created.\n\nWhen you create a sandbox, users and sandbox specific data are generated as sample data\n\n<br/>\n\n#### Get Sandbox\nGet an existing Sandbox application by invoking the GET /sandbox/ {sandbox-id} by using the unique sandbox-id. \n\nThis call will generate a new Sandbox with a unique sandbox-id.\n\nNote! In order to get a sandbox via its unique sandbox-id, a sandbox has to be created first.\n\n<br/>\n\n#### Update Sandbox\nUpdate an existing Sandbox application by invoking the PUT /sandbox/. \nThis call will generate a new Sandbox with a unique sandbox-id.\nNote! In order to update a sandbox, a sandbox has to be created first.\n\n<br/>\n\n#### Delete Sandbox\nDelete an existing Sandbox application by invoking the DELETE /sandbox/ {sandbox-id} by using the unique sandbox-id. \n\nThis call will delete an existing Sandbox via its unique sandbox-id.\n\nNote! In order to delete a sandbox via its unique sandbox-id, a sandbox has to be created first.\n\n<br/>\n\n## Sandbox Model\nBelow you may find information about the Sandbox Data Model.\n\nSample SandboxDataModel :\n\n     {\n        \"Accounts\": [\n            {\n                \"id\": \"8051b546-2dc5-4655-ad5b-c37c626b3e5d\",\n                \"iban\": \"GR1601100400000004012345600\",\n                \"bankEn\": \"National Bank of Greece\",\n                \"bankGr\": \"Εθνική Τράπεζα Ελλάδος\"\n            },\n            {\n                \"id\": \"38d5ecb6-a35d-4510-bdd0-6833f4217366\",\n                \"iban\": \"GR1601100400000004012345601\",\n                \"bankEn\": \"National Bank of Greece\",\n                \"bankGr\": \"Εθνική Τράπεζα Ελλάδος\"\n            },\n            {\n                \"id\": \"a5a92cb9-a652-4913-9a34-b9bcde3bd6d4\",\n                \"iban\": \"GR1601100400000004012345602\",\n                \"bankEn\": \"National Bank of Greece\",\n                \"bankGr\": \"Εθνική Τράπεζα Ελλάδος\"\n            },\n            {\n                \"id\": \"eb8aca6b-08fb-4784-9ca7-354c74ed387e\",\n                \"iban\": \"GR9101097155386567765933961\",\n                \"bankEn\": \"Eurobank\",\n                \"bankGr\": \"Eurobank\"\n            },\n            {\n                \"id\": \"f00b1864-1ceb-44b2-8122-98f62192b275\",\n                \"iban\": \"GR9101097155386567765933999\",\n                \"bankEn\": \"Eurobank\",\n                \"bankGr\": \"Eurobank\"\n            },\n            {\n                \"id\": \"56fea933-38ab-49be-a73a-0bc66c075b0b\",\n                \"iban\": \"FR1420041010050500013M02606\",\n                \"bankEn\": \"LA BANQUE POSTALE\",\n                \"bankGr\": \"LA BANQUE POSTALE\"\n            }\n        ],\n        \"Beneficiaries\": [\n            {\n                \"id\": \"dcc3f385-ef97-41ac-aceb-9918d51062ea\",\n                \"firstName\": \"Κωσταντίνος\",\n                \"midName\": \"\",\n                \"lastName\": \"Παπαδόπουλος\",\n                \"maskedFirstName\": \"Κ***αντ***\",\n                \"maskedMidName\": \"\",\n                \"maskedLastName\": \"Π*****π**λ*ς\",\n                \"companyName\": \"Tasty\",\n                \"taxId\": \"12136678901\",\n                \"dateOfBirth\": \"1980-12-01T00:00:00\",\n                \"owner\": true\n            },\n            {\n                \"id\": \"1987986a-0553-4167-a098-d2216d06cab4\",\n                \"firstName\": \"Νικολαος\",\n                \"midName\": \"\",\n                \"lastName\": \"Κρητικος\",\n                \"maskedFirstName\": \"Ν**ο***ς\",\n                \"maskedMidName\": \"\",\n                \"maskedLastName\": \"Κ**τ**ός\",\n                \"companyName\": \"Herz\",\n                \"taxId\": \"124563456\",\n                \"dateOfBirth\": \"1979-06-01T00:00:00\",\n                \"owner\": true\n            },\n            {\n                \"id\": \"5d9b5701-dbea-482d-b039-0ea79dfecf11\",\n                \"firstName\": \"Ιωαννης\",\n                \"midName\": \"\",\n                \"lastName\": \"Παπαδακης\",\n                \"maskedFirstName\": \"Ι***ν*ς\",\n                \"maskedMidName\": \"\",\n                \"maskedLastName\": \"Π***δ**ς\",\n                \"companyName\": \"AutoBesikos.AE\",\n                \"taxId\": \"987344765\",\n                \"dateOfBirth\": \"1978-02-09T00:00:00\",\n                \"owner\": false\n            },\n            {\n                \"id\": \"732f45b3-486d-452e-9226-2dbefedafa21\",\n                \"firstName\": \"Eleni\",\n                \"midName\": \"\",\n                \"lastName\": \"Iwannou\",\n                \"maskedFirstName\": \"Ε**n*\",\n                \"maskedMidName\": \"\",\n                \"maskedLastName\": \"I**n**u\",\n                \"companyName\": \"STEEAE\",\n                \"taxId\": \"763441234\",\n                \"dateOfBirth\": \"1981-05-05T00:00:00\",\n                \"owner\": true\n            },\n            {\n                \"id\": \"d313fa8f-fa61-4901-963d-3a591606d00c\",\n                \"firstName\": \"Marios\",\n                \"midName\": \"\",\n                \"lastName\": \"Markakis\",\n                \"maskedFirstName\": \"M*r**s\",\n                \"maskedMidName\": \"\",\n                \"maskedLastName\": \"M**k**is\",\n                \"companyName\": \"CokaCola AE\",\n                \"taxId\": \"768233456\",\n                \"dateOfBirth\": \"1981-06-29T00:00:00\",\n                \"owner\": true\n            },\n            {\n                \"id\": \"31a0cb8d-07f9-46b3-b487-b32f9161ac76\",\n                \"firstName\": \"Γιωργος\",\n                \"midName\": \"\",\n                \"lastName\": \"Κυριακου\",\n                \"maskedFirstName\": \"Γ**ρ**ς\",\n                \"maskedMidName\": \"\",\n                \"maskedLastName\": \"Κ****κ**\",\n                \"companyName\": \"Interamerican\",\n                \"taxId\": \"345788901\",\n                \"dateOfBirth\": \"1986-09-06T00:00:00\",\n                \"owner\": false\n            },\n            {\n                \"id\": \"f319cdc1-6f20-4b2a-bb83-da11c669ee86\",\n                \"firstName\": \"Μαρία\",\n                \"midName\": \"\",\n                \"lastName\": \"Καλιμάντζαλη\",\n                \"maskedFirstName\": \"Μ***α\",\n                \"maskedMidName\": \"\",\n                \"maskedLastName\": \"Κ***μ****α*η\",\n                \"companyName\": \"Ibm\",\n                \"taxId\": \"345788901\",\n                \"dateOfBirth\": \"1995-09-06T00:00:00\",\n                \"owner\": true\n            }\n        ],\n        \"AccountsBeneficiaries\": [\n            {\n                \"id\": \"cf819b44-7b97-40c8-9408-a033ddbe1f6e\",\n                \"iban\": \"GR1601100400000004012345600\",\n                \"beneficiaryIds\": [\n                    \"dcc3f385-ef97-41ac-aceb-9918d51062ea\",\n                    \"31a0cb8d-07f9-46b3-b487-b32f9161ac76\"\n                ],\n                \"confidence\": 95.0\n            },\n            {\n                \"id\": \"79067dc8-6d2f-47ec-9520-7cd5a17513f2\",\n                \"iban\": \"GR1601401010101002101047415\",\n                \"beneficiaryIds\": [\n                    \"1987986a-0553-4167-a098-d2216d06cab4\"\n                ],\n                \"confidence\": 80.0\n            },\n            {\n                \"id\": \"fa527d3b-d795-49ba-a748-4e348c504772\",\n                \"iban\": \"GR9101097155386567765933961\",\n                \"beneficiaryIds\": [\n                    \"5d9b5701-dbea-482d-b039-0ea79dfecf11\",\n                    \"732f45b3-486d-452e-9226-2dbefedafa21\"\n                ],\n                \"confidence\": 100.0\n            },\n            {\n                \"id\": \"79067dc8-6d2f-47ec-9520-7cd5a17513f2\",\n                \"iban\": \"FR1420041010050500013M02606\",\n                \"beneficiaryIds\": [\n                    \"d313fa8f-fa61-4901-963d-3a591606d00c\"\n                ],\n                \"confidence\": 94.0\n            },\n            {\n                \"id\": \"cbca52c0-c30f-42fe-a216-7d30078516ed\",\n                \"iban\": \"GR9101097155386567765933999\",\n                \"beneficiaryIds\": [\n                    \"f319cdc1-6f20-4b2a-bb83-da11c669ee86\"\n                ],\n                \"confidence\": 100.0\n            }\n        ]\n    }\n\n  \n# API Functionalities\nIn the below section you may find a short description of the supported API Calls.\n\n\n## validateNbgIban\nThe endpoint is used to retrieve an NBG account's benefeciaries using the account's IBAN.\n\nSample Request :\n\n    {\n      \"iban\": \"GR1601100400000004012345678\"\n    }\n\nSample Response : \n\n    {\n      \"beneficiaries\": [\n        \"Γ**ρ**ς Κ****κ**\",\n        \"Κ****ς Π*****π**λ*ς\"\n      ]\n    }\n\n## validateOtherIban\nThis endpoint is used to retrieve a third bank's account's most likely beneficiaries.\n\nAmong with the most likely benfeciaries a confidence value is returned, stating the results confidence against the returned data.\n\nSample Request :\n\n    {\n        \"iban\" : \"GR1601100400000004012345678\"\n    }\n\nSample Response : \n\n    {\n        \"likelyBeneficiary\" : \"\",\n        \"confidence\" : 94\n    }\n\n## validateNbgIbanConfidence\nThis endpoint is used to to calculate an NBG account's confidence against an IBAN and some additional criteria.\n\nIn case the targeted IBAN regards a retail Customer, then one of the \"likelyBeneficiaryName\", \"likelyBeneficaryMidName\" and \"likelyBeneficiarySurname\" parameters is needed.\n\nIn case the targeted IBAN regards a corporate Customer, then the \"companyName\" parameter is needed.\n\nSample Request :\n\n    {\n      \"iban\": \"GR1601100400000004012345601\",\n      \"likelyBeneficiaryName\": \"Γιωργος\",\n      \"likelyBeneficiaryMidName\": \"\",\n      \"likelyBeneficiarySurname\": \"Κυριακου\",\n      \"companyName\": \"Interamerican\"\n    }\n\nSample Response : \n\n    {\n        \"match\" : false,\n        \"confidence\" : 94\n    }\n\n\n\n# Quick Getting Started\n\n\n1. **Login/Register** to the NBG Technology HUB\n\n2. Go to **\"APPS\"**\n\n3. Select your Organization and go to step 4. If you want to create a new Organization click **\\\"CREATE AN ORGANIZATION\\\"** and follow the steps below:\n\t1. Enter the title of your Organization\n\t2. Enter a short description of your Organization (optional)\n\t3. Click **\"SUBMIT\"**\n\n4. Select the Organization of choice and click **\"ADD AN APPLICATION\"** \n\t  1. Fill in the forms (title and short description)\n\t  2. Check **\\\"Authorization Code\\\" and \\\"Client Credentials\\\"** \n\t  3. Enter the **OAuth Redirect and Post Logout URIs** (these are the URIs that we will redirect the user upon logging in and logging out respectively)\n\t\t  \n\t\t  You can use the following redirect URL to easily test the API through the portal: *https://developer.nbg.gr/oauth2/redoc-callback*\n\t  4. Click **\"SUBMIT\"**\n\t  5. Store the APPs **\"Client ID\"** and **\"Client Secret\"**\n\t  6. \n5. Go to **\"API PRODUCTS\"** and select the **IBAN Beneficiary Validation**\n\n6. Click **\\\"START USING THIS API\\\"**, choose your app and click **\"SUBSCRIBE\"**\n\n7. Get an Access Token using the Access Token Flow and the API scopes provided in the Authentication and Authorization (OAuth2) section below\n\n8. Create a Sandbox\n\n9. Play with the API \n\n\n## Sandbox Flow\nThe Sandbox Flow matches the Production Flow. The difference lies into the Data used. Instead of live data, the Sandbox flow uses mocked data.\n\n<br/>\n\n## Authentication and Authorization (OAuth2)\n\nThis API version uses the OAuth2 protocol for authentication and authorization, which means that a\nBearer (access token) should be acquired. An access token can be retrieved using the client_id and\nclient_secret of the APP that you created and subscribed in this API, and your own credentials\n(username, password) that you use to sign in the NBG Technology HUB. The scopes are defined below:\n\n\n**Token Endpoint:** \n\n\t  https://myqa.nbg.gr/identity/connect/token\n\n**Sandbox Scopes:** \n\n\t  sandbox-iban-validator-api-v1\n\t\n**Production Scopes:** \n\n\t  iban-validator-api-v1\n\n\n\nSee more [here](https://developer.nbg.gr/oauth-document)\n\n\n<br/>\n\n## Start Testing\n\nOnce you have your sandbox-id, you can start invoking the rest of the operations by providing the\nmandatory http header **sandbox-id**  and the http headers described below.\n\n\n<br/>\n\n## Important notes\n\n\n**Request headers**\n\n\nThe following HTTP header parameters are required for every call:\n\n\n1. Authorization. The OAuth2 Token\n\n2. sandbox_id. Your Sandbox ID\n\n<br/>\n\n# Feedback and Questions\n\nWe would love to hear your feedback and answer your questions. Send us at\n[developer@nbg.gr](developer@nbg.gr)\n\n\nCheck out our [Sandbox Postman\nCollection](https://github.com/myNBGcode/PostmanCollections/tree/master/IBAN%20Beneficiary%20Validation%20API)!\n\n\n\n________________________________________\n\nCreated by [**NBG**](https://www.nbg.gr/)."
+    contact:
+      email: developer@nbg.gr
+servers:
+    -
+        url: 'https://apis.nbg.gr/sandbox/iban.beneficiary.validation/oauth2/v1'
+        description: Sandbox Server
+paths:
+    '/sandbox/{sandboxid}':
+        get:
+            tags:
+                - Sandbox
+            parameters:
+                -
+                    name: Authorization
+                    description: Authorization
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    name: Client-Id
+                    description: Client Id
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    examples:
+                        MyIbanValidatorSandbox:
+                            value: '"MyIbanValidatorSandbox"'
+                    name: sandboxid
+                    description: Sandbox ID
+                    schema:
+                        type: string
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SandboxResponse'
+                    description: OK
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Bad Request
+                '401':
+                    description: Unauthorized
+                '403':
+                    description: Forbidden
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Not Found
+                '500':
+                    description: Internal Server Error
+            summary: Export a Sandbox
+            description: Export a Sandbox
+        delete:
+            tags:
+                - Sandbox
+            parameters:
+                -
+                    name: Authorization
+                    description: Authorization
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    name: Client-Id
+                    description: Client Id
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    examples:
+                        MyIbanValidatorSandbox:
+                            value: '"MyIbanValidatorSandbox"'
+                    name: sandboxid
+                    description: Sandbox ID
+                    schema:
+                        type: string
+                    in: path
+                    required: true
+            responses:
+                '204':
+                    description: No Content
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Bad Request
+                '401':
+                    description: Unauthorized
+                '403':
+                    description: Forbidded
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Not Found
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Internal Server Error
+            summary: Delete a Sandbox
+            description: Delete a Sandbox
+        parameters:
+            -
+                examples:
+                    MyIbanValidatorSandbox:
+                        value: '"MyIbanValidatorSandbox"'
+                name: sandboxid
+                schema:
+                    type: string
+                in: path
+                required: true
+    /ibanValidator/validateNbgIban:
+        summary: Endpoint used to validate an NBG IBAN
+        description: Endpoint used to validate an NBG IBAN
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ValidateIbanRequest'
+                required: true
+            tags:
+                - IbanValidator
+            parameters:
+                -
+                    name: Authorization
+                    description: Authorization
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    name: Sandbox-Id
+                    description: The required "Sandbox ID"
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    name: Client-Id
+                    description: Client Id
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidateIbanNbgResponse'
+                    description: OK
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Bad Request
+                '401':
+                    description: Unauthorized
+                '403':
+                    description: Forbidden
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Not Found
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Internal Server Error
+            summary: Validate NBG IBAN
+            description: Endpoint used to validate an NBG IBAN
+    /ibanValidator/validateNbgIbanConfidence:
+        summary: Validate Nbg  IBAN via confidence
+        description: Validate NBG Iban via Confidence and determine if it is a match
+        post:
+            requestBody:
+                description: Validate NBG  IBAN via confidence
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ValidateNbgIbanConfidenceRequest'
+            tags:
+                - IbanValidator
+            parameters:
+                -
+                    name: Authorization
+                    description: Authorization
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    name: Sandbox-Id
+                    description: The required "Sandbox ID"
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    name: Client-Id
+                    description: Client Id
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ValidateIbanConfidenceResponse'
+                    description: OK
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: BadRequest
+                '401':
+                    description: Unauthorized
+                '403':
+                    description: Forbidden
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Not Found
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Internal Server Error
+            summary: Validate NBG  IBAN via confidence
+            description: Validate NBG  IBAN via confidence
+    /ibanValidator/validateOtherIban:
+        summary: Validate other bank's Iban via Confidence
+        description: Validate other bank's Iban via Confidence
+        post:
+            requestBody:
+                description: ''
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ValidateIbanRequest'
+                        examples:
+                            IbanValidationRequest:
+                                value:
+                                    IBAN: GR1601100400000004012345600
+                required: true
+            tags:
+                - IbanValidator
+            parameters:
+                -
+                    name: Authorization
+                    description: Authorization
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    name: Sandbox-Id
+                    description: The required "Sandbox ID"
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    name: Client-Id
+                    description: Client Id
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ConfidenceResponse'
+                            examples:
+                                ValidateNBGIBANViaConfidenceResponse:
+                                    value:
+                                        likelyBeneficiary: Κ****ς Π*****π**λ*ς
+                                        Confidence: '94'
+                    description: OK
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Bad Request
+                '401':
+                    description: Unauthorized
+                '403':
+                    description: Forbidden
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Not Found
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Internal Server Error
+            summary: Validate other bank's Iban via Confidence
+            description: Validate other bank's Iban via Confidence
+    /sandbox:
+        summary: Create or Update Sandbox
+        description: Create or Update Sandbox
+        put:
+            requestBody:
+                description: SandboxModel
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SandboxModel'
+                required: true
+            tags:
+                - Sandbox
+            parameters:
+                -
+                    name: Authorization
+                    description: Authorization
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    name: Client-Id
+                    description: Client Id
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+            responses:
+                '204':
+                    description: No Content
+                '401':
+                    description: Unauthorized
+                '403':
+                    description: Forbidden
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Not Found
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: "Internal Server Error\r\n"
+            summary: Update Sandbox
+            description: Update Sandbox
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SandboxRequest'
+            tags:
+                - Sandbox
+            parameters:
+                -
+                    name: Authorization
+                    description: Authorization
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+                -
+                    name: Client-Id
+                    description: Client Id
+                    schema:
+                        type: string
+                    in: header
+                    required: true
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SandboxResponse'
+                    description: Created
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Bad Request
+                '401':
+                    description: Unauthorized
+                '403':
+                    description: Forbidden
+                '500':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                    description: Internal Server Error
+            summary: Create Sandbox
+            description: Create Sandbox
+components:
+    schemas:
+        AccountsBeneficiaries:
+            title: Root Type for IBANBeneficiary
+            description: Contains Iban from Account and Id from Beneficiary matrices
+            required:
+                - BeneficiaryIds
+                - IBAN
+                - Id
+                - Confidence
+            type: object
+            properties:
+                Id:
+                    description: Global Unique Identifier
+                    type: string
+                IBAN:
+                    description: International Bank Account Number - IBAN
+                    type: string
+                BeneficiaryIds:
+                    description: List of Ids as foreign keys of Beneficiary matrix
+                    type: array
+                    items:
+                        type: string
+                Confidence:
+                    description: Confidence
+                    type: number
+            example:
+                Id: cf819b44-7b97-40c8-9408-a033ddbe1f6e
+                BeneficiaryIds:
+                    - dcc3f385-ef97-41ac-aceb-9918d51062ea
+                    - 31a0cb8d-07f9-46b3-b487-b32f9161ac76
+                iban: GR1601100400000004012345600
+                confidence: 95
+        Beneficiary:
+            description: The beneficiary of any bank account would be the account holder
+            required:
+                - Id
+                - FirstName
+                - LastName
+                - MaskedFirstName
+                - MaskedLastName
+                - MaskedMidName
+                - MidName
+                - Owner
+                - TaxId
+            type: object
+            properties:
+                Id:
+                    description: Global Unique Identifier
+                    type: integer
+                CompanyName:
+                    description: Company Name
+                    type: string
+                FirstName:
+                    description: First Name
+                    type: string
+                MaskedFirstName:
+                    description: Masked First Name
+                    type: string
+                MaskedMidName:
+                    description: Masked Middle Name
+                    type: string
+                MaskedLastName:
+                    description: Masked Last Name
+                    type: string
+                LastName:
+                    description: Last Name
+                    type: string
+                MidName:
+                    description: Middle Name
+                    type: string
+                TaxId:
+                    description: Tax Id number
+                    type: string
+                Owner:
+                    description: Owner
+                    type: boolean
+                DateOfBirth:
+                    description: Date of Birth
+                    type: string
+            example:
+                id: f319cdc1-6f20-4b2a-bb83-da11c669ee86
+                firstName: Μαρία
+                midName: ''
+                lastName: Καλιμάντζαλη
+                maskedFirstName: Μ***α
+                maskedMidName: ''
+                maskedLastName: Κ***μ****α*η
+                taxId: '345788901'
+                companyName: Ibm
+                dateOfBirth: '1995-09-06'
+                owner: true
+        Account:
+            description: >-
+                A bank account is a financial account maintained by a bank or other financial institution in
+                which the financial transactions between the bank and a customer are recorded.
+            required:
+                - Id
+            type: object
+            properties:
+                Id:
+                    description: Global Unique Identifier
+                    type: string
+                IBAN:
+                    description: IBAN
+                    type: string
+                BankEn:
+                    description: Bank name in english
+                    type: string
+                BankGr:
+                    description: Bank name in greek
+                    type: string
+            example:
+                id: 8051b546-2dc5-4655-ad5b-c37c626b3e5d
+                IBAN: GR1601100400000004012345600
+                bankEn: National Bank of Greece
+                bankGr: Εθνική Τράπεζα Ελλάδος
+        ConfidenceResponse:
+            title: Root Type for ValidateNBGIBANViaConfidenceResponse
+            description: ConfidenceResponse
+            required: [Confidence]
+            type: object
+            properties:
+                Confidence:
+                    description: >-
+                        Percentage of confidence that likely Beneficiary details match the actual Beneficiary
+                        details
+                    type: number
+                LikelyBeneficiary:
+                    description: Likely Beneficiary of IBAN
+                    type: string
+            example:
+                likelyBeneficiary: Κ****ς Π*****π**λ*ς
+                Confidence: 94
+        ValidateIbanNbgResponse:
+            title: Root Type for ValidateIbanResponse
+            description: ''
+            type: object
+            properties:
+                Beneficiaries:
+                    description: Array of Beneficiaries
+                    type: array
+                    items:
+                        type: string
+            example:
+                beneficiaries:
+                    - Γ**ρ**ς Κ****κ**
+                    - Κ****ς Π*****π**λ*ς
+        ValidateIbanRequest:
+            title: Root Type for IbanValidationRequest
+            description: The expected request in order to validate an IBAN
+            required:
+                - iban
+            type: object
+            properties:
+                iban:
+                    description: The IBAN to validate
+                    type: string
+            example:
+                iban: GR1601100400000004012345678
+        SandboxRequest:
+            title: Root Type for SandboxRequest
+            description: Sandbox Request
+            required:
+                - SandboxId
+            type: object
+            properties:
+                SandboxId:
+                    description: Sandbox Id
+                    type: string
+            example:
+                sandboxId: string
+        SandboxResponse:
+            title: Root Type for SandboxModel
+            description: ''
+            required:
+                - SandboxDataModel
+            type: object
+            properties:
+                SandboxDataModel:
+                    $ref: '#/components/schemas/SandboxDataModel'
+                    description: Sandbox Data Model
+                    properties:
+                        TODO:
+                            type: string
+                SandboxId:
+                    description: Sandbox Id
+                    type: string
+                Version:
+                    format: int32
+                    description: Sandbox Version
+                    type: integer
+                Users:
+                    description: Lsit of Users
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/User'
+            example:
+                SandboxDataModel:
+                    Accounts:
+                        -
+                            id: 8051b546-2dc5-4655-ad5b-c37c626b3e5d
+                            iban: GR1601100400000004012345600
+                            bankEn: National Bank of Greece
+                            bankGr: Εθνική Τράπεζα Ελλάδος
+                        -
+                            id: 38d5ecb6-a35d-4510-bdd0-6833f4217366
+                            iban: GR1601100400000004012345601
+                            bankEn: National Bank of Greece
+                            bankGr: Εθνική Τράπεζα Ελλάδος
+                        -
+                            id: a5a92cb9-a652-4913-9a34-b9bcde3bd6d4
+                            iban: GR1601100400000004012345602
+                            bankEn: National Bank of Greece
+                            bankGr: Εθνική Τράπεζα Ελλάδος
+                        -
+                            id: eb8aca6b-08fb-4784-9ca7-354c74ed387e
+                            iban: GR9101097155386567765933961
+                            bankEn: Eurobank
+                            bankGr: Eurobank
+                        -
+                            id: f00b1864-1ceb-44b2-8122-98f62192b275
+                            iban: GR9101097155386567765933999
+                            bankEn: Eurobank
+                            bankGr: Eurobank
+                        -
+                            id: 56fea933-38ab-49be-a73a-0bc66c075b0b
+                            iban: FR1420041010050500013M02606
+                            bankEn: LA BANQUE POSTALE
+                            bankGr: LA BANQUE POSTALE
+                    Beneficiaries:
+                        -
+                            id: dcc3f385-ef97-41ac-aceb-9918d51062ea
+                            firstName: Κωσταντίνος
+                            midName: ''
+                            lastName: Παπαδόπουλος
+                            maskedFirstName: Κ***αντ***
+                            maskedMidName: ''
+                            maskedLastName: Π*****π**λ*ς
+                            companyName: Tasty
+                            taxId: '12136678901'
+                            dateOfBirth: '1980-12-01T00:00:00'
+                            owner: true
+                        -
+                            id: 1987986a-0553-4167-a098-d2216d06cab4
+                            firstName: Νικολαος
+                            midName: ''
+                            lastName: Κρητικος
+                            maskedFirstName: Ν**ο***ς
+                            maskedMidName: ''
+                            maskedLastName: Κ**τ**ός
+                            companyName: Herz
+                            taxId: '124563456'
+                            dateOfBirth: '1979-06-01T00:00:00'
+                            owner: true
+                        -
+                            id: 5d9b5701-dbea-482d-b039-0ea79dfecf11
+                            firstName: Ιωαννης
+                            midName: ''
+                            lastName: Παπαδακης
+                            maskedFirstName: Ι***ν*ς
+                            maskedMidName: ''
+                            maskedLastName: Π***δ**ς
+                            companyName: AutoBesikos.AE
+                            taxId: '987344765'
+                            dateOfBirth: '1978-02-09T00:00:00'
+                            owner: false
+                        -
+                            id: 732f45b3-486d-452e-9226-2dbefedafa21
+                            firstName: Eleni
+                            midName: ''
+                            lastName: Iwannou
+                            maskedFirstName: Ε**n*
+                            maskedMidName: ''
+                            maskedLastName: I**n**u
+                            companyName: STEEAE
+                            taxId: '763441234'
+                            dateOfBirth: '1981-05-05T00:00:00'
+                            owner: true
+                        -
+                            id: d313fa8f-fa61-4901-963d-3a591606d00c
+                            firstName: Marios
+                            midName: ''
+                            lastName: Markakis
+                            maskedFirstName: M*r**s
+                            maskedMidName: ''
+                            maskedLastName: M**k**is
+                            companyName: CokaCola AE
+                            taxId: '768233456'
+                            dateOfBirth: '1981-06-29T00:00:00'
+                            owner: true
+                        -
+                            id: 31a0cb8d-07f9-46b3-b487-b32f9161ac76
+                            firstName: Γιωργος
+                            midName: ''
+                            lastName: Κυριακου
+                            maskedFirstName: Γ**ρ**ς
+                            maskedMidName: ''
+                            maskedLastName: Κ****κ**
+                            companyName: Interamerican
+                            taxId: '345788901'
+                            dateOfBirth: '1986-09-06T00:00:00'
+                            owner: false
+                        -
+                            id: f319cdc1-6f20-4b2a-bb83-da11c669ee86
+                            firstName: Μαρία
+                            midName: ''
+                            lastName: Καλιμάντζαλη
+                            maskedFirstName: Μ***α
+                            maskedMidName: ''
+                            maskedLastName: Κ***μ****α*η
+                            companyName: Ibm
+                            taxId: '345788901'
+                            dateOfBirth: '1995-09-06T00:00:00'
+                            owner: true
+                    AccountsBeneficiaries:
+                        -
+                            id: cf819b44-7b97-40c8-9408-a033ddbe1f6e
+                            iban: GR1601100400000004012345600
+                            beneficiaryIds:
+                                - dcc3f385-ef97-41ac-aceb-9918d51062ea
+                                - 31a0cb8d-07f9-46b3-b487-b32f9161ac76
+                            confidence: 95
+                        -
+                            id: 79067dc8-6d2f-47ec-9520-7cd5a17513f2
+                            iban: GR1601401010101002101047415
+                            beneficiaryIds:
+                                - 1987986a-0553-4167-a098-d2216d06cab4
+                            confidence: 80
+                        -
+                            id: fa527d3b-d795-49ba-a748-4e348c504772
+                            iban: GR9101097155386567765933961
+                            beneficiaryIds:
+                                - 5d9b5701-dbea-482d-b039-0ea79dfecf11
+                                - 732f45b3-486d-452e-9226-2dbefedafa21
+                            confidence: 100
+                        -
+                            id: 79067dc8-6d2f-47ec-9520-7cd5a17513f2
+                            iban: FR1420041010050500013M02606
+                            beneficiaryIds:
+                                - d313fa8f-fa61-4901-963d-3a591606d00c
+                            confidence: 94
+                        -
+                            id: cbca52c0-c30f-42fe-a216-7d30078516ed
+                            iban: GR9101097155386567765933999
+                            beneficiaryIds:
+                                - f319cdc1-6f20-4b2a-bb83-da11c669ee86
+                            confidence: 100
+                SandboxId: my_Sandbox
+                Version: 1
+                Users:
+                    -
+                        userId: ''
+        DeleteResponse:
+            title: Root Type for DeleteResponse
+            description: DeleteResponse
+            type: object
+            properties:
+                payload:
+                    $ref: '#/components/schemas/Payload'
+                    description: Payload
+                    properties:
+                        Success:
+                            type: boolean
+                exception:
+                    description: "exception\r\n"
+                    type: string
+                messages:
+                    description: Messages
+                    type: string
+                executionTime:
+                    description: Execution Time
+                    type: string
+            example:
+                payload:
+                    Success: true
+                exception: string
+                messages: string
+                executionTime: string
+        ErrorResponse:
+            title: Root Type for ErrorResponse
+            description: ErrorResponse
+            type: object
+            properties:
+                errorMessage:
+                    description: 'Message that describes the error '
+                    type: string
+            example:
+                errorMessage: '"Sandbox with id ''replace_value'' already exists"'
+        SandboxDataModel:
+            description: ''
+            required:
+                - Accounts
+                - Beneficiaries
+                - AccountsBeneficiaries
+            type: object
+            properties:
+                Beneficiaries:
+                    description: List of Beneficiary objects
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Beneficiary'
+                AccountsBeneficiaries:
+                    description: List of AccountsBeneficiaries objects
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AccountsBeneficiaries'
+                Accounts:
+                    description: List of Account objects
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Account'
+            example:
+                Accounts:
+                    -
+                        id: 8051b546-2dc5-4655-ad5b-c37c626b3e5d
+                        iban: GR1601100400000004012345600
+                        bankEn: National Bank of Greece
+                        bankGr: Εθνική Τράπεζα Ελλάδος
+                    -
+                        id: 38d5ecb6-a35d-4510-bdd0-6833f4217366
+                        iban: GR1601100400000004012345601
+                        bankEn: National Bank of Greece
+                        bankGr: Εθνική Τράπεζα Ελλάδος
+                    -
+                        id: a5a92cb9-a652-4913-9a34-b9bcde3bd6d4
+                        iban: GR1601100400000004012345602
+                        bankEn: National Bank of Greece
+                        bankGr: Εθνική Τράπεζα Ελλάδος
+                    -
+                        id: eb8aca6b-08fb-4784-9ca7-354c74ed387e
+                        iban: GR9101097155386567765933961
+                        bankEn: Eurobank
+                        bankGr: Eurobank
+                    -
+                        id: f00b1864-1ceb-44b2-8122-98f62192b275
+                        iban: GR9101097155386567765933999
+                        bankEn: Eurobank
+                        bankGr: Eurobank
+                    -
+                        id: 56fea933-38ab-49be-a73a-0bc66c075b0b
+                        iban: FR1420041010050500013M02606
+                        bankEn: LA BANQUE POSTALE
+                        bankGr: LA BANQUE POSTALE
+                Beneficiaries:
+                    -
+                        id: dcc3f385-ef97-41ac-aceb-9918d51062ea
+                        firstName: Κωσταντίνος
+                        midName: ''
+                        lastName: Παπαδόπουλος
+                        maskedFirstName: Κ***αντ***
+                        maskedMidName: ''
+                        maskedLastName: Π*****π**λ*ς
+                        companyName: Tasty
+                        taxId: '12136678901'
+                        dateOfBirth: '1980-12-01T00:00:00'
+                        owner: true
+                    -
+                        id: 1987986a-0553-4167-a098-d2216d06cab4
+                        firstName: Νικολαος
+                        midName: ''
+                        lastName: Κρητικος
+                        maskedFirstName: Ν**ο***ς
+                        maskedMidName: ''
+                        maskedLastName: Κ**τ**ός
+                        companyName: Herz
+                        taxId: '124563456'
+                        dateOfBirth: '1979-06-01T00:00:00'
+                        owner: true
+                    -
+                        id: 5d9b5701-dbea-482d-b039-0ea79dfecf11
+                        firstName: Ιωαννης
+                        midName: ''
+                        lastName: Παπαδακης
+                        maskedFirstName: Ι***ν*ς
+                        maskedMidName: ''
+                        maskedLastName: Π***δ**ς
+                        companyName: AutoBesikos.AE
+                        taxId: '987344765'
+                        dateOfBirth: '1978-02-09T00:00:00'
+                        owner: false
+                    -
+                        id: 732f45b3-486d-452e-9226-2dbefedafa21
+                        firstName: Eleni
+                        midName: ''
+                        lastName: Iwannou
+                        maskedFirstName: Ε**n*
+                        maskedMidName: ''
+                        maskedLastName: I**n**u
+                        companyName: STEEAE
+                        taxId: '763441234'
+                        dateOfBirth: '1981-05-05T00:00:00'
+                        owner: true
+                    -
+                        id: d313fa8f-fa61-4901-963d-3a591606d00c
+                        firstName: Marios
+                        midName: ''
+                        lastName: Markakis
+                        maskedFirstName: M*r**s
+                        maskedMidName: ''
+                        maskedLastName: M**k**is
+                        companyName: CokaCola AE
+                        taxId: '768233456'
+                        dateOfBirth: '1981-06-29T00:00:00'
+                        owner: true
+                    -
+                        id: 31a0cb8d-07f9-46b3-b487-b32f9161ac76
+                        firstName: Γιωργος
+                        midName: ''
+                        lastName: Κυριακου
+                        maskedFirstName: Γ**ρ**ς
+                        maskedMidName: ''
+                        maskedLastName: Κ****κ**
+                        companyName: Interamerican
+                        taxId: '345788901'
+                        dateOfBirth: '1986-09-06T00:00:00'
+                        owner: false
+                    -
+                        id: f319cdc1-6f20-4b2a-bb83-da11c669ee86
+                        firstName: Μαρία
+                        midName: ''
+                        lastName: Καλιμάντζαλη
+                        maskedFirstName: Μ***α
+                        maskedMidName: ''
+                        maskedLastName: Κ***μ****α*η
+                        companyName: Ibm
+                        taxId: '345788901'
+                        dateOfBirth: '1995-09-06T00:00:00'
+                        owner: true
+                AccountsBeneficiaries:
+                    -
+                        id: cf819b44-7b97-40c8-9408-a033ddbe1f6e
+                        iban: GR1601100400000004012345600
+                        beneficiaryIds:
+                            - dcc3f385-ef97-41ac-aceb-9918d51062ea
+                            - 31a0cb8d-07f9-46b3-b487-b32f9161ac76
+                        confidence: 95
+                    -
+                        id: 79067dc8-6d2f-47ec-9520-7cd5a17513f2
+                        iban: GR1601401010101002101047415
+                        beneficiaryIds:
+                            - 1987986a-0553-4167-a098-d2216d06cab4
+                        confidence: 80
+                    -
+                        id: fa527d3b-d795-49ba-a748-4e348c504772
+                        iban: GR9101097155386567765933961
+                        beneficiaryIds:
+                            - 5d9b5701-dbea-482d-b039-0ea79dfecf11
+                            - 732f45b3-486d-452e-9226-2dbefedafa21
+                        confidence: 100
+                    -
+                        id: 79067dc8-6d2f-47ec-9520-7cd5a17513f2
+                        iban: FR1420041010050500013M02606
+                        beneficiaryIds:
+                            - d313fa8f-fa61-4901-963d-3a591606d00c
+                        confidence: 94
+                    -
+                        id: cbca52c0-c30f-42fe-a216-7d30078516ed
+                        iban: GR9101097155386567765933999
+                        beneficiaryIds:
+                            - f319cdc1-6f20-4b2a-bb83-da11c669ee86
+                        confidence: 100
+        Payload:
+            title: Root Type for Payload
+            description: Payload
+            type: object
+            properties:
+                success:
+                    description: Success Indication
+                    type: boolean
+            example:
+                success: true
+        User:
+            title: Root Type for User
+            description: ''
+            type: object
+            properties:
+                UserId:
+                    description: User Id
+                    type: string
+            example:
+                UserId: ''
+        ValidateIbanConfidenceResponse:
+            description: The response of ValidateNbgIbanMatch Endpoint
+            required:
+                - Match
+                - Confidence
+            type: object
+            properties:
+                Match:
+                    description: "Match\r\n"
+                    type: string
+                Confidence:
+                    description: Confidence
+                    type: number
+            example:
+                match: false
+                confidence: 94
+        ValidateNbgIbanConfidenceRequest:
+            title: Root Type for ValidateNbgIbanMatchRequest
+            description: Request for ValidateNbgIbanMatch Endpoint
+            required:
+                - iban
+            type: object
+            properties:
+                iban:
+                    description: The IBAN to validate
+                    type: string
+                companyName:
+                    description: The company name
+                    type: string
+                likelyBeneficiaryName:
+                    description: The First Name of likely Beneficiary
+                    type: string
+                likelyBeneficiarySurname:
+                    description: The Last Name of likely Beneficiary
+                    type: string
+                llikelyBeneficiaryMidName:
+                    description: The Middle Name of likely Beneficiary
+                    type: string
+                dateOfBirth:
+                    description: Date of Birth
+                    type: number
+            example:
+                IBAN: GR1601100400000004012345600
+                likelyBeneficiaryName: Κωσταντίνος
+                likelyBeneficiaryMidName: ''
+                likeliyBeneficiarySurName: Παπαδόπουλος
+                dateOfBirth: '1980-12-01'
+        SandboxModel:
+            title: Root Type for SandboxModel
+            description: ''
+            required:
+                - SandboxDataModel
+                - Users
+            type: object
+            properties:
+                SandboxDataModel:
+                    $ref: '#/components/schemas/SandboxDataModel'
+                    description: "Sandbox Data Model\r\n"
+                    properties:
+                        TODO:
+                            type: string
+                SandboxId:
+                    description: Sandbox Id
+                    type: string
+                Version:
+                    format: int32
+                    description: "Sandbox Version\r\n"
+                    type: integer
+                Users:
+                    description: Lsit of Users
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/User'
+            example:
+                SandboxDataModel:
+                    Accounts:
+                        -
+                            id: 8051b546-2dc5-4655-ad5b-c37c626b3e5d
+                            iban: GR1601100400000004012345600
+                            bankEn: National Bank of Greece
+                            bankGr: Εθνική Τράπεζα Ελλάδος
+                        -
+                            id: 38d5ecb6-a35d-4510-bdd0-6833f4217366
+                            iban: GR1601100400000004012345601
+                            bankEn: National Bank of Greece
+                            bankGr: Εθνική Τράπεζα Ελλάδος
+                        -
+                            id: a5a92cb9-a652-4913-9a34-b9bcde3bd6d4
+                            iban: GR1601100400000004012345602
+                            bankEn: National Bank of Greece
+                            bankGr: Εθνική Τράπεζα Ελλάδος
+                        -
+                            id: eb8aca6b-08fb-4784-9ca7-354c74ed387e
+                            iban: GR9101097155386567765933961
+                            bankEn: Eurobank
+                            bankGr: Eurobank
+                        -
+                            id: f00b1864-1ceb-44b2-8122-98f62192b275
+                            iban: GR9101097155386567765933999
+                            bankEn: Eurobank
+                            bankGr: Eurobank
+                        -
+                            id: 56fea933-38ab-49be-a73a-0bc66c075b0b
+                            iban: FR1420041010050500013M02606
+                            bankEn: LA BANQUE POSTALE
+                            bankGr: LA BANQUE POSTALE
+                    Beneficiaries:
+                        -
+                            id: dcc3f385-ef97-41ac-aceb-9918d51062ea
+                            firstName: Κωσταντίνος
+                            midName: ''
+                            lastName: Παπαδόπουλος
+                            maskedFirstName: Κ***αντ***
+                            maskedMidName: ''
+                            maskedLastName: Π*****π**λ*ς
+                            companyName: Tasty
+                            taxId: '12136678901'
+                            dateOfBirth: '1980-12-01T00:00:00'
+                            owner: true
+                        -
+                            id: 1987986a-0553-4167-a098-d2216d06cab4
+                            firstName: Νικολαος
+                            midName: ''
+                            lastName: Κρητικος
+                            maskedFirstName: Ν**ο***ς
+                            maskedMidName: ''
+                            maskedLastName: Κ**τ**ός
+                            companyName: Herz
+                            taxId: '124563456'
+                            dateOfBirth: '1979-06-01T00:00:00'
+                            owner: true
+                        -
+                            id: 5d9b5701-dbea-482d-b039-0ea79dfecf11
+                            firstName: Ιωαννης
+                            midName: ''
+                            lastName: Παπαδακης
+                            maskedFirstName: Ι***ν*ς
+                            maskedMidName: ''
+                            maskedLastName: Π***δ**ς
+                            companyName: AutoBesikos.AE
+                            taxId: '987344765'
+                            dateOfBirth: '1978-02-09T00:00:00'
+                            owner: false
+                        -
+                            id: 732f45b3-486d-452e-9226-2dbefedafa21
+                            firstName: Eleni
+                            midName: ''
+                            lastName: Iwannou
+                            maskedFirstName: Ε**n*
+                            maskedMidName: ''
+                            maskedLastName: I**n**u
+                            companyName: STEEAE
+                            taxId: '763441234'
+                            dateOfBirth: '1981-05-05T00:00:00'
+                            owner: true
+                        -
+                            id: d313fa8f-fa61-4901-963d-3a591606d00c
+                            firstName: Marios
+                            midName: ''
+                            lastName: Markakis
+                            maskedFirstName: M*r**s
+                            maskedMidName: ''
+                            maskedLastName: M**k**is
+                            companyName: CokaCola AE
+                            taxId: '768233456'
+                            dateOfBirth: '1981-06-29T00:00:00'
+                            owner: true
+                        -
+                            id: 31a0cb8d-07f9-46b3-b487-b32f9161ac76
+                            firstName: Γιωργος
+                            midName: ''
+                            lastName: Κυριακου
+                            maskedFirstName: Γ**ρ**ς
+                            maskedMidName: ''
+                            maskedLastName: Κ****κ**
+                            companyName: Interamerican
+                            taxId: '345788901'
+                            dateOfBirth: '1986-09-06T00:00:00'
+                            owner: false
+                        -
+                            id: f319cdc1-6f20-4b2a-bb83-da11c669ee86
+                            firstName: Μαρία
+                            midName: ''
+                            lastName: Καλιμάντζαλη
+                            maskedFirstName: Μ***α
+                            maskedMidName: ''
+                            maskedLastName: Κ***μ****α*η
+                            companyName: Ibm
+                            taxId: '345788901'
+                            dateOfBirth: '1995-09-06T00:00:00'
+                            owner: true
+                    AccountsBeneficiaries:
+                        -
+                            id: cf819b44-7b97-40c8-9408-a033ddbe1f6e
+                            iban: GR1601100400000004012345600
+                            beneficiaryIds:
+                                - dcc3f385-ef97-41ac-aceb-9918d51062ea
+                                - 31a0cb8d-07f9-46b3-b487-b32f9161ac76
+                            confidence: 95
+                        -
+                            id: 79067dc8-6d2f-47ec-9520-7cd5a17513f2
+                            iban: GR1601401010101002101047415
+                            beneficiaryIds:
+                                - 1987986a-0553-4167-a098-d2216d06cab4
+                            confidence: 80
+                        -
+                            id: fa527d3b-d795-49ba-a748-4e348c504772
+                            iban: GR9101097155386567765933961
+                            beneficiaryIds:
+                                - 5d9b5701-dbea-482d-b039-0ea79dfecf11
+                                - 732f45b3-486d-452e-9226-2dbefedafa21
+                            confidence: 100
+                        -
+                            id: 79067dc8-6d2f-47ec-9520-7cd5a17513f2
+                            iban: FR1420041010050500013M02606
+                            beneficiaryIds:
+                                - d313fa8f-fa61-4901-963d-3a591606d00c
+                            confidence: 94
+                        -
+                            id: cbca52c0-c30f-42fe-a216-7d30078516ed
+                            iban: GR9101097155386567765933999
+                            beneficiaryIds:
+                                - f319cdc1-6f20-4b2a-bb83-da11c669ee86
+                            confidence: 100
+                SandboxId: string
+                Version: 0
+                Users:
+                    -
+                        UserId: string
