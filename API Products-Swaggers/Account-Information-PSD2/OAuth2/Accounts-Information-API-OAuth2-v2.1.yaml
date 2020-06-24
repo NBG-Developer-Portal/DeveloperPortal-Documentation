@@ -137,7 +137,6 @@ info:
       
       You can download the NBG certificates to validate the API responses using the following links:
         
-        - [Sandbox Certificate](https://files.nbg.gr/certificates/NBG%20QSeal%20Sandbox.cer)
         - [Production Certificate](https://files.nbg.gr/certificates/NBG%20QSeal%20production.cer)
         
       **Signing flow**
