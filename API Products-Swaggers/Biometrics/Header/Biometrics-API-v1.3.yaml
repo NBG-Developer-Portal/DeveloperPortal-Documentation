@@ -1154,12 +1154,27 @@ paths:
             type: string
             default: 0
       responses:
+        default:
+          description: i am default response
         '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/FaceMatchResponse'
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                enum:
+                 - 'Invalid Json'
+                 - 'Invalid or no images'
+                 - 'No face detected in the first image'
+                 - 'No face detected in the second image'
+                 - 'More than one person detected'
+                example: 'No face detected in the first image'
       x-code-samples:
         - lang: C
           source: >-
