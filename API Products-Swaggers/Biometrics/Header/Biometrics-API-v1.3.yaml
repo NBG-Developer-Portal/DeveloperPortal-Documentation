@@ -1154,8 +1154,6 @@ paths:
             type: string
             default: 0
       responses:
-        default:
-          description: i am default response
         '200':
           description: OK
           content:
