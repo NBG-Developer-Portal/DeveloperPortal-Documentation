@@ -10,6 +10,16 @@ info:
     1. retrieve the beneficiaries of NBG accounts, 
     2. calculate the confidence of a third bank's IBAN where the most likely beneficiary is returned, and finally 
     3. verify if an NBG IBAN matches with a certain beneficiary and calculates the matching confidence level.
+    
+    <br/>
+    
+    ## Confidence Scoring
+    Confidence Scoring is calculated differently in Sandbox and Production modes.
+    
+    ### Sandbox Mode
+    Confidence is calculated in a random way.
+    
+    <br/>
 
     # Quick Getting Started
 
@@ -56,154 +66,12 @@ info:
 
         iban-beneficiary-validation-api-v1
 
-
-
     See more [here](https://developer.nbg.gr/oauth-document)
-
-
-    # API Functionality
-    In the section below you may find a short description of the supported API Calls.
-
-
-    ## /beneficiaryValidation/nbgIban
-    The endpoint is used to retrieve an NBG account's benefeciaries using the account's IBAN.
-
-    Sample Request :
-
-        {
-          "iban": "GR1601100400000004012345678"
-        }
-
-    Sample Response : 
-
-        {
-          "beneficiaries": [
-            "Γ**ρ**ς Κ****κ**",
-            "Κ****ς Π*****π**λ*ς"
-          ]
-        }
-
-    ## /beneficiaryValidation/otherBanksIban
-    This endpoint is used to retrieve a third bank's account's most likely beneficiaries.
-
-    Among with the most likely benfeciaries a confidence value is returned, stating the results confidence against the returned data.
-
-    Sample Request :
-
-        {
-            "iban" : "GR1601100400000004012345678"
-        }
-
-    Sample Response : 
-
-        {
-            "likelyBeneficiary" : "",
-            "confidence" : 94
-        }
-
-    ## /beneficiaryValidation/nbgIbanDetailsMatch
-    This endpoint is used to to calculate an NBG account's confidence against an IBAN and some additional criteria.
-
-    In case the targeted IBAN regards a retail Customer, then one of the "likelyBeneficiaryName", "likelyBeneficaryMidName" and "likelyBeneficiarySurname" parameters is needed.
-
-    In case the targeted IBAN regards a corporate Customer, then the "companyName" parameter is needed.
-
-    Sample Request :
-
-        {
-          "iban": "GR1601100400000004012345601",
-          "likelyBeneficiaryName": "Γιωργος",
-          "likelyBeneficiaryMidName": "",
-          "likelyBeneficiarySurname": "Κυριακου",
-          "companyName": "Interamerican"
-        }
-
-    Sample Response : 
-
-        {
-            "match" : false,
-            "confidence" : 94
-        }
-
 
     ## Start Testing
 
     Once you have your sandbox-id, you can start invoking the rest of the operations by providing the
     mandatory http header **sandbox-id**  and the http headers described below.
-
-
-    # Sandbox Data Model
-   
-    Below you may find information about the Sandbox Data Model.
-
-    Sample SandboxDataModel :
-
-         {
-            "Accounts": [
-                {
-                    "id": "8051b546-2dc5-4655-ad5b-c37c626b3e5d",
-                    "iban": "GR1601100400000004012345600",
-                    "bankEn": "National Bank of Greece",
-                    "bankGr": "Εθνική Τράπεζα Ελλάδος"
-                },
-                {
-                    "id": "38d5ecb6-a35d-4510-bdd0-6833f4217366",
-                    "iban": "GR1601100400000004012345601",
-                    "bankEn": "National Bank of Greece",
-                    "bankGr": "Εθνική Τράπεζα Ελλάδος"
-                }
-            ],
-            "Beneficiaries": [
-                {
-                    "id": "dcc3f385-ef97-41ac-aceb-9918d51062ea",
-                    "firstName": "Κωσταντίνος",
-                    "midName": "",
-                    "lastName": "Παπαδόπουλος",
-                    "maskedFirstName": "Κ***αντ***",
-                    "maskedMidName": "",
-                    "maskedLastName": "Π*****π**λ*ς",
-                    "companyName": "Tasty",
-                    "taxId": "12136678901",
-                    "dateOfBirth": "1980-12-01T00:00:00",
-                    "owner": true
-                },
-                {
-                    "id": "1987986a-0553-4167-a098-d2216d06cab4",
-                    "firstName": "Νικολαος",
-                    "midName": "",
-                    "lastName": "Κρητικος",
-                    "maskedFirstName": "Ν**ο***ς",
-                    "maskedMidName": "",
-                    "maskedLastName": "Κ**τ**ός",
-                    "companyName": "Herz",
-                    "taxId": "124563456",
-                    "dateOfBirth": "1979-06-01T00:00:00",
-                    "owner": true
-                }
-            ],
-            "AccountsBeneficiaries": [
-                {
-                    "id": "cf819b44-7b97-40c8-9408-a033ddbe1f6e",
-                    "iban": "GR1601100400000004012345600",
-                    "beneficiaryIds": [
-                        "dcc3f385-ef97-41ac-aceb-9918d51062ea",
-                        "31a0cb8d-07f9-46b3-b487-b32f9161ac76"
-                    ],
-                    "confidence": 95.0
-                },
-                {
-                    "id": "79067dc8-6d2f-47ec-9520-7cd5a17513f2",
-                    "iban": "GR1601401010101002101047415",
-                    "beneficiaryIds": [
-                        "1987986a-0553-4167-a098-d2216d06cab4"
-                    ],
-                    "confidence": 80.0
-                }
-            ]
-        }
-
-
-    <br/>
 
     ## Important notes
 
@@ -1181,19 +1049,19 @@ components:
     ValidateIbanConfidenceResponse:
       description: The response of ValidateNbgIbanMatch Endpoint
       required:
-        - Match
-        - Confidence
+        - match
+        - matchingScore
       type: object
       properties:
-        Match:
-          description: "Match\r\n"
+        match:
+          description: A flag indicating the matching boolean result
           type: string
-        Confidence:
-          description: Confidence
+        matchingScore:
+          description: The average matching score of the input values with the real values
           type: number
       example:
         match: false
-        confidence: 94
+        matchingScore: 94
     ValidateNbgIbanConfidenceRequest:
       title: Root Type for ValidateNbgIbanMatchRequest
       description: Request for ValidateNbgIbanMatch Endpoint
