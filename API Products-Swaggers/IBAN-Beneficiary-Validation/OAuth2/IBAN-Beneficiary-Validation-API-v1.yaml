@@ -310,8 +310,6 @@ paths:
       summary: Create Sandbox
       description: Create Sandbox
   /beneficiaryValidation/nbgIban:
-    summary: Get the beneficiaries of an NBG IBAN
-    description: Get a list of the masked full names of the beneficiaries of an NBG IBAN.
     post:
       requestBody:
         content:
@@ -369,11 +367,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
-      summary: Validate NBG IBAN
-      description: Endpoint used to validate an NBG IBAN
+      summary: Get the beneficiaries of an NBG IBAN
+      description: Get a list of the masked full names of the beneficiaries of an NBG IBAN.
   /beneficiaryValidation/otherBanksIban:
-    summary: Get the most likely full name of the alleged beneficiary of an IBAN held in other banks
-    description: Get the most likely full name of the alleged beneficiary of an IBAN held in other banks. A confidence score exposes the variance of the alleged beneficiary name as observed in our remmitance data. A high confidence score indicates low variance among the observed beneficiaries in remmitances.
     post:
       requestBody:
         description: ''
@@ -441,11 +437,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
-      summary: Validate other bank's Iban via Confidence
-      description: Validate other bank's Iban via Confidence      
+      summary: Get the most likely full name of the beneficiary of a non-NBG IBAN
+      description: Get the most likely full name of the alleged beneficiary of an IBAN held in other banks. A confidence score exposes the variance of the alleged beneficiary name as observed in our remmitance data. A high confidence score indicates low variance among the observed beneficiaries in remmitances.     
   /beneficiaryValidation/nbgIbanDetailsMatch:
-    summary: Match a beneficiary's details of an NBG IBAN
-    description: Match a beneficiary's details of an NBG IBAN. In case of a false match, a confidence score exposes the discrepancy among the beneficiary\'s details.
     post:
       requestBody:
         description: Validate NBG  IBAN via confidence
@@ -503,8 +497,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
-      summary: Validate NBG  IBAN via confidence
-      description: Validate NBG  IBAN via confidence
+      summary: Match a beneficiary's details of an NBG IBAN
+      description: Match a beneficiary's details of an NBG IBAN. In case of a false match, a confidence score exposes the discrepancy among the beneficiary\'s details.
 components:
   schemas:
     AccountsBeneficiaries:
