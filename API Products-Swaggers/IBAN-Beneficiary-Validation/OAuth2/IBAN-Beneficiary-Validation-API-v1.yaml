@@ -8,18 +8,29 @@ info:
 
     The API enables the consumer to:
     1. retrieve the beneficiaries of NBG accounts, 
-    2. calculate the confidence of a third bank's IBAN where the most likely beneficiary is returned, and finally 
-    3. verify if an NBG IBAN matches with a certain beneficiary and calculates the matching confidence level.
+    2. calculate the most likely beneficiary of a third bank's IBAN along with a confidence score, and finally 
+    3. verify wether an NBG IBAN matches with a certain beneficiary and calculate the matching confidence level.
     
-    <br/>
+    # Confidence Scoring
+    Some endpoints of the IBAN Beneficiary validation API return confidence or matching scores, which indicate our confidence on the response we return or the matching score of the data input we received in your request. This section discusses the method that these scores are calculated and provide some examples so as to facilate the scoring interpretation by the API consumers.
     
-    ## Confidence Scoring
-    Confidence Scoring is calculated differently in Sandbox and Production modes.
+    Please note that in this version the scoring calculation method discussed below only applies to the Production version. In Sandbox mode the scores are calculated in a random way.
     
-    ### Sandbox Mode
-    Confidence is calculated in a random way.
+    ## Confidence score on the likely beneficiary of /otherBanksIban
+
+    The IBAN included in the request data of the /otherBanksIban endpoint corresponds to a bank account held in other banks (non-NBG account). Our data source to extract the likely beneficiary in this case is from our remmitance records, meaning that the data is not verified by NBG and our response is based on a statistical analysis on the beneficiaries observed in our remmitance records. 
     
-    <br/>
+    Many times the remmitance records of the same IBAN include beneficiaries that differ among each other. This is why the /otherBanksIban endpoint return not only the name of the most frequent beneficiary observed (likelyBeneficiary), but also a confidence score that indicates the variance of this name among the remmitance records.
+
+    The confidence score is based on the *weighted* average Levenshtein Distance (aLD) of the likelyBeneficiary name as measured against the rest of the beneficiary name's observed. More specifically, the confidence score is bounded from above by 1 (meaning that the score is always <=1), based on the likelyBeneficiary character length (L) as follows:
+    
+    - confidence = 1 - (aLD/L)
+
+    ## Matching score on the request data of /nbgIbanDetailsMatch
+    
+    The input included in the request data of the /nbgIbanDetailsMatch endpoint corresponds to an NBG IBAN and its beneficiaries  verified details. The response is in the form of true/false interpreted as match/do not match, but it also provides a matchingScore which indicated the matching level of the input data. We discuss below how this matching score is computed.
+    
+    The number of the input fields to be matched are counted and each of them has equal weight in the matchingScore. So again here the average Levenshtein Distance (aLD) is computed among the input values and the true values that we maintain in our verified data source. More specifically, the matchingScore is bounded from above by 1 (meaning that the score is always <=1), based on each of the input fields character length.
 
     # Quick Getting Started
 
