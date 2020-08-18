@@ -2296,7 +2296,7 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: The unique name of your Sandbox
           required: true
           schema:
             type: string
@@ -2344,13 +2344,13 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: The unique name of your Sandbox
           required: true
           schema:
             type: string
         - name: user_id
           in: path
-          description: ''
+          description: The unique id of the user
           required: true
           schema:
             type: string
@@ -2379,13 +2379,13 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: The unique name of your Sandbox
           required: true
           schema:
             type: string
         - name: user_id
           in: path
-          description: ''
+          description: The unique id of the user
           required: true
           schema:
             type: string
@@ -2433,19 +2433,19 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: The unique name of your Sandbox
           required: true
           schema:
             type: string
         - name: user_id
           in: path
-          description: ''
+          description: The unique id of the user
           required: true
           schema:
             type: string
         - name: account_id
           in: path
-          description: ''
+          description: The unique id of the user account
           required: true
           schema:
             type: string
@@ -2493,19 +2493,19 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: The unique name of your Sandbox
           required: true
           schema:
             type: string
         - name: user_id
           in: path
-          description: ''
+          description: The unique id of the user
           required: true
           schema:
             type: string
         - name: account_id
           in: path
-          description: ''
+          description: The unique id of the user account
           required: true
           schema:
             type: string
@@ -2523,7 +2523,7 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: The unique name of your Sandbox
           required: true
           schema:
             type: string
