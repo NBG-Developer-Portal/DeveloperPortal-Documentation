@@ -20,7 +20,7 @@ info:
 
     Are you interested in the **Bill Payments network API for partners**? 
 
-    The i-bank BillPayments Sandbox supports bill payments for **retail customers** who are also I-Bank users.
+    The i-bank Bill Payments Sandbox supports bill payments for **retail customers** who are also I-Bank users.
     The API supports Centralized or Decentralized networks of machine requesters. Please contact us: [developer@nbg.gr](developer@nbg.gr)
 
     ## Quick Getting Started
@@ -6175,7 +6175,7 @@ components:
           description: The type of the job that needs to run
           type: string
         request:
-          description: 'The request that triggered this job to be created, holding serialized information about the payments to be processed'
+          description: The request that triggered this job to be created, holding serialized information about the payments to be processed
           type: string
         response:
           description: The response created holding serialized information about the status or outcomes of a set of payments
@@ -6287,7 +6287,7 @@ components:
       type: object
       properties:
         id:
-          format: uuidf
+          format: uuid
           type: string
           description: Unique ID of SpotMachineTransaction object
           example: 00000000-0000-0000-0000-000000000000
@@ -6418,15 +6418,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ibank.TPPSandbox.Types.Sandbox.SpotMachineTransactionDetails'
-        exception:
-          $ref: '#/components/schemas/bUtility.ResponseMessage'
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/bUtility.ResponseMessage'
-        executionTime:
-          format: double
-          type: number
       example:
         payload:
           id: 39ce0424-6412-45c7-8ab2-aa8927bbfe54
@@ -6463,10 +6454,6 @@ components:
               fieldValue: '553585623019'
             - fieldKey: PAYMENT_CODE
               fieldValue: '553585623019'
-        exception: null
-        messages: null
-        executionTime: 0
-        
     ibank.TPPSandbox.Types.Sandbox.SpotMachineAccount:
       type: object
       properties:
@@ -6561,6 +6548,55 @@ components:
         executionTime:
           format: double
           type: number
+      example:
+        payload:
+          user:
+            userId: 6071bc96-caf0-4c9a-973d-d0d619ddc230
+            userName: machine_user1
+            providerId: NBG.gr
+            provider: NBG
+            userType: MACHINE
+            userAccounts: []
+          spot:
+            id: 01f6ec51-3047-4dc7-9b19-1d35cfa7d7b5
+            name: machine_user11_Spot
+            comments: 
+            address: Γαργγητού 99
+            startDate: '2020-08-19T14:35:43.855Z'
+            endDate: '2021-08-19T14:35:43.855Z'
+            ownerIBUserId: 6071bc96-caf0-4c9a-973d-d0d619ddc230
+            ssn: '111111111'
+            status: ENABLED
+            authorizationUpdateLvl: NETWORK
+            spotMachines:
+            - id: a40606aa-0d4b-4d0d-a1a9-172012c08e40
+              machineId: machine_user11_MachineId
+              serialNo: ''
+              machineType: NetworkAdministrationTerminal
+              description: machine_user11_SpotMachine
+              installedSoftware: CASH_REGISTER_SIMPLE_PAY_SPOT
+              installedDate: '2020-08-19T14:35:43.855Z'
+              startDate: '2020-08-19T14:35:43.855Z'
+              endDate: '2021-08-19T14:35:43.855Z'
+              status: ENABLED
+              authorizationUpdateLvl: 
+              store: ''
+              spotMachineOTTs: []
+              spotMachineTransactions: []
+              spotMachineAccounts: []
+              spotMachineNetworkLimits: []
+              spotMachineNetworkMessage: []
+              spotMachineLocation:
+                id: e3a1a0f5-295b-4260-8d48-67d8ade47890
+                latitude: '47.65100'
+                longitude: "-122.34900"
+                coordinatesSystem: DECIMAL
+                address: 
+            spotNetworkLimits: []
+            spotNetworkMessages: []
+        exception: 
+        messages: 
+        executionTime: 0
     ibank.TPPSandbox.Types.Sandbox.CreateSandboxUserResponse:
       type: object
       properties:
@@ -6590,7 +6626,7 @@ components:
           type: string
           example: GR7816570557954999
       example:
-        balance: 100000
+        balance: 100001
         accountType: "IBAN"
         accountTypeValue: "GR7816570557954999"
     ibank.Hosting.WebApi.Response.ibank.TPPSandbox.Types.Sandbox.SandboxAccount:
@@ -6610,7 +6646,7 @@ components:
       example:
         payload:
           accountId: 94297c47-56ea-478f-a7a3-2d8717710f3e
-          balance: 100000
+          balance: 100001
           accountType: IBAN
           accountTypeValue: GR7816570557954999
         exception: null
