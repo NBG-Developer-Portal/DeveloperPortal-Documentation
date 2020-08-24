@@ -12,7 +12,7 @@ info:
     3. verify wether an NBG IBAN matches with a certain beneficiary and calculate the matching confidence level.
     
     # Confidence Scoring
-    Some endpoints of the IBAN Beneficiary validation API return confidence or matching scores, which indicate our confidence on the response we return or the matching score of the data input we received in your request. This section discusses the method that these scores are calculated and provide some examples so as to facilate the scoring interpretation by the API consumers.
+    Some endpoints of the IBAN Beneficiary validation API return confidence or matching scores, which indicate our confidence on the response we return or the matching score of the data input we received in your request. This section discusses the method that these scores are calculated and provide some examples so as to facilate the scoring interpretation by the API consumers. Detailed Request/Response examples are provided in the corresponding endpoints in the paths section below.
     
     Please note that in this version the scoring calculation method discussed below only applies to the Production version. In Sandbox mode the scores are calculated in a random way.
     
@@ -20,7 +20,7 @@ info:
 
     The IBAN included in the request data of the /otherBanksIban endpoint corresponds to a bank account held in other banks (non-NBG account). Our data source to extract the likely beneficiary in this case is from our remmitance records, meaning that the data is not verified by NBG and our response is based on a statistical analysis on the beneficiaries observed in our remmitance records. 
     
-    Many times the remmitance records of the same IBAN include beneficiaries that differ among each other. This is why the /otherBanksIban endpoint return not only the name of the most frequent beneficiary observed (likelyBeneficiary), but also a confidence score that indicates the variance of this name among the remmitance records.
+    Many times the remmitance records of the same IBAN include beneficiaries that differ among each other. This is why the /otherBanksIban endpoint return not only the masked name of the most frequent beneficiary observed (likelyBeneficiary), but also a confidence score that indicates the variance of this name among the remmitance records.
 
     The confidence score is based on the *weighted* average Levenshtein Distance (aLD) of the likelyBeneficiary name as measured against the rest of the beneficiary name's observed. More specifically, the confidence score is bounded from above by 1 (meaning that the score is always <=1), based on the likelyBeneficiary character length (L) as follows:
     
@@ -28,7 +28,7 @@ info:
 
     ## Matching score on the request data of /nbgIbanDetailsMatch
     
-    The input included in the request data of the /nbgIbanDetailsMatch endpoint corresponds to an NBG IBAN and its beneficiaries  verified details. The response is in the form of true/false interpreted as match/do not match, but it also provides a matchingScore which indicated the matching level of the input data. We discuss below how this matching score is computed.
+    The input included in the request data of the /nbgIbanDetailsMatch endpoint corresponds to an NBG IBAN and its beneficiaries  verified details. The response is in the true/false form interpreted as match/do-not-match, but it also provides a matchingScore which indicates the matching level of the input data. We discuss below how this matching score is computed.
     
     The number of the input fields to be matched are counted and each of them has equal weight in the matchingScore. So again here the average Levenshtein Distance (aLD) is computed among the input values and the true values that we maintain in our verified data source. More specifically, the matchingScore is bounded from above by 1 (meaning that the score is always <=1), based on each of the input fields character length.
 
@@ -102,7 +102,7 @@ info:
     We would love to hear your feedback and answer your questions. Send us at
     [developer@nbg.gr](developer@nbg.gr)
 
-    Check out our [Sandbox Postman Collection](https://github.com/myNBGcode/PostmanCollections)!
+    Check out our [Sandbox Postman Collection](https://github.com/NBG-Developer-Portal/IBAN-Beneficiary-Validation-API)!
 
     ________________________________________
 
@@ -449,7 +449,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
       summary: Get the most likely full name of the beneficiary of a non-NBG IBAN
-      description: Get the most likely full name of the alleged beneficiary of an IBAN held in other banks. A confidence score exposes the variance of the alleged beneficiary name as observed in our remmitance data. A high confidence score indicates low variance among the observed beneficiaries in remmitances.     
+      description: Get the most likely full name of the alleged beneficiary of an IBAN held in other banks. A matching score exposes the variance of the alleged beneficiary name as observed in our remmitance data. A high confidence score indicates low variance among the observed beneficiaries in remmitances.     
   /beneficiaryValidation/nbgIbanDetailsMatch:
     post:
       requestBody:
