@@ -330,7 +330,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                    
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
             requestBody:
                 content:
                     application/json:
@@ -423,7 +430,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                       
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
             requestBody:
                 content:
                     application/json:
@@ -528,7 +542,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                       
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
             requestBody:
                 content:
                     application/json:
@@ -650,7 +671,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                      
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 -
                     name: Consent-Id
                     in: header
@@ -786,7 +814,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                       
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 -
                     name: Consent-Id
                     in: header
@@ -922,7 +957,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                       
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 -
                     name: Consent-Id
                     in: header
@@ -1054,7 +1096,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                      
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 -
                     name: Consent-Id
                     in: header
@@ -1168,7 +1217,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false     
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 - 
                     name: Consent-Id
                     in: header
@@ -1279,7 +1335,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false     
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 - 
                     name: Consent-Id
                     in: header
@@ -1390,7 +1453,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false     
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 - 
                     name: Consent-Id
                     in: header
@@ -1521,7 +1591,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                      
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 -
                     name: Consent-Id
                     in: header
@@ -1656,7 +1733,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                       
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 -
                     name: Consent-Id
                     in: header
@@ -1792,7 +1876,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                      
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 -
                     name: Consent-Id
                     in: header
@@ -1927,7 +2018,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                      
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 -
                     name: Consent-Id
                     in: header
@@ -2066,7 +2164,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                       
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 -
                     $ref: '#/components/parameters/Consent-Id-Header-Param'
                 -
@@ -2200,7 +2305,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                        
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
                 -
                     $ref: '#/components/parameters/Consent-Id-Header-Param'
                 -
@@ -2471,7 +2583,14 @@ paths:
                   required: true
                   schema:
                     type: string
-                    default: false                       
+                    default: false
+                - name: user-agent
+                  in: header
+                  description: Indicates the browser that the API is called from
+                  schema:
+                    type: string
+                    default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+                  required: true
             requestBody:
                 content:
                     application/json:
