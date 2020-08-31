@@ -292,6 +292,8 @@ info:
     Created by [**NBG**](https://www.nbg.gr/).
 
   version: v3.1.0
+  contact:
+    email: developer@nbg.gr
 servers:
   - url: 'https://apis.nbg.gr/sandbox/uk.openbanking.paymentinitiation/oauth2/v3.1.0'
 paths:
@@ -300,6 +302,7 @@ paths:
       tags:
         - DomesticPayments
       summary: Create Domestic Payment Consents
+      description: Create Domestic Payment Consents
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -439,6 +442,7 @@ paths:
       tags:
         - DomesticPayments
       summary: Get Domestic Payment Consents
+      description: Get Domestic Payment Consents by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -561,6 +565,7 @@ paths:
       tags:
         - DomesticPayments
       summary: Get Domestic Payment Consents Funds Confirmation
+      description: Get Domestic Payment Consents Funds Confirmation by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -683,6 +688,7 @@ paths:
       tags:
         - DomesticPayments
       summary: Create Domestic Payments
+      description: Create Domestic Payments
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -822,6 +828,7 @@ paths:
       tags:
         - DomesticPayments
       summary: Get Domestic Payments
+      description: Get Domestic Payments by Domestic Payment ID
       parameters:
         - name: domesticPaymentId
           in: path
@@ -944,6 +951,7 @@ paths:
       tags:
         - DomesticScheduledPayments
       summary: Create Domestic Scheduled Payment Consents
+      description: Create Domestic Scheduled Payment Consents
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -1085,6 +1093,7 @@ paths:
       tags:
         - DomesticScheduledPayments
       summary: Get Domestic Scheduled Payment Consents
+      description: Get Domestic Scheduled Payment Consents by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -1209,6 +1218,7 @@ paths:
       tags:
         - DomesticScheduledPayments
       summary: Create Domestic Scheduled Payments
+      description: Create Domestic Scheduled Payments
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -1350,6 +1360,7 @@ paths:
       tags:
         - DomesticScheduledPayments
       summary: Get Domestic Scheduled Payments
+      description: Get Domestic Scheduled Payments by Domestic Scheduled Payment ID
       parameters:
         - name: domesticScheduledPaymentId
           in: path
@@ -1474,6 +1485,7 @@ paths:
       tags:
         - DomesticStandingOrders
       summary: Create Domestic Standing Order Consents
+      description: Create Domestic Standing Order Consents
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -1615,6 +1627,7 @@ paths:
       tags:
         - DomesticStandingOrders
       summary: Get Domestic Standing Order Consents
+      description: Get Domestic Standing Order Consents by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -1739,6 +1752,7 @@ paths:
       tags:
         - DomesticStandingOrders
       summary: Create Domestic Standing Orders
+      description: Create Domestic Standing Orders
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -1880,6 +1894,7 @@ paths:
       tags:
         - DomesticStandingOrders
       summary: Get Domestic Standing Orders
+      description: Get Domestic Standing Orders by Domestic Standing Order ID
       parameters:
         - name: domesticStandingOrderId
           in: path
@@ -2004,6 +2019,7 @@ paths:
       tags:
         - FilePayments
       summary: Create File Payment Consents
+      description: Create File Payment Consents
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -2145,6 +2161,7 @@ paths:
       tags:
         - FilePayments
       summary: Get File Payment Consents
+      description: Get File Payment Consents by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -2269,6 +2286,7 @@ paths:
       tags:
         - FilePayments
       summary: Create File Payment Consents
+      description: Create File Payment Consents
       parameters:
         - name: consentId
           in: path
@@ -2408,6 +2426,7 @@ paths:
       tags:
         - FilePayments
       summary: Get File Payment Consents
+      description: Get File Payment Consents by Consent ID (File)
       parameters:
         - name: consentId
           in: path
@@ -2541,6 +2560,7 @@ paths:
       tags:
         - FilePayments
       summary: Create File Payments
+      description: Create File Payments
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -2682,6 +2702,7 @@ paths:
       tags:
         - FilePayments
       summary: Get File Payments
+      description: Get File Payments by File Payment ID
       parameters:
         - name: filePaymentId
           in: path
@@ -2806,6 +2827,7 @@ paths:
       tags:
         - FilePayments
       summary: Get File Payments
+      description: Get File Payments by File Payment ID (File)
       parameters:
         - name: filePaymentId
           in: path
@@ -2922,6 +2944,7 @@ paths:
       tags:
         - InternationalPayments
       summary: Create International Payment Consents
+      description: Create International Payment Consents
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -3063,6 +3086,7 @@ paths:
       tags:
         - InternationalPayments
       summary: Get International Payment Consents
+      description: Get International Payment Consents by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -3187,6 +3211,7 @@ paths:
       tags:
         - InternationalPayments
       summary: Get International Payment Consents Funds Confirmation
+      description: Get International Payment Consents Funds Confirmation by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -3311,6 +3336,7 @@ paths:
       tags:
         - InternationalPayments
       summary: Create International Payments
+      description: Create International Payments
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -3452,6 +3478,7 @@ paths:
       tags:
         - InternationalPayments
       summary: Get International Payments
+      description: Get International Payments by International Payment ID
       parameters:
         - name: internationalPaymentId
           in: path
@@ -3576,6 +3603,7 @@ paths:
       tags:
         - InternationalScheduledPayments
       summary: Create International Scheduled Payment Consents
+      description: Create International Scheduled Payment Consents
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -3766,6 +3794,7 @@ paths:
       tags:
         - InternationalScheduledPayments
       summary: Get International Scheduled Payment Consents
+      description: Get International Scheduled Payment Consents by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -3932,6 +3961,7 @@ paths:
       tags:
         - InternationalScheduledPayments
       summary: Get International Scheduled Payment Consents Funds Confirmation
+      description: Get International Scheduled Payment Consents Funds Confirmation by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -4098,6 +4128,7 @@ paths:
       tags:
         - InternationalScheduledPayments
       summary: Create International Scheduled Payments
+      description: Create International Scheduled Payments
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -4288,6 +4319,7 @@ paths:
       tags:
         - InternationalScheduledPayments
       summary: Get International Scheduled Payments
+      description: Get International Scheduled Payments by International Scheduled Payment ID
       parameters:
         - name: internationalScheduledPaymentId
           in: path
@@ -4454,6 +4486,7 @@ paths:
       tags:
         - InternationalStandingOrders
       summary: Create International Standing Order Consents
+      description: Create International Standing Order Consents
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -4595,6 +4628,7 @@ paths:
       tags:
         - InternationalStandingOrders
       summary: Get International Standing Order Consents
+      description: Get International Standing Order Consents by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -4719,6 +4753,7 @@ paths:
       tags:
         - InternationalStandingOrders
       summary: Create International Standing Orders
+      description: Create International Standing Orders
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -4860,6 +4895,7 @@ paths:
       tags:
         - InternationalStandingOrders
       summary: Get International Standing Orders
+      description: Get International Standing Orders by International Standing Order Payment ID
       parameters:
         - name: internationalStandingOrderPaymentId
           in: path
@@ -4984,6 +5020,15 @@ paths:
       tags:
         - Sandbox
       summary: Create Sandbox
+      description: Create Sandbox
+      parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
       requestBody:
         description: SandboxRequest
         content:
@@ -5035,6 +5080,15 @@ paths:
       tags:
         - Sandbox
       summary: Import Sandbox
+      description: Import Sandbox
+      parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
       requestBody:
         description: Sandbox
         content:
@@ -5082,7 +5136,15 @@ paths:
       tags:
         - Sandbox
       summary: Get Sandbox
+      description: Get Sandbox
       parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: sandboxId
           in: path
           description: Sandbox Id
@@ -5135,7 +5197,15 @@ paths:
       tags:
         - Sandbox
       summary: Delete Sandbox
+      description: Delete Sandbox
       parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: sandboxId
           in: path
           description: Sandbox Id
@@ -8424,10 +8494,10 @@ components:
           nullable: true
       description: Sandbox model
   securitySchemes:
-    Client Id:
+    Client-Id:
       type: apiKey
       description: Application's Id
       name: Client-Id
       in: header
 security:
-  - Client Id: []
+  - Client-Id: []
