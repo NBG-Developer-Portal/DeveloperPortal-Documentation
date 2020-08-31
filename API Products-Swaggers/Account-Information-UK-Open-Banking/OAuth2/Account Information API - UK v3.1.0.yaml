@@ -205,6 +205,8 @@ info:
     Created by [**NBG**](https://www.nbg.gr/).
 
   version: v3.1.0
+  contact:
+    email: developer@nbg.gr
 servers:
   - url: 'https://apis.nbg.gr/sandbox/uk.openbanking.accountinfo/oauth2/v3.1.0'
 paths:
@@ -213,6 +215,7 @@ paths:
       tags:
         - AccountAccess
       summary: Create Account Access Consents
+      description: Create Account Access Consents
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -334,6 +337,7 @@ paths:
       tags:
         - AccountAccess
       summary: Get Account Access Consents
+      description: Get Account Access Consents by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -451,6 +455,7 @@ paths:
       tags:
         - AccountAccess
       summary: Delete Account Access Consents
+      description: Delete Account Access Consents by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -562,6 +567,7 @@ paths:
       tags:
         - Accounts
       summary: Get Accounts
+      description: Get Accounts
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -672,6 +678,7 @@ paths:
       tags:
         - Accounts
       summary: Get Accounts
+      description: Get Accounts by Account ID
       parameters:
         - name: accountId
           in: path
@@ -788,6 +795,7 @@ paths:
       tags:
         - Balances
       summary: Get Balances
+      description: Get Balances
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -898,6 +906,7 @@ paths:
       tags:
         - Balances
       summary: Get Balances
+      description: Get Balances by Account ID
       parameters:
         - name: accountId
           in: path
@@ -1014,6 +1023,7 @@ paths:
       tags:
         - Beneficiaries
       summary: Get Beneficiaries
+      description: Get Beneficiaries
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -1124,6 +1134,7 @@ paths:
       tags:
         - Beneficiaries
       summary: Get Beneficiaries
+      description: Get Beneficiaries by Account ID
       parameters:
         - name: accountId
           in: path
@@ -1242,6 +1253,7 @@ paths:
       tags:
         - DirectDebits
       summary: Get Direct Debits
+      description: Get Direct Debits
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -1352,6 +1364,7 @@ paths:
       tags:
         - DirectDebits
       summary: Get Direct Debits
+      description: Get Direct Debits by Account ID
       parameters:
         - name: accountId
           in: path
@@ -1470,6 +1483,7 @@ paths:
       tags:
         - Offers
       summary: Get Offers
+      description: Get Offers
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -1580,6 +1594,7 @@ paths:
       tags:
         - Offers
       summary: Get Offers
+      description: Get Offers by Account ID
       parameters:
         - name: accountId
           in: path
@@ -1698,6 +1713,7 @@ paths:
       tags:
         - Party
       summary: Get Party
+      description: Get Party
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -1808,6 +1824,7 @@ paths:
       tags:
         - Party
       summary: Get Party
+      description:  Get Party by Account ID
       parameters:
         - name: accountId
           in: path
@@ -1926,6 +1943,7 @@ paths:
       tags:
         - Products
       summary: Get Products
+      description: Get Products
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -2036,6 +2054,7 @@ paths:
       tags:
         - Products
       summary: Get Products
+      description: Get Products by Account ID
       parameters:
         - name: accountId
           in: path
@@ -2154,6 +2173,15 @@ paths:
       tags:
         - Sandbox
       summary: Create Sandbox
+      description: Create Sandbox
+      parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
       requestBody:
         description: SandboxRequest
         content:
@@ -2205,6 +2233,15 @@ paths:
       tags:
         - Sandbox
       summary: Import Sandbox
+      description: Import Sandbox
+      parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
       requestBody:
         description: Sandbox
         content:
@@ -2252,7 +2289,15 @@ paths:
       tags:
         - Sandbox
       summary: Get Sandbox
+      description: Get Sandbox
       parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: sandboxId
           in: path
           description: Sandbox Id
@@ -2305,7 +2350,15 @@ paths:
       tags:
         - Sandbox
       summary: Delete Sandbox
+      description: Delete Sandbox
       parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: sandboxId
           in: path
           description: Sandbox Id
@@ -2352,6 +2405,7 @@ paths:
       tags:
         - ScheduledPayments
       summary: Get Scheduled Payments
+      description: Get Scheduled Payments
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -2462,6 +2516,7 @@ paths:
       tags:
         - ScheduledPayments
       summary: Get Scheduled Payments
+      description: Get Scheduled Payments
       parameters:
         - name: accountId
           in: path
@@ -2580,6 +2635,7 @@ paths:
       tags:
         - StandingOrders
       summary: Get Standing Orders
+      description: Get Standing Orders
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -2690,6 +2746,7 @@ paths:
       tags:
         - StandingOrders
       summary: Get Standing Orders
+      description: Get Standing Orders by Account ID
       parameters:
         - name: accountId
           in: path
@@ -2808,6 +2865,7 @@ paths:
       tags:
         - Statements
       summary: Get Statements
+      description: Get Statements
       parameters:
         - name: fromStatementDateTime
           in: query
@@ -2933,7 +2991,8 @@ paths:
     get:
       tags:
         - Statements
-      summary: Get Statements
+      summary: Get Statements by Account ID
+      description: Get Statements
       parameters:
         - name: accountId
           in: path
@@ -3068,6 +3127,7 @@ paths:
       tags:
         - Statements
       summary: Get Statements
+      description: Get Statements by Account ID and Statement ID
       parameters:
         - name: accountId
           in: path
@@ -3194,6 +3254,7 @@ paths:
       tags:
         - Statements
       summary: Get Statements
+      description: Get Statements by Account ID and Statement ID (File)
       parameters:
         - name: accountId
           in: path
@@ -3322,6 +3383,7 @@ paths:
       tags:
         - Statements
       summary: Get Transactions
+      description: Get Transactions by Account ID and Statement ID
       parameters:
         - name: accountId
           in: path
@@ -3448,6 +3510,7 @@ paths:
       tags:
         - Transactions
       summary: Get Transactions
+      description: Get Transactions
       parameters:
         - name: fromBookingDateTime
           in: query
@@ -3574,6 +3637,7 @@ paths:
       tags:
         - Transactions
       summary: Get Transactions
+      description: Get Transactions by Account ID
       parameters:
         - name: accountId
           in: path
@@ -6839,10 +6903,11 @@ components:
           $ref: '#/components/schemas/Meta'
       description: ''
   securitySchemes:
-    Client Id:
+    Client-Id:
       type: apiKey
       description: Application's Id
       name: Client-Id
       in: header
+      
 security:
-  - Client Id: []
+  - Client-Id: []
