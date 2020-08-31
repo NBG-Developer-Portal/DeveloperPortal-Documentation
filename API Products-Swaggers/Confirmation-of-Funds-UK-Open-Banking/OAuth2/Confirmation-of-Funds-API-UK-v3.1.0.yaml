@@ -182,6 +182,8 @@ info:
     Created by [**NBG**](https://www.nbg.gr/).
 
   version: v3.1.0
+  contact:
+    email: developer@nbg.gr
 servers:
   - url: 'https://apis.nbg.gr/sandbox/uk.openbanking.fundsconfirmation/oauth2/v3.1.0'
 paths:
@@ -190,6 +192,7 @@ paths:
       tags:
         - Consents
       summary: Create Funds Confirmation Consent
+      description: Create Funds Confirmation Consent
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -310,6 +313,7 @@ paths:
       tags:
         - Consents
       summary: Get Funds Confirmation Consent
+      description: Get Funds Confirmation Consent by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -427,6 +431,7 @@ paths:
       tags:
         - Consents
       summary: Delete Funds Confirmation Consent
+      description: Delete Funds Confirmation Consent by Consent ID
       parameters:
         - name: consentId
           in: path
@@ -538,6 +543,7 @@ paths:
       tags:
         - Funds
       summary: Create Funds Confirmation
+      description: Create Funds Confirmation
       parameters:
         - name: x-fapi-financial-id
           in: header
@@ -658,6 +664,15 @@ paths:
       tags:
         - Sandbox
       summary: Create Sandbox
+      description: Create Sandbox
+      parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
       requestBody:
         description: SandboxRequest
         content:
@@ -709,6 +724,15 @@ paths:
       tags:
         - Sandbox
       summary: Import Sandbox
+      description: Import Sandbox
+      parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
       requestBody:
         description: Sandbox
         content:
@@ -756,7 +780,15 @@ paths:
       tags:
         - Sandbox
       summary: Get Sandbox
+      description: Get Sandbox
       parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: sandboxId
           in: path
           description: Sandbox Id
@@ -809,7 +841,15 @@ paths:
       tags:
         - Sandbox
       summary: Delete Sandbox
+      description: Delete Sandbox
       parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: sandboxId
           in: path
           description: Sandbox Id
@@ -1204,10 +1244,10 @@ components:
           nullable: true
       description: Sandbox model
   securitySchemes:
-    Client Id:
+    Client-Id:
       type: apiKey
       description: Application's Id
       name: Client-Id
       in: header
 security:
-  - Client Id: []
+  - Client-Id: []
