@@ -186,6 +186,9 @@ info:
     email: developer@nbg.gr
 servers:
   - url: 'https://apis.nbg.gr/sandbox/uk.openbanking.fundsconfirmation/oauth2/v3.1.0'
+    description: Sandbox Server
+  - url: 'https://services.nbg.gr/apis/open-banking/v3.1/cbpii'
+    description: Production Server  
 paths:
   /funds-confirmation-consents:
     post:
