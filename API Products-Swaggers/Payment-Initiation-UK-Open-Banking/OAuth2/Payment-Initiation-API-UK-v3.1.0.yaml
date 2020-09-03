@@ -296,6 +296,9 @@ info:
     email: developer@nbg.gr
 servers:
   - url: 'https://apis.nbg.gr/sandbox/uk.openbanking.paymentinitiation/oauth2/v3.1.0'
+    description: Sandbox Server
+  - url: 'https://services.nbg.gr/apis/open-banking/v3.1/pisp'
+    description: Production Server  
 paths:
   /domestic-payment-consents:
     post:
