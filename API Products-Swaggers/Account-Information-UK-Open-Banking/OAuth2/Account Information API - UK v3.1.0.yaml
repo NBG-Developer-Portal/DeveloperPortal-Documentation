@@ -209,6 +209,9 @@ info:
     email: developer@nbg.gr
 servers:
   - url: 'https://apis.nbg.gr/sandbox/uk.openbanking.accountinfo/oauth2/v3.1.0'
+    description: Sandbox Server
+  - url: 'https://services.nbg.gr/apis/open-banking/v3.1/aisp'
+    description: Production Server  
 paths:
   /account-access-consents:
     post:
