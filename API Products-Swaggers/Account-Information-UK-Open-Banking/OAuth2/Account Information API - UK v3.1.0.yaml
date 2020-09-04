@@ -2519,7 +2519,7 @@ paths:
       tags:
         - ScheduledPayments
       summary: Get Scheduled Payments
-      description: Get Scheduled Payments
+      description: Get Scheduled Payments by Account ID
       parameters:
         - name: accountId
           in: path
@@ -2994,8 +2994,8 @@ paths:
     get:
       tags:
         - Statements
-      summary: Get Statements by Account ID
-      description: Get Statements
+      summary: Get Statements
+      description: Get Statements by Account ID
       parameters:
         - name: accountId
           in: path
