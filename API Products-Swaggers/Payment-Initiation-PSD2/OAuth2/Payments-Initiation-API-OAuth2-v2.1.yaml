@@ -173,11 +173,10 @@ info:
     certificates.
 
 
-    You can download the NBG certificates to validate the API responses using
-    the following links:
+    You can download the NBG certificate to validate the API responses using
+    the following link:
       
-      - [Sandbox Certificate](https://files.nbg.gr/certificates/NBG%20QSeal%20Sandbox.cer)
-      - [Production Certificate](https://files.nbg.gr/certificates/NBG%20QSeal%20production.cer)
+      - [NBG QSeal Certificate](https://files.nbg.gr/certificates/NBG%20QSeal%20production.cer)
       
     **Signing flow**
 
@@ -12810,6 +12809,13 @@ paths:
           schema:
             type: string
             default: Bearer
+        - name: user-agent
+          in: header
+          description: Indicates the browser that the API is called from
+          schema:
+            type: string
+            default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+          required: true
       responses:
         '200':
           description: OK
@@ -13059,6 +13065,7 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
+          description: The unique name of your Sandbox
           required: true
           schema:
             type: string
@@ -13071,6 +13078,13 @@ paths:
           schema:
             type: string
             default: Bearer
+        - name: user-agent
+          in: header
+          description: Indicates the browser that the API is called from
+          schema:
+            type: string
+            default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+          required: true
       responses:
         '200':
           description: OK
@@ -13271,6 +13285,7 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
+          description: The unique name of your Sandbox
           required: true
           schema:
             type: string
@@ -13283,6 +13298,13 @@ paths:
           schema:
             type: string
             default: Bearer
+        - name: user-agent
+          in: header
+          description: Indicates the browser that the API is called from
+          schema:
+            type: string
+            default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+          required: true
       responses:
         '200':
           description: OK
@@ -14385,6 +14407,7 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
+          description: The unique name of your Sandbox
           required: true
           schema:
             type: string
@@ -14397,6 +14420,13 @@ paths:
           schema:
             type: string
             default: Bearer
+        - name: user-agent
+          in: header
+          description: Indicates the browser that the API is called from
+          schema:
+            type: string
+            default: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+          required: true
       responses:
         '200':
           description: OK
