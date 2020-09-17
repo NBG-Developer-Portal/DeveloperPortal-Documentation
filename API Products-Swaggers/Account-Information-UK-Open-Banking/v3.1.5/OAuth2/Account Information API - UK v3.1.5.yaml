@@ -765,6 +765,10 @@ paths:
         - Balances
       summary: Get Balances
       description: Get Balances
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -914,6 +918,10 @@ paths:
         - Balances
       summary: Get Balances
       description: Get Balances by Account ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -1062,6 +1070,10 @@ paths:
         - Beneficiaries
       summary: Get Beneficiaries
       description: Get Beneficiaries
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -1211,6 +1223,10 @@ paths:
         - Beneficiaries
       summary: Get Beneficiaries
       description: Get Beneficiaries by Account ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -1368,6 +1384,10 @@ paths:
         - DirectDebits
       summary: Get Direct Debits
       description: Get Direct Debits
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -1517,6 +1537,10 @@ paths:
         - DirectDebits
       summary: Get Direct Debits
       description: Get Direct Debits by Account ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -1674,6 +1698,10 @@ paths:
         - Offers
       summary: Get Offers
       description: Get Offers
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -1823,6 +1851,10 @@ paths:
         - Offers
       summary: Get Offers
       description: Get Offers by Account ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -1980,6 +2012,10 @@ paths:
         - Parties
       summary: Get Party
       description: Get Party
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -2129,6 +2165,10 @@ paths:
         - Parties
       summary: Get Party
       description:  Get Party by Account ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -2286,6 +2326,10 @@ paths:
         - Parties
       summary: Get Parties
       description:  Get Parties by Account ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -2443,6 +2487,10 @@ paths:
         - Products
       summary: Get Products
       description: Get Products
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -2592,6 +2640,10 @@ paths:
         - Products
       summary: Get Products
       description: Get Products by Account ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -2749,6 +2801,10 @@ paths:
         - Sandbox
       summary: Create Sandbox
       description: Create Sandbox
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       requestBody:
         description: SandboxRequest
         content:
@@ -2801,6 +2857,10 @@ paths:
         - Sandbox
       summary: Import Sandbox
       description: Import Sandbox
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       requestBody:
         description: Sandbox
         content:
@@ -2849,6 +2909,10 @@ paths:
         - Sandbox
       summary: Get Sandbox
       description: Get Sandbox
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: sandboxId
           in: path
@@ -2903,6 +2967,10 @@ paths:
         - Sandbox
       summary: Delete Sandbox
       description: Delete Sandbox
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: sandboxId
           in: path
@@ -2951,6 +3019,10 @@ paths:
         - ScheduledPayments
       summary: Get Scheduled Payments
       description: Get Scheduled Payments
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -3100,6 +3172,10 @@ paths:
         - ScheduledPayments
       summary: Get Scheduled Payments
       description: Get Scheduled Payments by Account ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -3257,6 +3333,10 @@ paths:
         - StandingOrders
       summary: Get Standing Orders
       description: Get Standing Orders
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -3406,6 +3486,10 @@ paths:
         - StandingOrders
       summary: Get Standing Orders
       description: Get Standing Orders by Account ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -3563,6 +3647,10 @@ paths:
         - Statements
       summary: Get Statements
       description: Get Statements
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: fromStatementDateTime
           in: query
@@ -3728,6 +3816,10 @@ paths:
         - Statements
       summary: Get Statements
       description: Get Statements by Account ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -3901,6 +3993,10 @@ paths:
         - Statements
       summary: Get Statements
       description: Get Statements by Account ID and Statement ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -4066,6 +4162,10 @@ paths:
         - Statements
       summary: Get Statements
       description: Get Statements by Account ID and Statement ID (File)
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -4220,6 +4320,10 @@ paths:
         - Transactions
       summary: Get Transactions
       description: Get Transactions
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: fromBookingDateTime
           in: query
@@ -4385,6 +4489,10 @@ paths:
         - Transactions
       summary: Get Transactions
       description: Get Transactions by Account ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -4558,6 +4666,10 @@ paths:
         - Transactions
       summary: Get Transactions
       description: Get Transactions by Account ID and Statement ID
+      security:
+        - Client-Id: []
+          Authorization-Code-Token:
+            - sandbox-uk-account-info-api-v1 offline_access
       parameters:
         - name: accountId
           in: path
@@ -8299,7 +8411,3 @@ components:
           tokenUrl: https://my.nbg.gr/identity/connect/token
           scopes:
             sandbox-uk-account-info-api-v1: Sandbox Scope
-security:
-  - Client-Id: []
-    Authorization-Code-Token:
-      - sandbox-uk-account-info-api-v1 offline_access
