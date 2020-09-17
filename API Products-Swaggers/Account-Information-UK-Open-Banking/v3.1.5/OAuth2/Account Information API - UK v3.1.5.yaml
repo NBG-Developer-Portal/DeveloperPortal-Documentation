@@ -21,7 +21,6 @@ paths:
         - Client-Id: []
           Client-Credentials-Token:
             - sandbox-uk-account-info-api-v1
-            - accounts
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -184,7 +183,6 @@ paths:
         - Client-Id: []
           Client-Credentials-Token:
             - sandbox-uk-account-info-api-v1
-            - accounts
       parameters:
         - name: consentId
           in: path
@@ -336,7 +334,6 @@ paths:
         - Client-Id: []
           Client-Credentials-Token:
             - sandbox-uk-account-info-api-v1
-            - accounts
       parameters:
         - name: consentId
           in: path
@@ -8294,7 +8291,6 @@ components:
           tokenUrl: https://my.nbg.gr/identity/connect/token
           scopes:
             sandbox-uk-account-info-api-v1 offline_access: Sandbox Scope
-            accounts offline_access: Production Scope
     Client-Credentials-Token:
       type: oauth2
       description: OAuth2 Client Credentials Flow
@@ -8303,9 +8299,7 @@ components:
           tokenUrl: https://my.nbg.gr/identity/connect/token
           scopes:
             sandbox-uk-account-info-api-v1: Sandbox Scope
-            accounts: Production Scope
 security:
   - Client-Id: []
     Authorization-Code-Token:
       - sandbox-uk-account-info-api-v1 offline_access
-      - accounts offline_access
