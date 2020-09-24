@@ -17,11 +17,6 @@ paths:
         - AccountAccess
       summary: Create Account Access Consents
       description: Create Account Access Consents
-      security:
-        - Client-Id: []
-          Client-Credentials-Token:
-            - sandbox-uk-account-info-api-v1
-            - accounts
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -38,6 +33,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -180,11 +182,6 @@ paths:
         - AccountAccess
       summary: Get Account Access Consents
       description: Get Account Access Consents by Consent ID
-      security:
-        - Client-Id: []
-          Client-Credentials-Token:
-            - sandbox-uk-account-info-api-v1
-            - accounts
       parameters:
         - name: consentId
           in: path
@@ -209,6 +206,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -332,11 +336,6 @@ paths:
         - AccountAccess
       summary: Delete Account Access Consents
       description: Delete Account Access Consents by Consent ID
-      security:
-        - Client-Id: []
-          Client-Credentials-Token:
-            - sandbox-uk-account-info-api-v1
-            - accounts
       parameters:
         - name: consentId
           in: path
@@ -361,6 +360,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -494,6 +500,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -644,6 +657,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -784,6 +804,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -941,6 +968,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -1081,6 +1115,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -1238,6 +1279,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -1387,6 +1435,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -1544,6 +1599,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -1693,6 +1755,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -1850,6 +1919,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -1999,6 +2075,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -2156,6 +2239,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -2313,6 +2403,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -2462,6 +2559,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -2619,6 +2723,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -2752,6 +2863,14 @@ paths:
         - Sandbox
       summary: Create Sandbox
       description: Create Sandbox
+      parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
       requestBody:
         description: SandboxRequest
         content:
@@ -2804,6 +2923,14 @@ paths:
         - Sandbox
       summary: Import Sandbox
       description: Import Sandbox
+      parameters:
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
       requestBody:
         description: Sandbox
         content:
@@ -2861,6 +2988,13 @@ paths:
             type: string
             description: Sandbox Id
             nullable: true
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
       responses:
         '200':
           description: OK
@@ -2915,6 +3049,13 @@ paths:
             type: string
             description: Sandbox Id
             nullable: true
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
       responses:
         '204':
           description: No Content
@@ -2970,6 +3111,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -3127,6 +3275,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -3276,6 +3431,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -3433,6 +3595,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -3598,6 +3767,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -3771,6 +3947,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -3936,6 +4119,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -4101,6 +4291,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -4255,6 +4452,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -4428,6 +4632,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -4593,6 +4804,13 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
+        - name: Authorization
+          in: header
+          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -8285,27 +8503,5 @@ components:
       description: Application's Id
       name: Client-Id
       in: header
-    Authorization-Code-Token:
-      type: oauth2
-      description: OAuth2 Authorization Code Flow
-      flows:
-        authorizationCode:
-          authorizationUrl: https://my.nbg.gr/identity/connect/authorize
-          tokenUrl: https://my.nbg.gr/identity/connect/token
-          scopes:
-            sandbox-uk-account-info-api-v1 offline_access: Sandbox Scope
-            accounts offline_access: Production Scope
-    Client-Credentials-Token:
-      type: oauth2
-      description: OAuth2 Client Credentials Flow
-      flows:
-        clientCredentials: 
-          tokenUrl: https://my.nbg.gr/identity/connect/token
-          scopes:
-            sandbox-uk-account-info-api-v1: Sandbox Scope
-            accounts: Production Scope
 security:
   - Client-Id: []
-    Authorization-Code-Token:
-      - sandbox-uk-account-info-api-v1 offline_access
-      - accounts offline_access
