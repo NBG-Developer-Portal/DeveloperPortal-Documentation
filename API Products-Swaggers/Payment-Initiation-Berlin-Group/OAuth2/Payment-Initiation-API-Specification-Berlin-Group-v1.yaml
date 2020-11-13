@@ -1,0 +1,3830 @@
+openapi: 3.0.1
+info:
+  title: Payment Initiation API Specification - Berlin Group
+  description: "## Functionality at a glance\r\n\r\nThe NBG \"Berlin Group Payments Initiation\" API follows the \"Berlin Group Specification v1.3.6\".\r\n\r\nThis Payment Initiation API Specification describes the flows and payloads for initiating and executing a general payment-order.\r\n\r\nThe API endpoints described here allow a PISP to:\r\n\r\n- Register an intent to stage a payment-order (initiate a payment).\r\n\r\n- Submit the payment-order for processing.\r\n\r\n- Optionally retrieve the status of a payment-order resource.\r\n\r\n<br/><br/>\r\n\r\n## Quick Getting Started\r\n1. <b>Login/Register</b> to the NBG Technology HUB\r\n\r\n2. Go to <b>\"APPS\"</b>\r\n\r\n3. Select your Organization and go to step 4. If you want to create a new Organization click <b>\"CREATE AN ORGANIZATION\"</b> and follow the steps below:\r\n\r\n    1. Enter the title of your Organization\r\n    1. Enter a short description of your Organization (optional)\r\n    2. Click \"SUBMIT\"\r\n\r\n4. Select the Organization of choice and click <b>\"ADD AN APPLICATION\"</b>\r\n\r\n    1. Fill in the forms (title and short description)\r\n    \r\n    2. Check <b>\"Authorization Code\"</b> and <b>\"Client Credentials\"</b>\r\n    \r\n    3. Enter the <b>OAuth Redirect and Post Logout URIs</b> (these are the URIs that we will redirect the user upon logging in and logging out respectively)\r\n    \r\n    4. *You can use the following redirect URL to easily test the API through the portal: https://developer.nbg.gr/oauth2/redoc-callback*\r\n    \r\n    6. Click <b>\"SUBMIT\"</b>\r\n    \r\n    7. Store the APPs <b>\"Client ID\"</b> and <b>\"Client Secret\"</b>\r\n\r\n5. Go to <b>\"API PRODUCTS\"</b> and select the <b>PAYMENT INITIATION - BG OPEN BANKING API</b>\r\n\r\n6. Click <b>\"START USING THIS API\"</b>, choose your app and click <b>\"SUBSCRIBE\"</b>\r\n\r\n7. Get an <b>Access Token</b> using the Access Token Flow and the API scopes provided in the Authentication and Authorization (OAuth2) section below\r\n\r\n8. Create a <b>Sandbox</b>\r\n\r\n9. Play with the API\r\n\r\n<br/>\r\n\r\n### Sandbox Flow\r\nThe Sandbox Flow matches the Production Flow. The difference lies into the Data used. Instead of live data, the Sandbox flow uses mocked data.\r\n\r\n### Production Flow\r\nThe Production Flow is described in the Berlin Group Specification v1.3.6\r\n\r\nMore details about the implementation specifics followed, please visit section [Berlin Group Specification page](https://www.berlin-group.org/nextgenpsd2-downloads)\r\n\r\n<br/>\r\n\r\n### Authentication and Authorization (OAuth2)\r\nThe UK Open Banking v3.1.5 Specification uses the OAuth2 protocol for authentication and authorization, which means that a Bearer (access token) should be acquired. An access token can be retrieved using the client_id and client_secret of the APP that you created and subscribed in this API, and finally your own credentials (username, password) that you use to sign in the NBG Technology HUB.\r\n\r\nThe scopes are defined below:\r\n\r\nAuthorization Endpoint:\r\n\r\n    https://my.nbg.gr/identity/connect/authorize\r\nToken Endpoint:\r\n\r\n    https://my.nbg.gr/identity/connect/token\r\n\r\n**Authorization Code**\r\n\r\nSandbox Scopes:\r\n\r\n     sandbox-bg-ob-payments offline_access\r\nProduction Scopes:\r\n\r\n    bg-ob-payments offline_access\r\n\r\n**Client Credentials**\r\n\r\nSandbox Scopes:\r\n\r\n     sandbox-bg-ob-payments\r\nProduction Scopes:\r\n\r\n    bg-ob-payments\r\nSee more [here](https://developer.nbg.gr/oauth-document)\r\n\r\n<br/>\r\n\r\n### QWAC Certificates\r\nTPPs are required to present a QWAC certificate during API consumption. \r\nThe API checks that this certificate has been provided and is valid. \r\nIn sandbox mode the certificate validations are optional. \r\nTo validate your certificate in sandbox implementation, please send us your QWAC \r\ncertificate at developer@nbg.gr and set the HTTP Header **\"x-sandbox-qwac-certificate-check\"** with the value **\"true\"** in your requests.\r\n\r\n<br/>\r\n\r\n### SMS Challenge (One Time Password)\r\nIn order to successfully complete a Payment you will need to provide the SMS OTP (One Time Password) in the corresponding Payments Consent UI Screen.\r\n\r\nBy default the SMS OTP will be sent to the mobile number declared upon singing up in the NBG Technology HUB.\r\n\r\n<br/>\r\n\r\n### Create your Sandbox\r\nCreate a new Sandbox application by invoking the POST /sandbox. This call will generate a new Sandbox with a unique sandbox-id.\r\n\r\nWhen you create a sandbox, users and sandbox specific data are generated as sample data.\r\n\r\nImportant! Don't lose your sandbox_id, since you will need it for all the API calls. Sandbox endpoints are not included in the production version API.\r\n\r\n<br/>\r\n\r\n### Start Testing\r\nOnce you have your **sandbox-id**, you can start invoking the rest of the operations by providing the mandatory http header sandbox-id and the http headers described below.\r\n\r\n<br/>\r\n\r\n### Important notes\r\n**Request headers**\r\n\r\nThe following HTTP header parameters are required for every call:\r\n\r\n1. Authorization. The OAuth2 Token\r\n\r\n2. sandbox-id. Your Sandbox ID\r\n\r\n<br/><br/>\r\n\r\n## Berlin Group Specification Specifics Implementation\r\nIn the below section we describe the flow we follow regarding a Payment Initiation and execution among with any other specific information is needed in order for you to successfully use the Berlin Group Specification Payments API.\r\n\r\n### General Flow\r\n1. TPP requests to initiate a Payment by utilizing the supported **Payment Iniitation Endpoint** and by using an **Authorization Flow OAuth2 Access Token**.\r\n    \r\n    This implies that the User needs to be identified by NBG prior to the Payments Initiation Request. The obtained Authorization Access Token will be used to access the resource.\r\n \r\n2. A **Payment-ID** is returned as a response to the Payments Initiation Request, among with the appropriate **Payment Authorization UI URL**.\r\n\r\n    The Payment Authorization UI URL can be found in the \"Links\" section of the Payment Initiation Response.\r\n\r\n3. The **User** need to be **redirected** by the TPP to the **Payment Authorization UI** where they **authorize** the Payment Execution.\r\n    \r\n    **SCA** is needed for the User in order to authorize the Payment.\r\n\r\n    Once the User successfully authorizes the Payment, then it is automatically **executed**.\r\n\r\n4. Finally, the TPP has the option to **inquire** the **Payment's status** by using the **Payment-ID** and via the appropriate endpoints.\r\n\r\n<br/>\r\n\r\n#### User Identification and Obtaining Token\r\nThe process is described in the \"Authentication and Authorization (OAuth2)\" Section.\r\n\r\n<br/>\r\n\r\n#### Payment Authorization UI\r\nThe Payment Authorization UI will be available only for a **short amount of time** and reachable only by the **User requesting the Payment Execution**.\r\n\r\nThe Payment Authorization UI URL can be found in the \"Links\" section of the Payment Initiation Response.\r\n\r\nThe **Payments Authorization UI URL** can be found in the Payments Initiation Response, in the \"**_links / scaRedirect**\" property.\r\n\r\nIn case a redirection is needed the \"**callback_url**\" attribute needs to be appended to the **Authorization URL** (e.g. https://microsites.nbg.gr/bg.ob.pisp.sandbox/payments/authorize?payment_id=xxxxxxxx-f6ca-434b-xxxx-257450ac3903&callback_url=https://www.nbg.gr)\r\n\r\n<br/>\r\n\r\n#### Signing\r\nSigning is not used in this version. Securiy relys on QWAC certificates.\r\n\r\n<br/>\r\n\r\n#### SCA Processes\r\nCurrently, multiple SCA processes are not supported.\r\n\r\n<br/>\r\n\r\n#### Access Tokens and Endpoints\r\nThe Payment Initiation Endpoints (POST) can be called only by using an Authorization Flow Access Token.\r\n\r\nThe Payment Information Endpoints (GET) can be called by using either a Client Credentials Access Token or an Authorization Flow Access Token.\r\n\r\n<br/><br/>\r\n\r\n### Supported Endpoints\r\nThe supported endpoints based on the selected flow are the following:\r\n\r\n1. [POST] Payment initiation request\r\n2. [GET] Get payment information\r\n3. [GET] Payment initiation status request\r\n\r\n<br/><br/>\r\n\r\n### Supported Payment Services and Products\r\n\r\nThe supported Payment Products are the following ones for JSON and Pain001.001.003 Formats:\r\n\r\n1. SEPA Credit Transfers\r\n2. Cross Border Credit Transfers\r\n\r\n<br/>\r\n\r\nThe support Payment Services are the following ones:\r\n\r\n1. Payments\r\n2. Bulk Payments (*only for Pain001.001.003 File Payments*)\r\n3. Periodic Payments (*Scheduled Payment / Standing Orders*)\r\n\r\n\r\n\r\n\r\n<br/><br/>\r\n\r\n### Implementation Specifics\r\n\r\n#### Payment Initiation Request\r\n\r\n##### Debtor Account\r\nCurrently, payments using a Card are not supported.\r\n\r\nFor **SEPA** transfers the Debtor's **IBAN** is required.\r\n\r\nFor **CrossBorder** transfers the Debtor's **BBAN** can be used only if the **Creditor Agent** is provided.\r\n\r\n<br/>\r\n\r\n##### Instructed Transfer Amount\r\nCurrently, transfers using a currency other than EUR is not supported.\r\n\r\n<br/>\r\n\r\n##### Scheduled Payments\r\nThe Payment Initiation Request has been extended to support **Scheduled Payments**.\r\n\r\nFor this purpose, the \"**requestedExecutionDateTime**\" DateTime field has been added to the \"**PaymentInitiationRequest**\" type.\r\n\r\n<br/>\r\n\r\n##### Charge Bearers\r\nIn order to provide the User the option to select who will be bear the commissions the \"**PaymentInitiationRequest**\" type has been extended.\r\n\r\nThe \"chargeBearer\" option has been added. Possible values are:\r\n\r\n- Shared : Charges are shared between Debtor and Creditor\r\n- BorneByDebtor : Charges are beared by the Debtor \r\n- BorneByCreditor : Charges are beared by the Creditor\r\n\r\nIn case a charge option is not applicable for the transfer to be initiated, an error message will be returned.\r\n\r\nThe property is not applicable in Bulk / File Payments.\r\n\r\n\r\n<br/>\r\n\r\n#### Charges\r\nCharge Type “**BorneByCreditor**” is allowed only to the following Currencies : \"USD\", \"CAD\", \"ZAR\", \"JPY\", \"AUD\", \"HKD\", \"TRY\"\r\n\r\nChage Type \"**BorneByDebtor**\" is allowed only for the \"EUR\" Currency\r\n\r\nCharge Type \"**BorneByDebtor**\" is not allowed for transfers to the following countries : \"GR\",\"AT\",\"BE\",\"BG\",\"CY\",\"CZ\",\"DE\",\"DK\",\"EE\",\"ES\",\"FI\",\"FR\",\"GB\",\"GF\",\"GI\",\"GP\",\"HU\",\"IE\",\"IS\",\"IT\",\"LI\",\"LT\",\"LU\",\"LV\",\"MC\",\"MQ\",\"MT\",\"NL\",\"NO\",\"RE\",\"RO\",\"PL\",\"PT\",\"SE\",\"SK\",\"SI\"\r\n\r\n\r\n<br/>\r\n\r\n##### Priority Code\r\nPriority Codes are supported by extending the \"**PaymentInitiationRequest**\" type.\r\n\r\nThe \"priorityCode\" property has been added which can be assigned one of the following values:\r\n\r\n1. Normal\r\n2. Urgent\r\n\r\nThe property is not applicable in Bulk / File Payments.\r\n\r\n<br/>\r\n\r\n##### Periodic Payments\r\nThe \"Periodic Payments Initiation Request\" has been modified. More specifically, the \"**endDate**\" property has been removed and the \"**numberOfPayments**\" propery has been added.\r\n\r\nThe Standing Orders End Date will be caluclated by the \"Start Date\" and the provided \"Number of Payments\".\r\n\r\n\r\n<br/><br/>\r\n\r\n#### Payment Initiation Response\r\nThe Payment Initiation Response has been updated in order to provide a more complete and full set of information.\r\n\r\nThe following information is returned:\r\n\r\n- **instructedAmount** : The net amount for the Credit Payment, Scheduled Payment, individual Payment in a Standing Order or the total net amount of all payments in a Bulk Payment Initiation.\r\n \r\n- **transactionFees** : The fees for a Credit Payment, Scheduled Payment, individual Payment in a Standing Order or the total fees of all payments in a Bulk Payment Initiation.\r\n\r\n- **estimatedTotalAmount** : The sum of the \"instructedAmount\" and \"transactionFees\"\r\n\r\n- **chargeBearer** : The bearer of the commissions. Applicable in Credit and Periodic Payments\r\n\r\n- **numberOfPayments** : The number of the payments to take place in a Periodic Payment Initiation\r\n\r\n<br/><br/>\r\n\r\n#### Error Codes\r\nSome returned Error Codes have been modified for simplicity.\r\n\r\nMore specifically, the \"**401**\" and \"**403**\" Status Codes do not return the expected Return Data Type, but an empty response with the appropriate Status Code.\r\n\r\n\r\n ________________________________________\r\n\r\nCreated by [**NBG**](https://www.nbg.gr/).\r\n"
+  version: v1.3.6
+servers:
+  - url: https://apis.nbg.gr/sandbox/bg.openbanking.payments/oauth2/v1
+    description: Sandbox Server
+  - url: https://services.nbg.gr/apis/bg-open-banking-pisp/v1
+    description: Production Server
+paths:
+  /payments/sepa-credit-transfers:
+    post:
+      tags:
+        - 1. SEPA Payment Initiation
+      summary: Initiates a sepa credit transfer
+      operationId: InitiateSepaCreditTransfer
+      parameters:
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          required: true
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      requestBody:
+        description: Payment Initiation Request Json
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentInitiationRequest'
+      responses:
+        '201':
+          description: Payment Initiation Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInformationResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '415':
+          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  '/payments/sepa-credit-transfers/{paymentId}':
+    get:
+      tags:
+        - 1. SEPA Payment Initiation
+      summary: Retrieves a sepa credit transfer
+      operationId: GetSepaCreditTransfer
+      parameters:
+        - name: paymentId
+          in: path
+          description: Payment Id
+          required: true
+          schema:
+            type: string
+            description: Payment Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      responses:
+        '200':
+          description: Payment Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInformationResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  '/payments/sepa-credit-transfers/{paymentId}/status':
+    get:
+      tags:
+        - 1. SEPA Payment Initiation
+      summary: Retrieves a sepa credit transfer status
+      operationId: GetSepaCreditTransferStatus
+      parameters:
+        - name: paymentId
+          in: path
+          description: Payment Id
+          required: true
+          schema:
+            type: string
+            description: Payment Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      responses:
+        '200':
+          description: Payment Status Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  /periodic-payments/sepa-credit-transfers:
+    post:
+      tags:
+        - 2. Periodical SEPA Payment Initiation
+      summary: Initiates a periodical sepa credit transfer
+      operationId: InitiatePeriodicalSepaCreditTransfer
+      parameters:
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          required: true
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      requestBody:
+        description: Periodical Payment Initiation Request Json
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PeriodicalPaymentInitiationRequest'
+      responses:
+        '201':
+          description: Periodical Payment Initiation Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '415':
+          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  '/periodic-payments/sepa-credit-transfers/{paymentId}':
+    get:
+      tags:
+        - 2. Periodical SEPA Payment Initiation
+      summary: Retrieves a periodical sepa credit transfer
+      operationId: GetPeriodicalSepaCreditTransfer
+      parameters:
+        - name: paymentId
+          in: path
+          description: Payment Id
+          required: true
+          schema:
+            type: string
+            description: Payment Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      responses:
+        '200':
+          description: Payment Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  '/periodic-payments/sepa-credit-transfers/{paymentId}/status':
+    get:
+      tags:
+        - 2. Periodical SEPA Payment Initiation
+      summary: Retrieves a periodical sepa credit transfer status
+      operationId: GetPeriodicalSepaCreditTransferStatus
+      parameters:
+        - name: paymentId
+          in: path
+          description: Payment Id
+          required: true
+          schema:
+            type: string
+            description: Payment Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      responses:
+        '200':
+          description: Payment Status Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  /payments/cross-border-credit-transfers:
+    post:
+      tags:
+        - 3. Cross Border Payment Initiation
+      summary: Initiates a cross border credit transfer
+      operationId: InitiateCrossBorderCreditTransfer
+      parameters:
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          required: true
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      requestBody:
+        description: Payment Initiation Request Json
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentInitiationRequest'
+      responses:
+        '201':
+          description: Payment Initiation Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInformationResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '415':
+          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  '/payments/cross-border-credit-transfers/{paymentId}':
+    get:
+      tags:
+        - 3. Cross Border Payment Initiation
+      summary: Retrieves a cross border credit transfer
+      operationId: GetCrossBorderCreditTransfer
+      parameters:
+        - name: paymentId
+          in: path
+          description: Payment Id
+          required: true
+          schema:
+            type: string
+            description: Payment Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      responses:
+        '200':
+          description: Payment Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInformationResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  '/payments/cross-border-credit-transfers/{paymentId}/status':
+    get:
+      tags:
+        - 3. Cross Border Payment Initiation
+      summary: Retrieves a cross border credit transfer status
+      operationId: GetCrossBorderCreditTransferStatus
+      parameters:
+        - name: paymentId
+          in: path
+          description: Payment Id
+          required: true
+          schema:
+            type: string
+            description: Payment Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      responses:
+        '200':
+          description: Payment Status Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  /periodic-payments/cross-border-credit-transfers:
+    post:
+      tags:
+        - 4. Periodical Cross Border Payment Initiation
+      summary: Initiates a periodical cross border credit transfer
+      operationId: InitiatePeriodicalCrossBorderCreditTransfer
+      parameters:
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          required: true
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      requestBody:
+        description: Periodical Payment Initiation Request Json
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PeriodicalPaymentInitiationRequest'
+      responses:
+        '201':
+          description: Periodical Payment Initiation Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '415':
+          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  '/periodic-payments/cross-border-credit-transfers/{paymentId}':
+    get:
+      tags:
+        - 4. Periodical Cross Border Payment Initiation
+      summary: Retrieves a periodical cross border credit transfer
+      operationId: GetPeriodicalCrossBorderCreditTransfer
+      parameters:
+        - name: paymentId
+          in: path
+          description: Payment Id
+          required: true
+          schema:
+            type: string
+            description: Payment Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      responses:
+        '200':
+          description: Payment Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  '/periodic-payments/cross-border-credit-transfers/{paymentId}/status':
+    get:
+      tags:
+        - 4. Periodical Cross Border Payment Initiation
+      summary: Retrieves a periodical cross border credit transfer status
+      operationId: GetPeriodicalCrossBorderCreditTransferStatus
+      parameters:
+        - name: paymentId
+          in: path
+          description: Payment Id
+          required: true
+          schema:
+            type: string
+            description: Payment Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      responses:
+        '200':
+          description: Payment Status Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  /bulk-payments/pain.001-sepa-credit-transfers:
+    post:
+      tags:
+        - 5. Bulk Payment Initiation
+      summary: Initiates bulk pain001 sepa credit transfers
+      operationId: InitiateBulkPainSepaCreditTransfer
+      parameters:
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          required: true
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      requestBody:
+        description: Pain.001.001.03 Payment Initiation Request XML
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Pain00100103'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/Pain00100103'
+      responses:
+        '201':
+          description: Payment Initiation Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkPaymentInformationResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '415':
+          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  '/bulk-payments/pain.001-sepa-credit-transfers/{paymentId}':
+    get:
+      tags:
+        - 5. Bulk Payment Initiation
+      summary: Retrieves bulk pain sepa credit transfer
+      operationId: GetBulkPainSepaCreditTransfers
+      parameters:
+        - name: paymentId
+          in: path
+          description: Payment Id
+          required: true
+          schema:
+            type: string
+            description: Payment Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      responses:
+        '200':
+          description: Payment Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkPaymentInformationResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  '/bulk-payments/pain.001-sepa-credit-transfers/{paymentId}/status':
+    get:
+      tags:
+        - 5. Bulk Payment Initiation
+      summary: Retrieves bulk pain sepa credit transfer status
+      operationId: GetBulkPainSepaCreditTransfersStatus
+      parameters:
+        - name: paymentId
+          in: path
+          description: Payment Id
+          required: true
+          schema:
+            type: string
+            description: Payment Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-payments-sandbox
+      responses:
+        '200':
+          description: Payment Status Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGPIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+  /sandbox:
+    post:
+      tags:
+        - Sandbox Operations
+      summary: Create Sandbox
+      parameters:
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+      requestBody:
+        description: SandboxRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - Sandbox Operations
+      summary: Import Sandbox
+      parameters:
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+      requestBody:
+        description: Sandbox
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sandbox'
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/Sandbox'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/sandbox/{sandboxId}':
+    get:
+      tags:
+        - Sandbox Operations
+      summary: Export Sandbox
+      parameters:
+        - name: sandboxId
+          in: path
+          description: Sandbox Id
+          required: true
+          schema:
+            type: string
+            description: Sandbox Id
+            nullable: true
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Sandbox Operations
+      summary: Delete Sandbox
+      parameters:
+        - name: sandboxId
+          in: path
+          description: Sandbox Id
+          required: true
+          schema:
+            type: string
+            description: Sandbox Id
+            nullable: true
+        - name: Authorization
+          in: header
+          description: An Authorisation Token as per https://tools.ietf.org/html/rfc6750
+          required: true
+          schema:
+            type: string
+            default: 'Bearer '
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    AccountReference:
+      type: object
+      properties:
+        iban:
+          pattern: '[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}'
+          type: string
+          description: IBAN of an account
+          nullable: true
+          example: GR3201106970000069774934603
+        bban:
+          pattern: '[a-zA-Z0-9]{1,30}'
+          type: string
+          description: "Basic Bank Account Number (BBAN) Identifier.\r\nThis data element can be used in the body of the consent request.Message for retrieving account access consent from this account.This data elements is used for payment accounts which have no IBAN. ISO20022: Basic Bank Account Number (BBAN).\r\nIdentifier used nationally by financial institutions, i.e., in individual countries, generally as part of a National Account Numbering Scheme(s), which uniquely identifies the account of a customer."
+          nullable: true
+          example: BARC12345612345678
+        currency:
+          pattern: '[A-Z]{3}'
+          type: string
+          description: ISO 4217 Alpha 3 currency code
+          nullable: true
+          example: EUR
+      additionalProperties: false
+      description: ''
+    Amount:
+      required:
+        - amount
+        - currency
+      type: object
+      properties:
+        currency:
+          pattern: '[A-Z]{3}'
+          type: string
+          description: ISO 4217 Alpha 3 currency code
+          example: EUR
+        amount:
+          pattern: '-?[0-9]{1,14}(\.[0-9]{1,3})?'
+          type: string
+          description: "The amount given with fractional digits, where fractions must be compliant to the currency definition. Up to 14 significant figures.\r\nNegative amounts are signed by minus.\r\nThe decimal separator is a dot."
+      additionalProperties: false
+      description: ''
+    Address:
+      required:
+        - country
+      type: object
+      properties:
+        streetName:
+          maxLength: 70
+          minLength: 1
+          pattern: '^[a-zA-Z0-9\-\.,+ ]*$'
+          type: string
+          description: ''
+          nullable: true
+        buildingNumber:
+          pattern: '^[a-zA-Z0-9\-\.,+ ]*$'
+          type: string
+          description: ''
+          nullable: true
+        townName:
+          pattern: '^[a-zA-Z0-9\-\.,+ ]*$'
+          type: string
+          description: ''
+          nullable: true
+        postCode:
+          pattern: '^[a-zA-Z0-9\-\.,+ ]*$'
+          type: string
+          description: ''
+          nullable: true
+        country:
+          pattern: '[A-Z]{2}'
+          type: string
+          description: ''
+      additionalProperties: false
+    ChargeBearerType:
+      enum:
+        - Shared
+        - BorneByCreditor
+        - BorneByDebtor
+      type: string
+      description: Specifies which party will bear the charges associated with the processing of the payment transaction.
+    PriorityCode:
+      enum:
+        - Normal
+        - Urgent
+      type: string
+      description: Indicator of the urgency or order of importance that the instructing party would like the instructed party to apply to the processing of the instruction.
+    PaymentInitiationRequest:
+      required:
+        - creditorAccount
+        - creditorName
+        - debtorAccount
+        - instructedAmount
+      type: object
+      properties:
+        endToEndIdentification:
+          maxLength: 35
+          minLength: 1
+          pattern: '^[a-zA-Z0-9\-\.,+ ]*$'
+          type: string
+          description: Unique identification assigned by the initiating party to unambiguously identify the transaction
+          nullable: true
+        debtorAccount:
+          $ref: '#/components/schemas/AccountReference'
+        instructedAmount:
+          $ref: '#/components/schemas/Amount'
+        creditorAccount:
+          $ref: '#/components/schemas/AccountReference'
+        creditorName:
+          maxLength: 70
+          minLength: 1
+          pattern: '^[α-ωΑ-Ωa-zA-Z0-9\/\-\?:\(\).,''+ ]*$'
+          type: string
+          description: Creditor name
+        creditorAddress:
+          $ref: '#/components/schemas/Address'
+        creditorAgent:
+          pattern: '[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}'
+          type: string
+          description: BICFI
+          nullable: true
+        creditorAgentName:
+          maxLength: 70
+          minLength: 1
+          pattern: '^[α-ωΑ-Ωa-zA-Z0-9\/\-\?:\(\).,''+ ]*$'
+          type: string
+          description: Creditor agent name
+          nullable: true
+        remittanceInformationUnstructured:
+          maxLength: 140
+          minLength: 1
+          type: string
+          description: Unstructured remittance information
+          nullable: true
+        chargeBearer:
+          $ref: '#/components/schemas/ChargeBearerType'
+        requestedExecutionDate:
+          type: string
+          description: Requested execution date
+          format: date-time
+          nullable: true
+        priorityCode:
+          $ref: '#/components/schemas/PriorityCode'
+      additionalProperties: false
+      description: Body for a payment initation.
+    TransactionStatus:
+      enum:
+        - ACCC
+        - ACCP
+        - ACSC
+        - ACSP
+        - ACTC
+        - ACWC
+        - ACWP
+        - RCVD
+        - PDNG
+        - RJCT
+        - CANC
+        - ACFC
+        - PATC
+        - PART
+      type: string
+      description: "The transaction status is filled with codes of the ISO 20022 data table:\r\n- 'ACCC': 'AcceptedSettlementCompleted' -   Settlement on the creditor's account has been completed.\r\n- 'ACCP': 'AcceptedCustomerProfile' -    Preceding check of technical validation was successful.    Customer profile check was also successful.\r\n- 'ACSC': 'AcceptedSettlementCompleted' -    Settlement on the debtor's account has been completed.      **Usage:** this can be used by the first agent to report to the debtor that the transaction has been completed.       **Warning:** this status is provided for transaction status reasons, not for financial information.    It can only be used after bilateral agreement.\r\n- 'ACSP': 'AcceptedSettlementInProcess' -    All preceding checks such as technical validation and customer profile were successful and therefore the payment initiation has been accepted for execution.\r\n- 'ACTC': 'AcceptedTechnicalValidation' -    Authentication and syntactical and semantical validation are successful.\r\n- 'ACWC': 'AcceptedWithChange' -    Instruction is accepted but a change will be made, such as date or remittance not sent.\r\n- 'ACWP': 'AcceptedWithoutPosting' -    Payment instruction included in the credit transfer is accepted without being posted to the creditor customer's account.\r\n- 'RCVD': 'Received' -    Payment initiation has been received by the receiving agent.\r\n- 'PDNG': 'Pending' -    Payment initiation or individual transaction included in the payment initiation is pending.    Further checks and status update will be performed.\r\n- 'RJCT': 'Rejected' -    Payment initiation or individual transaction included in the payment initiation has been rejected.\r\n- 'CANC': 'Cancelled'   Payment initiation has been cancelled before execution   Remark: This code is accepted as new code by ISO20022.\r\n- 'ACFC': 'AcceptedFundsChecked' -   Preceding check of technical validation and customer profile was successful and an automatic funds check was positive .   Remark: This code is accepted as new code by ISO20022.\r\n- 'PATC': 'PartiallyAcceptedTechnical'   Correct The payment initiation needs multiple authentications, where some but not yet all have been performed. Syntactical and semantical validations are successful.   Remark: This code is accepted as new code by ISO20022.\r\n- 'PART': 'PartiallyAccepted' -   A number of transactions have been accepted, whereas another number of transactions have not yet achieved 'accepted' status.   Remark: This code may be used only in case of bulk payments. It is only used in a situation where all mandated authorisations have been applied, but some payments have been rejected."
+    HrefType:
+      type: object
+      properties:
+        href:
+          type: string
+          description: ''
+          nullable: true
+      additionalProperties: false
+      description: Link to a resource.
+    Links:
+      type: object
+      properties:
+        scaRedirect:
+          $ref: '#/components/schemas/HrefType'
+        self:
+          $ref: '#/components/schemas/HrefType'
+        status:
+          $ref: '#/components/schemas/HrefType'
+      additionalProperties: false
+      description: "A list of hyperlinks to be recognised by the TPP. The actual hyperlinks used in the response depend on the dynamical decisions of the ASPSP when processing the request.<br /><b>Remark:</b> All links can be relative or full links, to be decided by the ASPSP.<br />\r\nType of links admitted in this response, (further links might be added for ASPSP defined extensions):\r\n- 'scaRedirect': In case of an SCA Redirect Approach, the ASPSP is transmitting the link to which to redirect the PSU browser.\r\n- 'self': The link to the payment initiation resource created by this request.This link can be used to retrieve the resource data.\r\n- 'status': The link to retrieve the transaction status of the payment initiation."
+    PaymentInformationResponse:
+      required:
+        - _links
+        - creditorAccount
+        - creditorName
+        - debtorAccount
+        - instructedAmount
+        - paymentId
+        - transactionStatus
+      type: object
+      properties:
+        paymentId:
+          type: string
+          description: Resource identification of the generated payment initiation resource
+        transactionStatus:
+          $ref: '#/components/schemas/TransactionStatus'
+        endToEndIdentification:
+          maxLength: 35
+          minLength: 1
+          pattern: '^[a-zA-Z0-9\-\.,+ ]*$'
+          type: string
+          description: Unique identification assigned by the initiating party to unambiguously identify the transaction
+          nullable: true
+        debtorAccount:
+          $ref: '#/components/schemas/AccountReference'
+        instructedAmount:
+          $ref: '#/components/schemas/Amount'
+        transactionFees:
+          $ref: '#/components/schemas/Amount'
+        estimatedTotalAmount:
+          $ref: '#/components/schemas/Amount'
+        creditorAccount:
+          $ref: '#/components/schemas/AccountReference'
+        creditorName:
+          maxLength: 70
+          minLength: 1
+          pattern: '^[α-ωΑ-Ωa-zA-Z0-9\/\-\?:\(\).,''+ ]*$'
+          type: string
+          description: Creditor name
+        creditorAddress:
+          $ref: '#/components/schemas/Address'
+        creditorAgent:
+          pattern: '[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}'
+          type: string
+          description: BICFI
+          nullable: true
+        creditorAgentName:
+          maxLength: 70
+          minLength: 1
+          pattern: '^[α-ωΑ-Ωa-zA-Z0-9\/\-\?:\(\).,''+ ]*$'
+          type: string
+          description: Creditor agent name
+          nullable: true
+        remittanceInformationUnstructured:
+          maxLength: 140
+          minLength: 1
+          type: string
+          description: Unstructured remittance information
+          nullable: true
+        chargeBearer:
+          $ref: '#/components/schemas/ChargeBearerType'
+        requestedExecutionDate:
+          type: string
+          description: Requested execution date
+          format: date-time
+          nullable: true
+        priorityCode:
+          $ref: '#/components/schemas/PriorityCode'
+        _links:
+          $ref: '#/components/schemas/Links'
+      additionalProperties: false
+      description: Generic JSON response body consistion of the corresponding payment initation JSON body together with an optional transaction status field.
+    TppMessageCategory:
+      enum:
+        - ERROR
+        - WARNING
+      type: string
+      description: Category of the TPP message category.
+    MessageCode400PIS:
+      enum:
+        - FORMAT_ERROR
+        - PARAMETER_NOT_CONSISTENT
+        - PARAMETER_NOT_SUPPORTED
+        - SERVICE_INVALID
+        - RESOURCE_UNKNOWN
+        - RESOURCE_EXPIRED
+        - RESOURCE_BLOCKED
+        - TIMESTAMP_INVALID
+        - PERIOD_INVALID
+        - SCA_METHOD_UNKNOWN
+        - SCA_INVALID
+        - CONSENT_UNKNOWN
+        - PAYMENT_FAILED
+        - EXECUTION_DATE_INVALID
+      type: string
+      description: Message codes defined for PIS for HTTP Error code 400 (BAD_REQUEST).
+    TppMessage400PIS:
+      required:
+        - category
+        - code
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/TppMessageCategory'
+        code:
+          $ref: '#/components/schemas/MessageCode400PIS'
+        path:
+          type: string
+          description: ''
+          nullable: true
+        text:
+          maxLength: 500
+          minLength: 1
+          type: string
+          description: Additional explaining text to the TPP.
+          nullable: true
+      additionalProperties: false
+    Error400NGPIS:
+      type: object
+      properties:
+        tppMessages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TppMessage400PIS'
+          description: ''
+          nullable: true
+      additionalProperties: false
+      description: NextGenPSD2 specific definition of reporting error information in case of a HTTP error code 400.
+    MessageCode404PIS:
+      enum:
+        - RESOURCE_UNKNOWN
+        - PRODUCT_UNKNOWN
+      type: string
+      description: Message codes defined for PIS for HTTP Error code 404 (NOT FOUND).
+    TppMessage404PIS:
+      required:
+        - category
+        - code
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/TppMessageCategory'
+        code:
+          $ref: '#/components/schemas/MessageCode404PIS'
+        path:
+          type: string
+          description: ''
+          nullable: true
+        text:
+          maxLength: 500
+          minLength: 1
+          type: string
+          description: Additional explaining text to the TPP.
+          nullable: true
+      additionalProperties: false
+    Error404NGPIS:
+      type: object
+      properties:
+        tppMessages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TppMessage404PIS'
+          description: ''
+          nullable: true
+      additionalProperties: false
+      description: NextGenPSD2 specific definition of reporting error information in case of a HTTP error code 404.
+    PaymentStatusResponse:
+      required:
+        - transactionStatus
+      type: object
+      properties:
+        transactionStatus:
+          $ref: '#/components/schemas/TransactionStatus'
+      additionalProperties: false
+    FrequencyCode:
+      enum:
+        - Monthly
+        - EveryTwoMonths
+        - Quarterly
+        - SemiAnnual
+        - Annual
+      type: string
+      description: "The following codes from the \\\"EventFrequency7Code\\\" of ISO 20022 are supported:\r\n- \\\"Monthly\\\"\r\n- \\\"EveryTwoMonths\\\"\r\n- \\\"Quarterly\\\"\r\n- \\\"SemiAnnual\\\"\r\n- \\\"Annual\\\""
+    PeriodicalPaymentInitiationRequest:
+      required:
+        - creditorAccount
+        - creditorName
+        - debtorAccount
+        - frequency
+        - instructedAmount
+        - startDate
+      type: object
+      properties:
+        endToEndIdentification:
+          maxLength: 35
+          minLength: 1
+          pattern: '^[a-zA-Z0-9\-\.,+ ]*$'
+          type: string
+          description: Unique identification assigned by the initiating party to unambiguously identify the transaction
+          nullable: true
+        debtorAccount:
+          $ref: '#/components/schemas/AccountReference'
+        instructedAmount:
+          $ref: '#/components/schemas/Amount'
+        creditorAccount:
+          $ref: '#/components/schemas/AccountReference'
+        creditorName:
+          maxLength: 70
+          minLength: 1
+          pattern: '^[α-ωΑ-Ωa-zA-Z0-9\/\-\?:\(\).,''+ ]*$'
+          type: string
+          description: Creditor name
+        creditorAddress:
+          $ref: '#/components/schemas/Address'
+        creditorAgent:
+          pattern: '[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}'
+          type: string
+          description: BICFI
+          nullable: true
+        creditorAgentName:
+          maxLength: 70
+          minLength: 1
+          pattern: '^[α-ωΑ-Ωa-zA-Z0-9\/\-\?:\(\).,''+ ]*$'
+          type: string
+          description: Creditor agent name
+          nullable: true
+        remittanceInformationUnstructured:
+          maxLength: 140
+          minLength: 1
+          type: string
+          description: Unstructured remittance information
+          nullable: true
+        chargeBearer:
+          $ref: '#/components/schemas/ChargeBearerType'
+        startDate:
+          type: string
+          description: The first applicable day of execution starting from this date is the first payment.
+          format: date-time
+        numberOfPayments:
+          type: integer
+          description: "The total number of payments.\r\nIf not provided, the maximum allowed number will be assigned"
+          format: int32
+          nullable: true
+        frequency:
+          $ref: '#/components/schemas/FrequencyCode'
+      additionalProperties: false
+      description: Body for a periodical payment initation.
+    PeriodicalPaymentInformationResponse:
+      required:
+        - _links
+        - creditorAccount
+        - creditorName
+        - debtorAccount
+        - frequency
+        - instructedAmount
+        - paymentId
+        - startDate
+        - transactionStatus
+      type: object
+      properties:
+        paymentId:
+          type: string
+          description: Resource identification of the generated payment initiation resource
+        transactionStatus:
+          $ref: '#/components/schemas/TransactionStatus'
+        endToEndIdentification:
+          maxLength: 35
+          minLength: 1
+          pattern: '^[a-zA-Z0-9\-\.,+ ]*$'
+          type: string
+          description: Unique identification assigned by the initiating party to unambiguously identify the transaction
+          nullable: true
+        debtorAccount:
+          $ref: '#/components/schemas/AccountReference'
+        instructedAmount:
+          $ref: '#/components/schemas/Amount'
+        transactionFees:
+          $ref: '#/components/schemas/Amount'
+        estimatedTotalAmount:
+          $ref: '#/components/schemas/Amount'
+        creditorAccount:
+          $ref: '#/components/schemas/AccountReference'
+        creditorName:
+          maxLength: 70
+          minLength: 1
+          pattern: '^[α-ωΑ-Ωa-zA-Z0-9\/\-\?:\(\).,''+ ]*$'
+          type: string
+          description: Creditor name
+        creditorAddress:
+          $ref: '#/components/schemas/Address'
+        creditorAgent:
+          pattern: '[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}'
+          type: string
+          description: BICFI
+          nullable: true
+        creditorAgentName:
+          maxLength: 70
+          minLength: 1
+          pattern: '^[α-ωΑ-Ωa-zA-Z0-9\/\-\?:\(\).,''+ ]*$'
+          type: string
+          description: Creditor agent name
+          nullable: true
+        remittanceInformationUnstructured:
+          maxLength: 140
+          minLength: 1
+          type: string
+          description: Unstructured remittance information
+          nullable: true
+        chargeBearer:
+          $ref: '#/components/schemas/ChargeBearerType'
+        startDate:
+          type: string
+          description: The first applicable day of execution starting from this date is the first payment.
+          format: date-time
+        numberOfPayments:
+          type: integer
+          description: "The total number of payments.\r\nIf not provided, the maximum allowed number will be assigned"
+          format: int32
+          nullable: true
+        frequency:
+          $ref: '#/components/schemas/FrequencyCode'
+        _links:
+          $ref: '#/components/schemas/Links'
+      additionalProperties: false
+      description: Generic JSON response body consistion of the corresponding periodic payment initation JSON body together with an optional transaction status field.
+    Authorisation1Choice:
+      type: object
+      properties:
+        Item:
+          nullable: true
+      additionalProperties: false
+    AddressType2Code:
+      enum:
+        - ADDR
+        - PBOX
+        - HOME
+        - BIZZ
+        - MLTO
+        - DLVY
+      type: string
+    PostalAddress6:
+      type: object
+      properties:
+        AdrTp:
+          $ref: '#/components/schemas/AddressType2Code'
+        AdrTpSpecified:
+          type: boolean
+        Dept:
+          type: string
+          nullable: true
+        SubDept:
+          type: string
+          nullable: true
+        StrtNm:
+          type: string
+          nullable: true
+        BldgNb:
+          type: string
+          nullable: true
+        PstCd:
+          type: string
+          nullable: true
+        TwnNm:
+          type: string
+          nullable: true
+        CtrySubDvsn:
+          type: string
+          nullable: true
+        Ctry:
+          type: string
+          nullable: true
+        AdrLine:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    Party6Choice:
+      type: object
+      properties:
+        Item:
+          nullable: true
+      additionalProperties: false
+    NamePrefix1Code:
+      enum:
+        - DOCT
+        - MIST
+        - MISS
+        - MADM
+      type: string
+    ContactDetails2:
+      type: object
+      properties:
+        NmPrfx:
+          $ref: '#/components/schemas/NamePrefix1Code'
+        NmPrfxSpecified:
+          type: boolean
+        Nm:
+          type: string
+          nullable: true
+        PhneNb:
+          type: string
+          nullable: true
+        MobNb:
+          type: string
+          nullable: true
+        FaxNb:
+          type: string
+          nullable: true
+        EmailAdr:
+          type: string
+          nullable: true
+        Othr:
+          type: string
+          nullable: true
+      additionalProperties: false
+    PartyIdentification32:
+      type: object
+      properties:
+        Nm:
+          type: string
+          nullable: true
+        PstlAdr:
+          $ref: '#/components/schemas/PostalAddress6'
+        Id:
+          $ref: '#/components/schemas/Party6Choice'
+        CtryOfRes:
+          type: string
+          nullable: true
+        CtctDtls:
+          $ref: '#/components/schemas/ContactDetails2'
+      additionalProperties: false
+    ItemChoiceType2:
+      enum:
+        - Cd
+        - Prtry
+      type: string
+    ClearingSystemIdentification2Choice:
+      type: object
+      properties:
+        Item:
+          type: string
+          nullable: true
+        ItemElementName:
+          $ref: '#/components/schemas/ItemChoiceType2'
+      additionalProperties: false
+    ClearingSystemMemberIdentification2:
+      type: object
+      properties:
+        ClrSysId:
+          $ref: '#/components/schemas/ClearingSystemIdentification2Choice'
+        MmbId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ItemChoiceType3:
+      enum:
+        - Cd
+        - Prtry
+      type: string
+    FinancialIdentificationSchemeName1Choice:
+      type: object
+      properties:
+        Item:
+          type: string
+          nullable: true
+        ItemElementName:
+          $ref: '#/components/schemas/ItemChoiceType3'
+      additionalProperties: false
+    GenericFinancialIdentification1:
+      type: object
+      properties:
+        Id:
+          type: string
+          nullable: true
+        SchmeNm:
+          $ref: '#/components/schemas/FinancialIdentificationSchemeName1Choice'
+        Issr:
+          type: string
+          nullable: true
+      additionalProperties: false
+    FinancialInstitutionIdentification7:
+      type: object
+      properties:
+        BIC:
+          type: string
+          nullable: true
+        ClrSysMmbId:
+          $ref: '#/components/schemas/ClearingSystemMemberIdentification2'
+        Nm:
+          type: string
+          nullable: true
+        PstlAdr:
+          $ref: '#/components/schemas/PostalAddress6'
+        Othr:
+          $ref: '#/components/schemas/GenericFinancialIdentification1'
+      additionalProperties: false
+    BranchData2:
+      type: object
+      properties:
+        Id:
+          type: string
+          nullable: true
+        Nm:
+          type: string
+          nullable: true
+        PstlAdr:
+          $ref: '#/components/schemas/PostalAddress6'
+      additionalProperties: false
+    BranchAndFinancialInstitutionIdentification4:
+      type: object
+      properties:
+        FinInstnId:
+          $ref: '#/components/schemas/FinancialInstitutionIdentification7'
+        BrnchId:
+          $ref: '#/components/schemas/BranchData2'
+      additionalProperties: false
+    GroupHeader32:
+      type: object
+      properties:
+        MsgId:
+          type: string
+          nullable: true
+        CreDtTm:
+          type: string
+          format: date-time
+        Authstn:
+          type: array
+          items:
+            $ref: '#/components/schemas/Authorisation1Choice'
+          nullable: true
+        NbOfTxs:
+          type: string
+          nullable: true
+        CtrlSum:
+          type: number
+          format: double
+        InitgPty:
+          $ref: '#/components/schemas/PartyIdentification32'
+        FwdgAgt:
+          $ref: '#/components/schemas/BranchAndFinancialInstitutionIdentification4'
+      additionalProperties: false
+    PaymentMethod3Code:
+      enum:
+        - CHK
+        - TRF
+        - TRA
+      type: string
+    Priority2Code:
+      enum:
+        - HIGH
+        - NORM
+      type: string
+    ItemChoiceType4:
+      enum:
+        - Cd
+        - Prtry
+      type: string
+    ServiceLevel8Choice:
+      type: object
+      properties:
+        Item:
+          type: string
+          nullable: true
+        ItemElementName:
+          $ref: '#/components/schemas/ItemChoiceType4'
+      additionalProperties: false
+    ItemChoiceType5:
+      enum:
+        - Cd
+        - Prtry
+      type: string
+    LocalInstrument2Choice:
+      type: object
+      properties:
+        Item:
+          type: string
+          nullable: true
+        ItemElementName:
+          $ref: '#/components/schemas/ItemChoiceType5'
+      additionalProperties: false
+    ItemChoiceType6:
+      enum:
+        - Cd
+        - Prtry
+      type: string
+    CategoryPurpose1Choice:
+      type: object
+      properties:
+        Item:
+          type: string
+          nullable: true
+        ItemElementName:
+          $ref: '#/components/schemas/ItemChoiceType6'
+      additionalProperties: false
+    PaymentTypeInformation19:
+      type: object
+      properties:
+        InstrPrty:
+          $ref: '#/components/schemas/Priority2Code'
+        InstrPrtySpecified:
+          type: boolean
+        SvcLvl:
+          $ref: '#/components/schemas/ServiceLevel8Choice'
+        LclInstrm:
+          $ref: '#/components/schemas/LocalInstrument2Choice'
+        CtgyPurp:
+          $ref: '#/components/schemas/CategoryPurpose1Choice'
+      additionalProperties: false
+    AccountIdentification4Choice:
+      type: object
+      properties:
+        Item:
+          nullable: true
+      additionalProperties: false
+    CashAccountType2:
+      type: object
+      properties:
+        Item:
+          nullable: true
+      additionalProperties: false
+    CashAccount16:
+      type: object
+      properties:
+        Id:
+          $ref: '#/components/schemas/AccountIdentification4Choice'
+        Tp:
+          $ref: '#/components/schemas/CashAccountType2'
+        Ccy:
+          type: string
+          nullable: true
+        Nm:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ChargeBearerType1Code:
+      enum:
+        - DEBT
+        - CRED
+        - SHAR
+        - SLEV
+      type: string
+    PaymentIdentification1:
+      type: object
+      properties:
+        InstrId:
+          type: string
+          nullable: true
+        EndToEndId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    AmountType3Choice:
+      type: object
+      properties:
+        Item:
+          nullable: true
+      additionalProperties: false
+    ExchangeRateType1Code:
+      enum:
+        - SPOT
+        - SALE
+        - AGRD
+      type: string
+    ExchangeRateInformation1:
+      type: object
+      properties:
+        XchgRate:
+          type: number
+          format: double
+        XchgRateSpecified:
+          type: boolean
+        RateTp:
+          $ref: '#/components/schemas/ExchangeRateType1Code'
+        RateTpSpecified:
+          type: boolean
+        CtrctId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ChequeType2Code:
+      enum:
+        - CCHQ
+        - CCCH
+        - BCHQ
+        - DRFT
+        - ELDR
+      type: string
+    NameAndAddress10:
+      type: object
+      properties:
+        Nm:
+          type: string
+          nullable: true
+        Adr:
+          $ref: '#/components/schemas/PostalAddress6'
+      additionalProperties: false
+    ChequeDeliveryMethod1Choice:
+      type: object
+      properties:
+        Item:
+          nullable: true
+      additionalProperties: false
+    Cheque6:
+      type: object
+      properties:
+        ChqTp:
+          $ref: '#/components/schemas/ChequeType2Code'
+        ChqTpSpecified:
+          type: boolean
+        ChqNb:
+          type: string
+          nullable: true
+        ChqFr:
+          $ref: '#/components/schemas/NameAndAddress10'
+        DlvryMtd:
+          $ref: '#/components/schemas/ChequeDeliveryMethod1Choice'
+        DlvrTo:
+          $ref: '#/components/schemas/NameAndAddress10'
+        InstrPrty:
+          $ref: '#/components/schemas/Priority2Code'
+        InstrPrtySpecified:
+          type: boolean
+        ChqMtrtyDt:
+          type: string
+          format: date-time
+        ChqMtrtyDtSpecified:
+          type: boolean
+        FrmsCd:
+          type: string
+          nullable: true
+        MemoFld:
+          type: array
+          items:
+            type: string
+          nullable: true
+        RgnlClrZone:
+          type: string
+          nullable: true
+        PrtLctn:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Instruction3Code:
+      enum:
+        - CHQB
+        - HOLD
+        - PHOB
+        - TELB
+      type: string
+    InstructionForCreditorAgent1:
+      type: object
+      properties:
+        Cd:
+          $ref: '#/components/schemas/Instruction3Code'
+        CdSpecified:
+          type: boolean
+        InstrInf:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ItemChoiceType8:
+      enum:
+        - Cd
+        - Prtry
+      type: string
+    Purpose2Choice:
+      type: object
+      properties:
+        Item:
+          type: string
+          nullable: true
+        ItemElementName:
+          $ref: '#/components/schemas/ItemChoiceType8'
+      additionalProperties: false
+    RegulatoryReportingType1Code:
+      enum:
+        - CRED
+        - DEBT
+        - BOTH
+      type: string
+    RegulatoryAuthority2:
+      type: object
+      properties:
+        Nm:
+          type: string
+          nullable: true
+        Ctry:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ActiveOrHistoricCurrencyAndAmount:
+      type: object
+      properties:
+        Ccy:
+          type: string
+          nullable: true
+        Value:
+          type: number
+          format: double
+      additionalProperties: false
+    StructuredRegulatoryReporting3:
+      type: object
+      properties:
+        Tp:
+          type: string
+          nullable: true
+        Dt:
+          type: string
+          format: date-time
+        DtSpecified:
+          type: boolean
+        Ctry:
+          type: string
+          nullable: true
+        Cd:
+          type: string
+          nullable: true
+        Amt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+        Inf:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    RegulatoryReporting3:
+      type: object
+      properties:
+        DbtCdtRptgInd:
+          $ref: '#/components/schemas/RegulatoryReportingType1Code'
+        DbtCdtRptgIndSpecified:
+          type: boolean
+        Authrty:
+          $ref: '#/components/schemas/RegulatoryAuthority2'
+        Dtls:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructuredRegulatoryReporting3'
+          nullable: true
+      additionalProperties: false
+    TaxParty1:
+      type: object
+      properties:
+        TaxId:
+          type: string
+          nullable: true
+        RegnId:
+          type: string
+          nullable: true
+        TaxTp:
+          type: string
+          nullable: true
+      additionalProperties: false
+    TaxAuthorisation1:
+      type: object
+      properties:
+        Titl:
+          type: string
+          nullable: true
+        Nm:
+          type: string
+          nullable: true
+      additionalProperties: false
+    TaxParty2:
+      type: object
+      properties:
+        TaxId:
+          type: string
+          nullable: true
+        RegnId:
+          type: string
+          nullable: true
+        TaxTp:
+          type: string
+          nullable: true
+        Authstn:
+          $ref: '#/components/schemas/TaxAuthorisation1'
+      additionalProperties: false
+    TaxRecordPeriod1Code:
+      enum:
+        - MM01
+        - MM02
+        - MM03
+        - MM04
+        - MM05
+        - MM06
+        - MM07
+        - MM08
+        - MM09
+        - MM10
+        - MM11
+        - MM12
+        - QTR1
+        - QTR2
+        - QTR3
+        - QTR4
+        - HLF1
+        - HLF2
+      type: string
+    DatePeriodDetails:
+      type: object
+      properties:
+        FrDt:
+          type: string
+          format: date-time
+        ToDt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    TaxPeriod1:
+      type: object
+      properties:
+        Yr:
+          type: string
+          format: date-time
+        YrSpecified:
+          type: boolean
+        Tp:
+          $ref: '#/components/schemas/TaxRecordPeriod1Code'
+        TpSpecified:
+          type: boolean
+        FrToDt:
+          $ref: '#/components/schemas/DatePeriodDetails'
+      additionalProperties: false
+    TaxRecordDetails1:
+      type: object
+      properties:
+        Prd:
+          $ref: '#/components/schemas/TaxPeriod1'
+        Amt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+      additionalProperties: false
+    TaxAmount1:
+      type: object
+      properties:
+        Rate:
+          type: number
+          format: double
+        RateSpecified:
+          type: boolean
+        TaxblBaseAmt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+        TtlAmt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+        Dtls:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxRecordDetails1'
+          nullable: true
+      additionalProperties: false
+    TaxRecord1:
+      type: object
+      properties:
+        Tp:
+          type: string
+          nullable: true
+        Ctgy:
+          type: string
+          nullable: true
+        CtgyDtls:
+          type: string
+          nullable: true
+        DbtrSts:
+          type: string
+          nullable: true
+        CertId:
+          type: string
+          nullable: true
+        FrmsCd:
+          type: string
+          nullable: true
+        Prd:
+          $ref: '#/components/schemas/TaxPeriod1'
+        TaxAmt:
+          $ref: '#/components/schemas/TaxAmount1'
+        AddtlInf:
+          type: string
+          nullable: true
+      additionalProperties: false
+    TaxInformation3:
+      type: object
+      properties:
+        Cdtr:
+          $ref: '#/components/schemas/TaxParty1'
+        Dbtr:
+          $ref: '#/components/schemas/TaxParty2'
+        AdmstnZn:
+          type: string
+          nullable: true
+        RefNb:
+          type: string
+          nullable: true
+        Mtd:
+          type: string
+          nullable: true
+        TtlTaxblBaseAmt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+        TtlTaxAmt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+        Dt:
+          type: string
+          format: date-time
+        DtSpecified:
+          type: boolean
+        SeqNb:
+          type: number
+          format: double
+        SeqNbSpecified:
+          type: boolean
+        Rcrd:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxRecord1'
+          nullable: true
+      additionalProperties: false
+    RemittanceLocationMethod2Code:
+      enum:
+        - FAXI
+        - EDIC
+        - URID
+        - EMAL
+        - POST
+        - SMSM
+      type: string
+    RemittanceLocation2:
+      type: object
+      properties:
+        RmtId:
+          type: string
+          nullable: true
+        RmtLctnMtd:
+          $ref: '#/components/schemas/RemittanceLocationMethod2Code'
+        RmtLctnMtdSpecified:
+          type: boolean
+        RmtLctnElctrncAdr:
+          type: string
+          nullable: true
+        RmtLctnPstlAdr:
+          $ref: '#/components/schemas/NameAndAddress10'
+      additionalProperties: false
+    ReferredDocumentType1Choice:
+      type: object
+      properties:
+        Item:
+          nullable: true
+      additionalProperties: false
+    ReferredDocumentType2:
+      type: object
+      properties:
+        CdOrPrtry:
+          $ref: '#/components/schemas/ReferredDocumentType1Choice'
+        Issr:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ReferredDocumentInformation3:
+      type: object
+      properties:
+        Tp:
+          $ref: '#/components/schemas/ReferredDocumentType2'
+        Nb:
+          type: string
+          nullable: true
+        RltdDt:
+          type: string
+          format: date-time
+        RltdDtSpecified:
+          type: boolean
+      additionalProperties: false
+    CreditDebitCode:
+      enum:
+        - CRDT
+        - DBIT
+      type: string
+    DocumentAdjustment1:
+      type: object
+      properties:
+        Amt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+        CdtDbtInd:
+          $ref: '#/components/schemas/CreditDebitCode'
+        CdtDbtIndSpecified:
+          type: boolean
+        Rsn:
+          type: string
+          nullable: true
+        AddtlInf:
+          type: string
+          nullable: true
+      additionalProperties: false
+    RemittanceAmount1:
+      type: object
+      properties:
+        DuePyblAmt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+        DscntApldAmt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+        CdtNoteAmt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+        TaxAmt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+        AdjstmntAmtAndRsn:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentAdjustment1'
+          nullable: true
+        RmtdAmt:
+          $ref: '#/components/schemas/ActiveOrHistoricCurrencyAndAmount'
+      additionalProperties: false
+    CreditorReferenceType1Choice:
+      type: object
+      properties:
+        Item:
+          nullable: true
+      additionalProperties: false
+    CreditorReferenceType2:
+      type: object
+      properties:
+        CdOrPrtry:
+          $ref: '#/components/schemas/CreditorReferenceType1Choice'
+        Issr:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CreditorReferenceInformation2:
+      type: object
+      properties:
+        Tp:
+          $ref: '#/components/schemas/CreditorReferenceType2'
+        Ref:
+          type: string
+          nullable: true
+      additionalProperties: false
+    StructuredRemittanceInformation7:
+      type: object
+      properties:
+        RfrdDocInf:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferredDocumentInformation3'
+          nullable: true
+        RfrdDocAmt:
+          $ref: '#/components/schemas/RemittanceAmount1'
+        CdtrRefInf:
+          $ref: '#/components/schemas/CreditorReferenceInformation2'
+        Invcr:
+          $ref: '#/components/schemas/PartyIdentification32'
+        Invcee:
+          $ref: '#/components/schemas/PartyIdentification32'
+        AddtlRmtInf:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    RemittanceInformation5:
+      type: object
+      properties:
+        Ustrd:
+          type: array
+          items:
+            type: string
+          nullable: true
+        Strd:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructuredRemittanceInformation7'
+          nullable: true
+      additionalProperties: false
+    CreditTransferTransactionInformation10:
+      type: object
+      properties:
+        PmtId:
+          $ref: '#/components/schemas/PaymentIdentification1'
+        PmtTpInf:
+          $ref: '#/components/schemas/PaymentTypeInformation19'
+        Amt:
+          $ref: '#/components/schemas/AmountType3Choice'
+        XchgRateInf:
+          $ref: '#/components/schemas/ExchangeRateInformation1'
+        ChrgBr:
+          $ref: '#/components/schemas/ChargeBearerType1Code'
+        ChqInstr:
+          $ref: '#/components/schemas/Cheque6'
+        UltmtDbtr:
+          $ref: '#/components/schemas/PartyIdentification32'
+        IntrmyAgt1:
+          $ref: '#/components/schemas/BranchAndFinancialInstitutionIdentification4'
+        IntrmyAgt1Acct:
+          $ref: '#/components/schemas/CashAccount16'
+        IntrmyAgt2:
+          $ref: '#/components/schemas/BranchAndFinancialInstitutionIdentification4'
+        IntrmyAgt2Acct:
+          $ref: '#/components/schemas/CashAccount16'
+        IntrmyAgt3:
+          $ref: '#/components/schemas/BranchAndFinancialInstitutionIdentification4'
+        IntrmyAgt3Acct:
+          $ref: '#/components/schemas/CashAccount16'
+        CdtrAgt:
+          $ref: '#/components/schemas/BranchAndFinancialInstitutionIdentification4'
+        CdtrAgtAcct:
+          $ref: '#/components/schemas/CashAccount16'
+        Cdtr:
+          $ref: '#/components/schemas/PartyIdentification32'
+        CdtrAcct:
+          $ref: '#/components/schemas/CashAccount16'
+        UltmtCdtr:
+          $ref: '#/components/schemas/PartyIdentification32'
+        InstrForCdtrAgt:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstructionForCreditorAgent1'
+          nullable: true
+        InstrForDbtrAgt:
+          type: string
+          nullable: true
+        Purp:
+          $ref: '#/components/schemas/Purpose2Choice'
+        RgltryRptg:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegulatoryReporting3'
+          nullable: true
+        Tax:
+          $ref: '#/components/schemas/TaxInformation3'
+        RltdRmtInf:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemittanceLocation2'
+          nullable: true
+        RmtInf:
+          $ref: '#/components/schemas/RemittanceInformation5'
+      additionalProperties: false
+    PaymentInstructionInformation3:
+      type: object
+      properties:
+        PmtInfId:
+          type: string
+          nullable: true
+        PmtMtd:
+          $ref: '#/components/schemas/PaymentMethod3Code'
+        BtchBookg:
+          type: boolean
+        BtchBookgSpecified:
+          type: boolean
+        NbOfTxs:
+          type: string
+          nullable: true
+        CtrlSum:
+          type: number
+          format: double
+        PmtTpInf:
+          $ref: '#/components/schemas/PaymentTypeInformation19'
+        ReqdExctnDt:
+          type: string
+          format: date-time
+        PoolgAdjstmntDt:
+          type: string
+          format: date-time
+        PoolgAdjstmntDtSpecified:
+          type: boolean
+        Dbtr:
+          $ref: '#/components/schemas/PartyIdentification32'
+        DbtrAcct:
+          $ref: '#/components/schemas/CashAccount16'
+        DbtrAgt:
+          $ref: '#/components/schemas/BranchAndFinancialInstitutionIdentification4'
+        DbtrAgtAcct:
+          $ref: '#/components/schemas/CashAccount16'
+        UltmtDbtr:
+          $ref: '#/components/schemas/PartyIdentification32'
+        ChrgBr:
+          $ref: '#/components/schemas/ChargeBearerType1Code'
+        ChrgBrSpecified:
+          type: boolean
+        ChrgsAcct:
+          $ref: '#/components/schemas/CashAccount16'
+        ChrgsAcctAgt:
+          $ref: '#/components/schemas/BranchAndFinancialInstitutionIdentification4'
+        CdtTrfTxInf:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditTransferTransactionInformation10'
+          nullable: true
+      additionalProperties: false
+    CustomerCreditTransferInitiationV03:
+      type: object
+      properties:
+        GrpHdr:
+          $ref: '#/components/schemas/GroupHeader32'
+        PmtInf:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentInstructionInformation3'
+          nullable: true
+      additionalProperties: false
+    Pain00100103:
+      type: object
+      properties:
+        CstmrCdtTrfInitn:
+          $ref: '#/components/schemas/CustomerCreditTransferInitiationV03'
+        NumberOfTransactions:
+          type: integer
+          format: int32
+          readOnly: true
+        TotalAmount:
+          type: number
+          format: double
+          readOnly: true
+        RequestedExecutionDateTime:
+          type: string
+          format: date-time
+          readOnly: true
+        Currency:
+          type: string
+          nullable: true
+          readOnly: true
+        DebtorAccount:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+    BulkPaymentElement:
+      required:
+        - creditorAccount
+        - creditorName
+        - instructedAmount
+      type: object
+      properties:
+        instructedAmount:
+          $ref: '#/components/schemas/Amount'
+        transactionFees:
+          $ref: '#/components/schemas/Amount'
+        creditorAccount:
+          $ref: '#/components/schemas/AccountReference'
+        creditorName:
+          maxLength: 70
+          minLength: 1
+          pattern: '^[α-ωΑ-Ωa-zA-Z0-9\/\-\?:\(\).,''+ ]*$'
+          type: string
+          description: Creditor name
+        creditorAgent:
+          pattern: '[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}'
+          type: string
+          description: BICFI
+          nullable: true
+        remittanceInformationUnstructured:
+          maxLength: 140
+          minLength: 1
+          type: string
+          description: Unstructured remittance information
+          nullable: true
+      additionalProperties: false
+      description: Generic body for a bulk payment initation entry.
+    BulkPaymentInformationResponse:
+      required:
+        - _links
+        - debtorAccount
+        - instructedAmount
+        - paymentId
+        - payments
+        - transactionStatus
+      type: object
+      properties:
+        paymentId:
+          type: string
+          description: Resource identification of the generated payment initiation resource
+        transactionStatus:
+          $ref: '#/components/schemas/TransactionStatus'
+        debtorAccount:
+          $ref: '#/components/schemas/AccountReference'
+        instructedAmount:
+          $ref: '#/components/schemas/Amount'
+        transactionFees:
+          $ref: '#/components/schemas/Amount'
+        estimatedTotalAmount:
+          $ref: '#/components/schemas/Amount'
+        requestedExecutionDate:
+          type: string
+          description: Requested execution date
+          format: date-time
+          nullable: true
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkPaymentElement'
+          description: A list of generic JSON bodies payment initations for bulk payments via JSON.
+        _links:
+          $ref: '#/components/schemas/Links'
+      additionalProperties: false
+      description: Generic JSON response body consistion of the corresponding bulk payment initation JSON body together with an optional transaction status field.
+    SandboxRequest:
+      required:
+        - sandboxId
+      type: object
+      properties:
+        sandboxId:
+          pattern: '^[a-zA-Z0-9_-]+$'
+          type: string
+          description: Sandbox id
+      additionalProperties: false
+      description: Sandbox request
+    SandboxPayment:
+      type: object
+      properties:
+        paymentId:
+          type: string
+          description: Payment id
+          nullable: true
+        isCanceled:
+          type: boolean
+          description: Is canceled payment
+      additionalProperties: false
+      description: Represents a payment
+    SandboxBankAccount:
+      required:
+        - balance
+        - currency
+        - iban
+      type: object
+      properties:
+        description:
+          type: string
+          description: Iban name / description
+          nullable: true
+        currency:
+          type: string
+          description: 'Currency ( EUR, USD,...)'
+        iban:
+          type: string
+          description: Iban
+        balance:
+          type: number
+          description: Available balance
+          format: double
+      additionalProperties: false
+      description: Sandbox bank account
+    SandboxUser:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: User Id
+          nullable: true
+        smsOtpMobileNumber:
+          type: string
+          description: Phone mobile number used for SMS OTPs
+          nullable: true
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/SandboxPayment'
+          description: List of payment ids
+          nullable: true
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SandboxBankAccount'
+          description: List of accounts
+          nullable: true
+      additionalProperties: false
+      description: Sandbox user
+    Sandbox:
+      required:
+        - sandboxId
+      type: object
+      properties:
+        sandboxId:
+          pattern: '^[a-zA-Z0-9_-]+$'
+          type: string
+          description: Sandbox id
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/SandboxUser'
+          description: List of users
+          nullable: true
+      additionalProperties: false
+      description: Sandbox model
+    ErrorResponse:
+      type: object
+      properties:
+        errorMessage:
+          type: string
+          nullable: true
+      additionalProperties: false
+  securitySchemes:
+    Client-Id:
+      type: apiKey
+      description: Application's Id
+      name: Client-Id
+      in: header
+security:
+  - Client-Id: [ ]
