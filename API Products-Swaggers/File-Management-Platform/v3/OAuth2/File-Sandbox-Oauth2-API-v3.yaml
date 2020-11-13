@@ -1,0 +1,2121 @@
+openapi: 3.0.0
+info:
+  title: File Sandbox API
+  description: "Start integrating your application with our Bank and give your clients\
+    \ the options upload and download files without any restriction, neither size\
+    \ nor file type.\n\n## How to upload\nThere are only 2 steps in order to upload\
+    \ a file.\n\n1. Initiate an upload request in order to be informed of the size\
+    \ and the number of the chunks that the initial file should be seperated. You\
+    \ can use our own console application which takes over the seperation/upload process\
+    \ and the download process as well. Initiation could be invoke by typing **PUT\
+    \ /files/upload-initiation**\n2. Upload the chunks one by one in a chronologically\
+    \ and incremental way as they seperated. Upload can be invoked by typing **POST\
+    \ /files/{fileId}/upload**. The File identifier is retrieved from the previous\
+    \ step. Let's say there are 3 chunks, the first two chunks return an HTTP Status\
+    \ Code 308 Range and the final one returns HTTP Status Code 200 OK which indicates\
+    \ that the operation ended successfully.\n\nBetween and after the above steps\
+    \ you can be informed about the status of the operation by invoking **GET /files/{fileId}**.\n\
+    \n## How to download\nA file can be downloaded by providing the file identifier\
+    \ and the chunk number one by one. Let's say a file is seperated in 3 chunks,\
+    \ the download action **GET /files/{fileId}/{chunkPart}** should be invoked 3\
+    \ times by specifying the same fileId and chunk parts one by one (first 1 then\
+    \ 2 and lastly 3). The total chunks of an file can be retrieved from GET /files/{fileId}\
+    \ action.\n\n## File API Command Line Interface (CLI)\n\nAs stated above, you\
+    \ can use this API from your console application by utilizing the FileAPI_CLI\
+    \ tool. FileAPI_CLI tool is a complete command-line interface that enables you\
+    \ to configure or execute commands from your command-line environment.  \nBy utilizing\
+    \ the File API CLI you enable a machine-to-machine connection and communication.\
+    \ You can integrate the CLI to your systems and use the File API through your\
+    \ software and applications.\n\n### Running the CLI\nThe application leverages\
+    \ the .Net Core Runtime library to be able to conform to the multiplatform requirements.\
+    \ In order to run the application the current .Net Core Runtime for your environment\
+    \ must be downloaded and installed (https://dotnet.microsoft.com/download).\n\n\
+    The application is run through CMD by navigating to the location of the exported\
+    \  \"FIleAPI_CLI.dll\" file (in most cases the bin file of the project will contain\
+    \ said .dll)  and using the command 'dotnet' followed by the .dll of the app and\
+    \ the accompanying  parameters as described further below in these instructions\
+    \ (Examples Section). (the location needs to include the configuration files \"\
+    appSettings.json\" )\n\n### Configuration\nThe FileAPI_CLI tool enables you to\
+    \ configure a .json file necessary for setting up authorization or proxy for application\
+    \ endpoints or the parameter values used in each command. \n1. **appSettings.json**\
+    \ Within the \"appSettings.json\" file, the information about authorization and\
+    \ proxy application endpoints are configured.\n     \n     \"Password\" grant\
+    \ type is used for the **authorization**.\n     You will need to **contact us**\
+    \ to provide you access for the \"Password\" grant type authorization.\n     By\
+    \ providing the client_id and client_secret of the APP that you created and subscribed\
+    \ to the FILE MANAGEMENT PLATFORM, and your own credentials (username, password)\
+    \ that you use to sign in the NBG Technology HUB, the CLI will authorize you and\
+    \ perform the required operation.\n     \n     \"client_id\": \"client_id_guid\"\
+    \ \n     \"client_secret\": \"client_secret_guid\" \n     \"AppUserName\": \"your_portal_username\"\
+    \ \n     \"password\": \"your_portal_password\"\n     \n     For users using Developer\
+    \ Portal credentials:\n     arc_provider=1\n     \n     For users using iBank\
+    \ credentials:\n     arc_provider=5\n     \n     It is suggested to use arc_provider=1\
+    \ for sandbox calls and arc_provider=5 for production calls.\n     \n     For\
+    \ sandbox calls your sandbox_id also needs to be provided here.\"ethnofiles_sandbox_id\"\
+    : \"MyUniqueSandbox\"\n\n\n2. **appsetting.json** Additionally within deferent\
+    \ sections, the default parameter values used in each command and the logging\
+    \ levels, are configured \n \n\n### Commands\n\nThe FileAPI_CLI offers a set of\
+    \ different commands that you can utilize:\n\n1. Upload: Upload a file from a\
+    \ specified path\n\n2. Download: Download a file by its GUID, in a specified directory\n\
+    \n3. Add user tags: Add user tags to a file \n\n4. Remove user tags: Remove user\
+    \ tags from a file\nMore File Api commands are available that can be used to communicate\
+    \ with more nbg services like ethnofiles.  These commands can be found in other\
+    \ apis of that product.\nFor the better understanding of the FileAPI_CLI we will\
+    \ go through some examples of the commands and how you can utilize them. \n\n\
+    **Upload Example**\n*> .\\FileapiCli.exe upload -i \"C:\\TestFiles\\CUS2BANK1234002020021201.FTI\"\
+    \ -d \"Test Ethnofiles file from cli\" -t \"MD5\",\"Ethnofiles\" \n\n**Download\
+    \ Example**\n*> .\\FileapiCli.exe download -f \"53b322fc-2940-424f-9dad-59aa3168848c\"\
+    \ -d C:\\tmp\\  \nFor **more inforamtion** on how to use FileAPI_CLI please visit:\
+    \ https://github.com/myNBGcode/FileAPI_Cli/blob/master/BasicInstructions.txt \n\
+    ## Authentication and Authorization (OAuth2) \nThis API version uses the OAuth2\
+    \ protocol for authentication and authorization, which means that a Bearer (access\
+    \ token) should be acquired. An access token can be retrieved using the client_id\
+    \ and client_secret of the APP that you created and subscribed in this API, and\
+    \ your own credentials (username, password) that you use to sign in the NBG Technology\
+    \ HUB. The scopes are defined below:\n**Sandbox Scopes**: openid profile ibank_profile\
+    \ sandbox-file-api-v3\n**Production Scopes**: openid profile ibank_profile file-api-v2\n\
+    **Authorization Endpoint**: https://my.nbg.gr/identity/connect/authorize\n**Token\
+    \ Endpoint**: https://my.nbg.gr/identity/connect/token\nSee more [here](https://developer.nbg.gr/content/authorization-oauth-20#8an-authorization-code-flow-example)\n\
+    ## Create your Sandbox\nSandboxes are self - contained testing environments that\
+    \ provide a simple way of testing the API without any real impact, meaning that\
+    \ no personal or financial data is used.\nYou can create **your Sandbox** by invoking\
+    \ the **POST** /api/sandbox call by simply providing an “id” as your sandbox id\
+    \ and naming it almost anything you like. **Moreover you should provide the name\
+    \ (userId) of the user that is going to be created in the default data. The 'userId'\
+    \ must be the same as the username of the logged in user in the NBG Technology\
+    \ Hub.**\n**_Important!_** Don't lose your sandbox_id, since you will need it\
+    \ for all the API calls. Sandbox endpoints are not included in the production\
+    \ version API.\n## Start Testing\nOnce you have your sandbox_id, you can start\
+    \ invoking the rest of the operations by providing the mandatory http header **sandbox_id**\
+    \ and the other required information on the “_request body payload_” (e.g. “userId”\
+    ).\n## Important notes\nRequest headers 1. Each request **_MUST_** have a new\
+    \ GUID passed to request.header.ID 2. Pass your client_id to request.header.application\
+    \ ## Feedback and Questions ## \nWe would love to hear your feedback and answer\
+    \ your questions. Send us at [developer@nbg.gr](developer@nbg.gr)\n[Sandbox Postman\
+    \ Collection](https://github.com/NBG-Developer-Portal/File-API)\n------------------------------------------------------------------------------------------\
+    \ \nCreated by **NBG**. \nSee more at [https://www.nbg.gr/](https://www.nbg.gr/)\
+    \ \nTo gain access to the Postman Collection please email us your Github account\
+    \ at [developer@nbg.gr](developer@nbg.gr) to invite you to our repository.\n"
+  contact:
+    email: developer@nbg.gr
+  version: v3
+servers:
+  - url: 'https://apis.nbg.gr/sandbox/file/oauth2/v3'
+    description: Sandbox Server
+  - url: 'https://services.nbg.gr/apis/fileapi/v2'
+    description: Production File Api Server
+paths:
+  /files/upload-initiation:
+    post:
+      tags:
+      - Files
+      summary: Initiates upload request.
+      description: Initiates upload request. The response object contains information
+        about the chunks (and their size) that the initial file should be seperated.
+        Moreover the file identifier is returned.
+      operationId: InitiateUpload
+      parameters:
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      requestBody:
+        description: Upload Initiation Request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/file.types.UploadInitiationRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file.types.UploadInitiationRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/file.types.UploadInitiationRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/file.types.UploadInitiationRequest'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.UploadedFile'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+      x-codegen-request-body-name: request
+  /files/{fileId}/upload:
+    put:
+      tags:
+      - Files
+      summary: Upload chunk.
+      description: Uploads chunk. The upload action is invoked only after the /files/upload-initiation
+        endpoint. The fileId and the chunk size is returned in the /files/upload-initiation
+        endpoint.
+      operationId: UploadChunk
+      parameters:
+      - name: fileId
+        in: path
+        description: File identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      requestBody:
+        description: Upload Request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/file.types.UploadRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file.types.UploadRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/file.types.UploadRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/file.types.UploadRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.GenericResponse'
+        308:
+          description: Range
+          content: {}
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+      x-codegen-request-body-name: request
+  /files/{fileId}/{chunkPart}:
+    get:
+      tags:
+      - Files
+      summary: Downloads a file.
+      description: Downloads a file by specifying chunk by chunk. If the file is seperated
+        only in one chunk just specify chunkPart 1. If file is seperated in more that
+        one chunk, this action should be invoked multiple times.
+      operationId: DownloadFile
+      parameters:
+      - name: chunkPart
+        in: path
+        description: Chunk part
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: requester
+        in: header
+        description: Requester, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: subject
+        in: header
+        description: Subject, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: fileId
+        in: path
+        description: File identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.FileContent'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+  /files/{fileId}:
+    get:
+      tags:
+      - Files
+      summary: Retrieves a file.
+      description: Retrieves a file metadata. This action can be used in order to
+        be informed of a file number of chunks that is seperated in order to download
+        them.
+      operationId: GetFile
+      parameters:
+      - name: requester
+        in: header
+        description: Requester, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: subject
+        in: header
+        description: Subject, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: fileId
+        in: path
+        description: File identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.FileDetails'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+    put:
+      tags:
+      - Files
+      summary: Updates a file.
+      description: Updates a file based on the requested data, only the filled values
+        are used.
+      operationId: UpdateFile
+      parameters:
+      - name: fileId
+        in: path
+        description: File identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      requestBody:
+        description: Update File Request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/file.types.UpdateFileRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file.types.UpdateFileRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/file.types.UpdateFileRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/file.types.UpdateFileRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.GenericResponse'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+      x-codegen-request-body-name: request
+    delete:
+      tags:
+      - Files
+      summary: Deletes a file.
+      description: A file is deleted, be careful! Only user with 'canDelete' permission
+        can complete this operation.
+      operationId: DeleteFile
+      parameters:
+      - name: requester
+        in: header
+        description: Requester, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: subject
+        in: header
+        description: Subject, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: fileId
+        in: path
+        description: The file identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      responses:
+        204:
+          description: No Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.GenericResponse'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+  /files/status/{fileId}:
+    put:
+      tags:
+      - Files
+      summary: Update file status
+      description: The status update is restricted from "Completed" to "Immutable".
+      operationId: UpdateStatus
+      parameters:
+      - name: fileId
+        in: path
+        description: File identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      requestBody:
+        description: Update Status Request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/file.types.UpdateStatusRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file.types.UpdateStatusRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/file.types.UpdateStatusRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/file.types.UpdateStatusRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.GenericResponse'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+      x-codegen-request-body-name: request
+  /files:
+    get:
+      tags:
+      - Files
+      summary: Gets file list.
+      description: The user file list is returned alongside the files that are shared.
+      operationId: GetFileList
+      parameters:
+      - name: requester
+        in: header
+        description: Requester, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: subject
+        in: header
+        description: Subject, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: userTags
+        in: header
+        description: User custom tag, used like a hashtag
+        style: simple
+        explode: false
+        schema:
+          uniqueItems: false
+          type: array
+          items:
+            type: string
+      - name: systemTags
+        in: header
+        description: System tag e.g. EthnofileSystemResponse
+        style: simple
+        explode: false
+        schema:
+          uniqueItems: false
+          type: array
+          items:
+            type: string
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/file.types.FileDetails'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+  /files/{fileId}/share/{sharedUserRegistry}/{sharedUserId}:
+    put:
+      tags:
+      - Files
+      summary: Shares a file.
+      description: A file is shared to an external user.
+      operationId: ShareFile
+      parameters:
+      - name: sharedUserRegistry
+        in: path
+        description: Shared user registry e.g. IBank
+        required: true
+        schema:
+          type: string
+      - name: sharedUserId
+        in: path
+        description: Shared user id e.g. 123456
+        required: true
+        schema:
+          type: string
+      - name: fileId
+        in: path
+        description: The file identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/file.types.ShareFileRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file.types.ShareFileRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/file.types.ShareFileRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/file.types.ShareFileRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.GenericResponse'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+      x-codegen-request-body-name: request
+    delete:
+      tags:
+      - Files
+      summary: Revokes share to a file.
+      description: A file share is revoked from an external user. The access cannot
+        be revoked to the user that created it.
+      operationId: RevokeShareFile
+      parameters:
+      - name: requester
+        in: header
+        description: Requester, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: subject
+        in: header
+        description: Subject, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: sharedUserRegistry
+        in: path
+        description: Shared user registry e.g. IBank
+        required: true
+        schema:
+          type: string
+      - name: sharedUserId
+        in: path
+        description: Shared user id e.g. 123456
+        required: true
+        schema:
+          type: string
+      - name: fileId
+        in: path
+        description: The file identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      responses:
+        204:
+          description: No Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.GenericResponse'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+  /Folders:
+    get:
+      tags:
+      - Folders
+      summary: Get the folder list.
+      description: The created/shared folders are returned.
+      operationId: GetFolders
+      parameters:
+      - name: requester
+        in: header
+        description: Requester, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: subject
+        in: header
+        description: Subject, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/folder.types.FolderInner'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+    post:
+      tags:
+      - Folders
+      summary: Creates a folder.
+      description: A folder is created based on the requested data e.g. name, description
+        e.t.c.
+      operationId: CreateFolder
+      parameters:
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      requestBody:
+        description: Create Folder Request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/folder.types.FolderRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/folder.types.FolderRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/folder.types.FolderRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/folder.types.FolderRequest'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/folder.types.CreateFolderResponse'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+      x-codegen-request-body-name: request
+  /Folders/{folderId}:
+    put:
+      tags:
+      - Folders
+      summary: Updates a folder.
+      description: A folder is updated based on the requested data e.g. name, description
+        e.t.c. Only the filled values are used.
+      operationId: UpdateFolder
+      parameters:
+      - name: folderId
+        in: path
+        description: The folder identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/folder.types.UpdateFolderRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/folder.types.UpdateFolderRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/folder.types.UpdateFolderRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/folder.types.UpdateFolderRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.GenericResponse'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+      x-codegen-request-body-name: request
+    delete:
+      tags:
+      - Folders
+      summary: Deletes a folder.
+      description: A folder is deleted. Be careful the containing files are deleted
+        also! Only user with 'canDelete' permission can complete this operation.
+      operationId: DeleteFolder
+      parameters:
+      - name: requester
+        in: header
+        description: Requester, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: subject
+        in: header
+        description: Subject, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: folderId
+        in: path
+        description: The folder identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      responses:
+        204:
+          description: No Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.GenericResponse'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+  /Folders/{folderId}/share/{sharedUserRegistry}/{sharedUserId}:
+    put:
+      tags:
+      - Folders
+      summary: Shares a folder.
+      description: A folder is shared to an external user.
+      operationId: ShareFolder
+      parameters:
+      - name: sharedUserRegistry
+        in: path
+        description: Shared user registry e.g. IBank
+        required: true
+        schema:
+          type: string
+      - name: sharedUserId
+        in: path
+        description: Shared user id e.g. 123456
+        required: true
+        schema:
+          type: string
+      - name: folderId
+        in: path
+        description: The folder identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      requestBody:
+        description: Share Folder Request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/folder.types.ShareFolderRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/folder.types.ShareFolderRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/folder.types.ShareFolderRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/folder.types.ShareFolderRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.GenericResponse'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+      x-codegen-request-body-name: request
+    delete:
+      tags:
+      - Folders
+      summary: Revoke share to a folder.
+      description: A folder share is revoked from an external user. The access cannot
+        be revoked to the user that created it.
+      operationId: RevokeShareFolder
+      parameters:
+      - name: requester
+        in: header
+        description: Requester, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: subject
+        in: header
+        description: Subject, with format 'registry:id'
+        required: true
+        schema:
+          type: string
+      - name: sharedUserRegistry
+        in: path
+        description: Shared user registry e.g. IBank
+        required: true
+        schema:
+          type: string
+      - name: sharedUserId
+        in: path
+        description: Shared user id e.g. 123456
+        required: true
+        schema:
+          type: string
+      - name: folderId
+        in: path
+        description: The folder identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      responses:
+        204:
+          description: No Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.GenericResponse'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+  /Sandbox:
+    post:
+      tags:
+      - Sandbox
+      summary: Create a sandbox.
+      description: A Sandbox with default data is created. Simply call by providing
+        an “id” as your sandbox id and naming it almost anything you like. Moreover
+        you should provide the name (userId) of the user that is going to be created
+        in the default data. The 'userId' must be the same as the username of the
+        logged in user in the NBG Technology Hub.
+      operationId: CreateSandbox
+      parameters:
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The unique name of your Sandbox
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      requestBody:
+        description: Create Sandbox Request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/file.sandbox.types.SandboxRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file.sandbox.types.SandboxRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/file.sandbox.types.SandboxRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/file.sandbox.types.SandboxRequest'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.sandbox.types.SandboxDataModel'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+      x-codegen-request-body-name: request
+  /Sandbox/{sandbox_id}:
+    get:
+      tags:
+      - Sandbox
+      summary: Export Sandbox
+      description: Export a sandbox
+      operationId: ExportSandbox
+      parameters:
+      - name: sandbox_id
+        in: path
+        description: The sandbox identifier
+        required: true
+        schema:
+          type: string
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The sandbox identifier
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.sandbox.types.SandboxDataModel'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+    put:
+      tags:
+      - Sandbox
+      summary: Import a sandbox.
+      description: Import a sandbox
+      operationId: ImportSandbox
+      parameters:
+      - name: sandbox_id
+        in: path
+        description: The sandbox identifier
+        required: true
+        schema:
+          type: string
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The sandbox identifier
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      requestBody:
+        description: Import Sandbox Request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/file.sandbox.types.SandboxDataModel'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file.sandbox.types.SandboxDataModel'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/file.sandbox.types.SandboxDataModel'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/file.sandbox.types.SandboxDataModel'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.sandbox.types.SandboxDataModel'
+        400:
+          description: Validation Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.types.ErrorResponse'
+      x-codegen-request-body-name: request
+    delete:
+      tags:
+      - Sandbox
+      summary: Delete Sandbox
+      description: Deleta a sandbox
+      operationId: DeleteSandbox
+      parameters:
+      - name: sandbox_id
+        in: path
+        description: The sandbox identifier
+        required: true
+        schema:
+          type: string
+      - name: Request-Id
+        in: header
+        description: A guid that uniquely identifies your request
+        required: true
+        schema:
+          type: string
+          default: 675A6656-955F-4547-AF18-F7087BA11CB7
+      - name: Authorization
+        in: header
+        description: Authorization Bearer
+        required: true
+        schema:
+          type: string
+          default: Bearer replace_this_value
+      - name: client-id
+        in: header
+        description: Your app client-id guid
+        required: true
+        schema:
+          type: string
+      - name: sandbox_id
+        in: header
+        description: The sandbox identifier
+        required: true
+        schema:
+          type: string
+          default: MyUniqueSandboxId
+      responses:
+        204:
+          description: No Content
+          content: {}
+        400:
+          description: Validation Error Response
+          content: {}
+components:
+  schemas:
+    file.types.UploadInitiationRequest:
+      required:
+      - fileName
+      - fileSize
+      - requester
+      - subject
+      type: object
+      properties:
+        folderId:
+          type: string
+          format: uuid
+        fileName:
+          type: string
+        fileDescription:
+          type: string
+        userTags:
+          type: array
+          items:
+            type: string
+        fileSize:
+          type: integer
+          format: int64
+        metadata:
+          type: string
+        fileIcon:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        requester:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        subject:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        claims:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+    file.types.RequestEntity:
+      required:
+      - id
+      - registry
+      type: object
+      properties:
+        id:
+          type: string
+        registry:
+          type: string
+    file.types.UploadedFile:
+      type: object
+      properties:
+        fileId:
+          type: string
+          format: uuid
+        fileChunks:
+          type: integer
+          format: int32
+        fileChunkSize:
+          type: integer
+          format: int32
+    file.types.ErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+        code:
+          type: string
+        message:
+          type: string
+    file.types.UploadRequest:
+      required:
+      - chunkPart
+      - fileContent
+      - requester
+      - subject
+      type: object
+      properties:
+        fileContent:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        chunkPart:
+          type: integer
+          format: int32
+        requester:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        subject:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        claims:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+    file.types.GenericResponse:
+      type: object
+      properties:
+        success:
+          type: string
+    file.types.FileContent:
+      type: object
+      properties:
+        fileContent:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+    file.types.FileDetails:
+      type: object
+      properties:
+        fileId:
+          type: string
+          format: uuid
+        fileName:
+          type: string
+        fileDescription:
+          type: string
+        fileSize:
+          type: integer
+          format: int64
+        chunksUploaded:
+          type: integer
+          format: int32
+        totalChunks:
+          type: integer
+          format: int32
+        userTags:
+          type: array
+          items:
+            type: string
+        systemTags:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum:
+          - WaitingForUpload
+          - WaitingForMerge
+          - MergingChunks
+          - Completed
+          - Deleted
+          - Immutable
+        statusReason:
+          type: string
+        metadata:
+          type: string
+        fileIcon:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        createdByUserId:
+          type: string
+        createdByUserRegistry:
+          type: string
+        updatedByUserId:
+          type: string
+        updatedByUserRegistry:
+          type: string
+        createdOn:
+          type: string
+          format: date-time
+        updatedOn:
+          type: string
+          format: date-time
+    file.types.UpdateFileRequest:
+      required:
+      - requester
+      - subject
+      type: object
+      properties:
+        fileName:
+          type: string
+        userTags:
+          type: array
+          items:
+            type: string
+        fileDescription:
+          type: string
+        fileIcon:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        folderId:
+          type: string
+          format: uuid
+        useFolderId:
+          type: boolean
+        requester:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        subject:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        claims:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+    file.types.UpdateStatusRequest:
+      required:
+      - requester
+      - subject
+      type: object
+      properties:
+        fileStatus:
+          type: string
+          enum:
+          - WaitingForUpload
+          - WaitingForMerge
+          - MergingChunks
+          - Completed
+          - Deleted
+          - Immutable
+        requester:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        subject:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        claims:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+    file.types.ShareFileRequest:
+      required:
+      - permissions
+      - requester
+      - subject
+      type: object
+      properties:
+        permissions:
+          $ref: '#/components/schemas/file.types.UserPermissions'
+        requester:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        subject:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        claims:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+    file.types.UserPermissions:
+      type: object
+      properties:
+        canAdd:
+          type: boolean
+        canView:
+          type: boolean
+        canEditMetadata:
+          type: boolean
+        canMove:
+          type: boolean
+        canDelete:
+          type: boolean
+        canShare:
+          type: boolean
+    folder.types.FolderRequest:
+      required:
+      - folderName
+      - requester
+      - subject
+      type: object
+      properties:
+        folderName:
+          type: string
+        folderDescription:
+          type: string
+        folderIcon:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        parentFolderId:
+          type: string
+          format: uuid
+        requester:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        subject:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        claims:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+    folder.types.CreateFolderResponse:
+      required:
+      - folderId
+      type: object
+      properties:
+        folderId:
+          type: string
+          format: uuid
+    folder.types.FolderInner:
+      type: object
+      properties:
+        folderId:
+          type: string
+          format: uuid
+        folderName:
+          type: string
+        folderDescription:
+          type: string
+        folderIcon:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        subFolders:
+          type: array
+          items:
+            $ref: '#/components/schemas/folder.types.FolderInner'
+        createdByUserId:
+          type: string
+        createdByUserRegistry:
+          type: string
+        updatedByUserId:
+          type: string
+        updatedByUserRegistry:
+          type: string
+        createdOn:
+          type: string
+          format: date-time
+        updatedOn:
+          type: string
+          format: date-time
+    folder.types.UpdateFolderRequest:
+      required:
+      - requester
+      - subject
+      type: object
+      properties:
+        folderName:
+          type: string
+        folderDescription:
+          type: string
+        folderIcon:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        parentFolderId:
+          type: string
+          format: uuid
+        requester:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        subject:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        claims:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+    folder.types.ShareFolderRequest:
+      required:
+      - permissions
+      - requester
+      - subject
+      type: object
+      properties:
+        permissions:
+          $ref: '#/components/schemas/file.types.UserPermissions'
+        requester:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        subject:
+          $ref: '#/components/schemas/file.types.RequestEntity'
+        claims:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+    file.sandbox.types.SandboxRequest:
+      required:
+      - sandboxId
+      - userId
+      type: object
+      properties:
+        sandboxId:
+          type: string
+        userId:
+          type: string
+    file.sandbox.types.SandboxDataModel:
+      type: object
+      properties:
+        SandboxID:
+          type: string
+        Users:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.sandbox.types.SandboxUser'
+        Folders:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.sandbox.types.SandboxFolder'
+        Files:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.sandbox.types.SandboxFile'
+        TppSampleFile:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.sandbox.types.SandboxTppSampleFile'
+        EthnofileCustomerApplications:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.sandbox.types.SandboxCustomerApplication'
+        EthnofileApplications:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.sandbox.types.SandboxApplication'
+        EthnofileValidators:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.sandbox.types.SandboxEthnofilesValidator'
+        EthnofileValidationsInbox:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.sandbox.types.SandboxValidationsInbox'
+    file.sandbox.types.SandboxUser:
+      type: object
+      properties:
+        Username:
+          type: string
+        Folders:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.sandbox.types.SandboxUserFolder'
+        Files:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.sandbox.types.SandboxUserFile'
+    file.sandbox.types.SandboxFolder:
+      type: object
+      properties:
+        FolderId:
+          type: string
+          format: uuid
+        FolderName:
+          type: string
+        FolderDescription:
+          type: string
+        FolderIcon:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        SubFolders:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.sandbox.types.SandboxFolder'
+        createdByUserId:
+          type: string
+        createdByUserRegistry:
+          type: string
+        updatedByUserId:
+          type: string
+        updatedByUserRegistry:
+          type: string
+        createdOn:
+          type: string
+          format: date-time
+        updatedOn:
+          type: string
+          format: date-time
+    file.sandbox.types.SandboxFile:
+      type: object
+      properties:
+        FolderId:
+          type: string
+          format: uuid
+        FileId:
+          type: string
+          format: uuid
+        FileContent:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        FileName:
+          type: string
+        FileDescription:
+          type: string
+        FileIcon:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        FileSize:
+          type: integer
+          format: int64
+        TotalChunks:
+          type: integer
+          format: int32
+        FileStatus:
+          type: string
+          enum:
+          - WaitingForUpload
+          - WaitingForMerge
+          - MergingChunks
+          - Completed
+          - Deleted
+          - Immutable
+        Metadata:
+          type: string
+        UserTags:
+          type: array
+          items:
+            type: string
+        SystemTags:
+          type: array
+          items:
+            type: string
+        createdByUserId:
+          type: string
+        createdByUserRegistry:
+          type: string
+        updatedByUserId:
+          type: string
+        updatedByUserRegistry:
+          type: string
+        createdOn:
+          type: string
+          format: date-time
+        updatedOn:
+          type: string
+          format: date-time
+    file.sandbox.types.SandboxTppSampleFile:
+      type: object
+      properties:
+        content:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        fileFormat:
+          type: string
+          enum:
+          - JSON
+          - XML
+          - CSV
+    file.sandbox.types.SandboxCustomerApplication:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        customerId:
+          type: integer
+          format: int32
+        applicationId:
+          type: integer
+          format: int32
+        filename:
+          type: string
+        fileDescription:
+          type: string
+        ascendingFilename:
+          type: boolean
+    file.sandbox.types.SandboxApplication:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        description:
+          type: string
+        validatorId:
+          type: integer
+          format: int32
+    file.sandbox.types.SandboxEthnofilesValidator:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        description:
+          type: string
+        assemblyFullName:
+          type: string
+        jsonData:
+          type: string
+    file.sandbox.types.SandboxValidationsInbox:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        customerApplicationId:
+          type: integer
+          format: int32
+        filename:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    file.sandbox.types.SandboxUserFolder:
+      type: object
+      properties:
+        FolderId:
+          type: string
+          format: uuid
+        Permissions:
+          $ref: '#/components/schemas/file.types.UserPermissions'
+    file.sandbox.types.SandboxUserFile:
+      type: object
+      properties:
+        FileId:
+          type: string
+          format: uuid
+        Permissions:
+          $ref: '#/components/schemas/file.types.UserPermissions'
