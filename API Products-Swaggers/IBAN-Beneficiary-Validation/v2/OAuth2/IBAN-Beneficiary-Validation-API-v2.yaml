@@ -167,7 +167,7 @@ servers:
         url: 'https://apis.nbg.gr/sandbox/iban.beneficiary.validation/oauth2/v2'
         description: Sandbox Server
     -
-        url: 'https://services.nbg.gr/apis/iban.beneficiary.validation/v2'
+        url: 'https://services.nbg.gr/apis/iban.beneficiary.validation/v1'
         description: Production Server        
 paths:
     '/sandbox/{sandboxid}':
