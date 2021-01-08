@@ -174,6 +174,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/account-access-consents/{consentId}':
     get:
       tags:
@@ -327,6 +333,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
     delete:
       tags:
         - AccountAccess
@@ -472,6 +484,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /accounts:
     get:
       tags:
@@ -614,6 +632,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}':
     get:
       tags:
@@ -762,6 +786,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /balances:
     get:
       tags:
@@ -911,6 +941,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/balances':
     get:
       tags:
@@ -1059,6 +1095,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /beneficiaries:
     get:
       tags:
@@ -1208,6 +1250,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/beneficiaries':
     get:
       tags:
@@ -1365,6 +1413,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /direct-debits:
     get:
       tags:
@@ -1514,6 +1568,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/direct-debits':
     get:
       tags:
@@ -1671,6 +1731,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /offers:
     get:
       tags:
@@ -1820,6 +1886,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/offers':
     get:
       tags:
@@ -1977,6 +2049,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /party:
     get:
       tags:
@@ -2126,6 +2204,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/party':
     get:
       tags:
@@ -2283,6 +2367,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/parties':
     get:
       tags:
@@ -2440,6 +2530,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /products:
     get:
       tags:
@@ -2589,6 +2685,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/product':
     get:
       tags:
@@ -2746,6 +2848,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /sandbox:
     post:
       tags:
@@ -2799,6 +2907,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
     put:
       tags:
         - Sandbox
@@ -2846,6 +2960,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/sandbox/{sandboxId}':
     get:
       tags:
@@ -2901,6 +3021,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
     delete:
       tags:
         - Sandbox
@@ -2948,6 +3074,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /scheduled-payments:
     get:
       tags:
@@ -3097,6 +3229,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/scheduled-payments':
     get:
       tags:
@@ -3254,6 +3392,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /standing-orders:
     get:
       tags:
@@ -3403,6 +3547,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/standing-orders':
     get:
       tags:
@@ -3560,6 +3710,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /statements:
     get:
       tags:
@@ -3725,6 +3881,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/statements':
     get:
       tags:
@@ -3898,6 +4060,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/statements/{statementId}':
     get:
       tags:
@@ -4063,6 +4231,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/statements/{statementId}/file':
     get:
       tags:
@@ -4217,6 +4391,12 @@ paths:
             application/pdf:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /transactions:
     get:
       tags:
@@ -4382,6 +4562,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/transactions':
     get:
       tags:
@@ -4555,6 +4741,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/statements/{statementId}/transactions':
     get:
       tags:
@@ -4720,6 +4912,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
 components:
   schemas:
     OBExternalPermissions1Code:
