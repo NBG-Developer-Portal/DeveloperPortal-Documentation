@@ -176,6 +176,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -335,6 +342,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -486,6 +500,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -634,6 +655,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -788,6 +816,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -943,6 +978,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -1097,6 +1139,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -1252,6 +1301,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -1415,6 +1471,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -1570,6 +1633,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -1733,6 +1803,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -1888,6 +1965,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -2051,6 +2135,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -2206,6 +2297,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -2369,6 +2467,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -2532,6 +2637,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -2687,6 +2799,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -2850,6 +2969,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -2909,6 +3035,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -2962,6 +3095,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -3023,6 +3163,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -3076,6 +3223,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -3231,6 +3385,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -3394,6 +3555,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -3549,6 +3717,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -3712,6 +3887,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -3883,6 +4065,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -4062,6 +4251,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -4233,6 +4429,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -4393,6 +4596,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -4564,6 +4774,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -4743,6 +4960,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
@@ -4914,6 +5138,13 @@ paths:
                 $ref: '#/components/schemas/OBErrorResponse1'
         default:
           description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
           content:
               application/json:
                   schema:
