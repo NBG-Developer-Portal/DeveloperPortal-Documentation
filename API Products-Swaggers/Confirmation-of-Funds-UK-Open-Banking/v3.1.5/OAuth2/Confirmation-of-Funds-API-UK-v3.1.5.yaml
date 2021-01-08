@@ -17,6 +17,11 @@ paths:
         - Consents
       summary: Create Funds Confirmation Consent
       description: Create Funds Confirmation Consent
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-fundsconfirmations-api-v1
+            - fundsconfirmations
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -33,13 +38,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -175,12 +173,30 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/funds-confirmation-consents/{consentId}':
     get:
       tags:
         - Consents
       summary: Get Funds Confirmation Consent
       description: Get Funds Confirmation Consent by Consent ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-fundsconfirmations-api-v1
+            - fundsconfirmations
       parameters:
         - name: consentId
           in: path
@@ -205,13 +221,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -332,11 +341,29 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
     delete:
       tags:
         - Consents
       summary: Delete Funds Confirmation Consent
       description: Delete Funds Confirmation Consent by Consent ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-fundsconfirmations-api-v1
+            - fundsconfirmations
       parameters:
         - name: consentId
           in: path
@@ -361,13 +388,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -479,6 +499,19 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /funds-confirmations:
     post:
       tags:
@@ -501,13 +534,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -643,20 +669,25 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /sandbox:
     post:
       tags:
         - Sandbox
       summary: Create Sandbox
       description: Create Sandbox
-      parameters:
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
       requestBody:
         description: SandboxRequest
         content:
@@ -704,19 +735,17 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
     put:
       tags:
         - Sandbox
       summary: Import Sandbox
       description: Import Sandboxx
-      parameters:
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
       requestBody:
         description: Sandbox
         content:
@@ -759,6 +788,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/sandbox/{sandboxId}':
     get:
       tags:
@@ -774,13 +809,6 @@ paths:
             type: string
             description: Sandbox Id
             nullable: true
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
       responses:
         '200':
           description: OK
@@ -821,6 +849,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
     delete:
       tags:
         - Sandbox
@@ -835,13 +869,6 @@ paths:
             type: string
             description: Sandbox Id
             nullable: true
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
       responses:
         '204':
           description: No Content
@@ -875,6 +902,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
 components:
   schemas:
     OBCashAccountDebtor4:
@@ -1286,5 +1319,27 @@ components:
       description: Application's Id
       name: Client-Id
       in: header
+    Authorization-Code-Token:
+      type: oauth2
+      description: OAuth2 Authorization Code Flow
+      flows:
+        authorizationCode:
+          authorizationUrl: https://my.nbg.gr/identity/connect/authorize
+          tokenUrl: https://my.nbg.gr/identity/connect/token
+          scopes:
+            sandbox-uk-fundsconfirmations-api-v1 offline_access: Sandbox Scope
+            fundsconfirmations offline_access: Production Scope
+    Client-Credentials-Token:
+      type: oauth2
+      description: OAuth2 Client Credentials Flow
+      flows:
+        clientCredentials: 
+          tokenUrl: https://my.nbg.gr/identity/connect/token
+          scopes:
+            sandbox-uk-fundsconfirmations-api-v1: Sandbox Scope
+            fundsconfirmations: Production Scope
 security:
   - Client-Id: []
+    Authorization-Code-Token:
+      - sandbox-uk-fundsconfirmations-api-v1 offline_access
+      - fundsconfirmations offline_access
