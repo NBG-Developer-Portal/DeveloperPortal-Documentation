@@ -17,6 +17,11 @@ paths:
         - DomesticPayments
       summary: Create Domestic Payment Consents
       description: Create Domestic Payment Consents
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -33,13 +38,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -214,12 +212,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/domestic-payment-consents/{consentId}':
     get:
       tags:
         - DomesticPayments
       summary: Get Domestic Payment Consents
       description: Get Domestic Payment Consents by Consent ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: consentId
           in: path
@@ -244,13 +266,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -393,6 +408,25 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/domestic-payment-consents/{consentId}/funds-confirmation':
     get:
       tags:
@@ -423,13 +457,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -572,6 +599,25 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /domestic-payments:
     post:
       tags:
@@ -594,13 +640,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -775,12 +814,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/domestic-payments/{domesticPaymentId}':
     get:
       tags:
         - DomesticPayments
       summary: Get Domestic Payments
       description: Get Domestic Payments by Domestic Payment ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: domesticPaymentId
           in: path
@@ -805,13 +868,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -954,12 +1010,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/domestic-payments/{domesticPaymentId}/payment-details':
     get:
       tags:
         - DomesticPayments
       summary: Get Payment Details
       description: Get Payment Details by Domestic Payment ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: domesticPaymentId
           in: path
@@ -984,13 +1064,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -1142,12 +1215,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /domestic-scheduled-payment-consents:
     post:
       tags:
         - DomesticScheduledPayments
       summary: Create Domestic Scheduled Payment Consents
       description: Create Domestic Scheduled Payment Consents
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -1164,13 +1261,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -1354,12 +1444,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/domestic-scheduled-payment-consents/{consentId}':
     get:
       tags:
         - DomesticScheduledPayments
       summary: Get Domestic Scheduled Payment Consents
       description: Get Domestic Scheduled Payment Consents by Consent ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: consentId
           in: path
@@ -1384,13 +1498,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -1542,6 +1649,25 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /domestic-scheduled-payments:
     post:
       tags:
@@ -1564,13 +1690,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -1754,12 +1873,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/domestic-scheduled-payments/{domesticScheduledPaymentId}':
     get:
       tags:
         - DomesticScheduledPayments
       summary: Get Domestic Scheduled Payments
       description: Get Domestic Scheduled Payments by Domestic Scheduled Payment ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: domesticScheduledPaymentId
           in: path
@@ -1784,13 +1927,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -1942,12 +2078,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/domestic-scheduled-payments/{domesticScheduledPaymentId}/payment-details':
     get:
       tags:
         - DomesticScheduledPayments
       summary: Get Payment Details
       description: Get Payment Details by Domestic Scheduled Payment ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: domesticScheduledPaymentId
           in: path
@@ -1972,13 +2132,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -2130,12 +2283,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /domestic-standing-order-consents:
     post:
       tags:
         - DomesticStandingOrders
       summary: Create Domestic Standing Order Consents
       description: Create Domestic Standing Order Consents
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -2152,13 +2329,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -2342,12 +2512,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/domestic-standing-order-consents/{consentId}':
     get:
       tags:
         - DomesticStandingOrders
       summary: Get Domestic Standing Order Consents
       description: Get Domestic Standing Order Consents by Consent ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: consentId
           in: path
@@ -2372,13 +2566,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -2530,6 +2717,25 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /domestic-standing-orders:
     post:
       tags:
@@ -2552,13 +2758,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -2742,12 +2941,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/domestic-standing-orders/{domesticStandingOrderId}':
     get:
       tags:
         - DomesticStandingOrders
       summary: Get Domestic Standing Orders
       description: Get Domestic Standing Orders by Domestic Standing Order ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: domesticStandingOrderId
           in: path
@@ -2772,13 +2995,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -2930,12 +3146,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/domestic-standing-orders/{domesticStandingOrderId}/payment-details':
     get:
       tags:
         - DomesticStandingOrders
       summary: Get Payment Details
       description: Get Payment Details by Domestic Standing Order ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: domesticStandingOrderId
           in: path
@@ -2960,13 +3200,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -3118,12 +3351,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /file-payment-consents:
     post:
       tags:
         - FilePayments
       summary: Create File Payment Consents
       description: Create File Payment Consents
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -3140,13 +3397,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -3330,12 +3580,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/file-payment-consents/{consentId}':
     get:
       tags:
         - FilePayments
       summary: Get File Payment Consents
       description: Get File Payment Consents by Consent ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: consentId
           in: path
@@ -3360,13 +3634,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -3518,12 +3785,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/file-payment-consents/{consentId}/file':
     post:
       tags:
         - FilePayments
       summary: Create File Payment Consents
       description: Create File Payment Consents
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: consentId
           in: path
@@ -3548,13 +3839,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -3729,11 +4013,35 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
     get:
       tags:
         - FilePayments
       summary: Get File Payment Consents
       description: Get File Payment Consents by Consent ID (File)
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: consentId
           in: path
@@ -3758,13 +4066,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -3928,6 +4229,25 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /file-payments:
     post:
       tags:
@@ -3950,13 +4270,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -4140,12 +4453,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/file-payments/{filePaymentId}':
     get:
       tags:
         - FilePayments
       summary: Get File Payments
       description: Get File Payments by File Payment ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: filePaymentId
           in: path
@@ -4170,13 +4507,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -4328,12 +4658,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/file-payments/{filePaymentId}/report-file':
     get:
       tags:
         - FilePayments
       summary: Get File Payments
       description: Get File Payments by File Payment ID (File)
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: filePaymentId
           in: path
@@ -4358,13 +4712,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -4505,12 +4852,36 @@ paths:
             application/pdf:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/file-payments/{filePaymentId}/payment-details':
     get:
       tags:
         - FilePayments
       summary: Get Payment Details
       description: Get Payment Details by File Payment ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: filePaymentId
           in: path
@@ -4535,13 +4906,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -4693,12 +5057,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /international-payment-consents:
     post:
       tags:
         - InternationalPayments
       summary: Create International Payment Consents
       description: Create International Payment Consents
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -4715,13 +5103,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -4905,12 +5286,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/international-payment-consents/{consentId}':
     get:
       tags:
         - InternationalPayments
       summary: Get International Payment Consents
       description: Get International Payment Consents by Consent ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: consentId
           in: path
@@ -4935,13 +5340,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -5093,6 +5491,25 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/international-payment-consents/{consentId}/funds-confirmation':
     get:
       tags:
@@ -5123,13 +5540,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -5281,6 +5691,25 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /international-payments:
     post:
       tags:
@@ -5303,13 +5732,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -5493,12 +5915,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/international-payments/{internationalPaymentId}':
     get:
       tags:
         - InternationalPayments
       summary: Get International Payments
       description: Get International Payments by International Payment ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: internationalPaymentId
           in: path
@@ -5523,13 +5969,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -5681,12 +6120,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/international-payments/{internationalPaymentId}/payment-details':
     get:
       tags:
         - InternationalPayments
       summary: Get Payment Details
       description: Get Payment Details by International Payment ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: internationalPaymentId
           in: path
@@ -5711,13 +6174,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -5869,12 +6325,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /international-scheduled-payment-consents:
     post:
       tags:
         - InternationalScheduledPayments
       summary: Create International Scheduled Payment Consents
       description: Create International Scheduled Payment Consents
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -5891,13 +6371,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -6123,12 +6596,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/international-scheduled-payment-consents/{consentId}':
     get:
       tags:
         - InternationalScheduledPayments
       summary: Get International Scheduled Payment Consents
       description: Get International Scheduled Payment Consents by Consent ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: consentId
           in: path
@@ -6153,13 +6650,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -6346,6 +6836,25 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/international-scheduled-payment-consents/{consentId}/funds-confirmation':
     get:
       tags:
@@ -6376,13 +6885,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -6569,6 +7071,25 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /international-scheduled-payments:
     post:
       tags:
@@ -6591,13 +7112,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -6823,12 +7337,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/international-scheduled-payments/{internationalScheduledPaymentId}':
     get:
       tags:
         - InternationalScheduledPayments
       summary: Get International Scheduled Payments
       description: Get International Scheduled Payments by International Scheduled Payment ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: internationalScheduledPaymentId
           in: path
@@ -6853,13 +7391,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -7046,12 +7577,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/international-scheduled-payments/{internationalScheduledPaymentId}/payment-details':
     get:
       tags:
         - InternationalScheduledPayments
       summary: Get Payment Details
       description: Get Payment Details by International Scheduled Payment ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: internationalScheduledPaymentId
           in: path
@@ -7076,13 +7631,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -7269,12 +7817,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /international-standing-order-consents:
     post:
       tags:
         - InternationalStandingOrders
       summary: Create International Standing Order Consents
       description: Create International Standing Order Consents
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -7291,13 +7863,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -7481,12 +8046,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/international-standing-order-consents/{consentId}':
     get:
       tags:
         - InternationalStandingOrders
       summary: Get International Standing Order Consents
       description: Get International Standing Order Consents by Consent ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: consentId
           in: path
@@ -7511,13 +8100,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -7669,6 +8251,25 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /international-standing-orders:
     post:
       tags:
@@ -7691,13 +8292,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-idempotency-key
           in: header
           description: Every request will be processed only once per x-idempotency-key.  The Idempotency Key will be valid for 24 hours.
@@ -7881,12 +8475,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/international-standing-orders/{internationalStandingOrderId}':
     get:
       tags:
         - InternationalStandingOrders
       summary: Get International Standing Orders
       description: Get International Standing Orders by International Standing Order ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: internationalStandingOrderId
           in: path
@@ -7911,13 +8529,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -8069,12 +8680,36 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/international-standing-orders/{internationalStandingOrderId}/payment-details':
     get:
       tags:
         - InternationalStandingOrders
       summary: Get Payment Details
       description: Get Payment Details by International Standing Order ID
+      security:
+        - Client-Id: []
+          Client-Credentials-Token:
+            - sandbox-uk-payments-api-v1
+            - payments
       parameters:
         - name: internationalStandingOrderId
           in: path
@@ -8099,13 +8734,6 @@ paths:
           description: An RFC4122 UID used as a correlation id.
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
         - name: x-customer-user-agent
           in: header
           description: Indicates the user-agent that the PSU is using.
@@ -8257,20 +8885,31 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          headers:
+            x-fapi-interaction-id:
+              description: An RFC4122 UID used as a correlation id
+              schema:
+                type: string
+                description: An RFC4122 UID used as a correlation id
+                format: ''
+            x-jws-signature:
+              description: Header containing a detached JWS signature of the body of the payload
+              schema:
+                type: string
+                description: Header containing a detached JWS signature of the body of the payload
+                format: ''
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   /sandbox:
     post:
       tags:
         - Sandbox
       summary: Create Sandbox
       description: Create Sandbox
-      parameters:
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
       requestBody:
         description: SandboxRequest
         content:
@@ -8318,19 +8957,17 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
     put:
       tags:
         - Sandbox
       summary: Import Sandbox
       description: Import Sandbox
-      parameters:
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
       requestBody:
         description: Sandbox
         content:
@@ -8373,6 +9010,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
   '/sandbox/{sandboxId}':
     get:
       tags:
@@ -8388,13 +9031,6 @@ paths:
             type: string
             description: Sandbox Id
             nullable: true
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
       responses:
         '200':
           description: OK
@@ -8435,6 +9071,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
     delete:
       tags:
         - Sandbox
@@ -8449,13 +9091,6 @@ paths:
             type: string
             description: Sandbox Id
             nullable: true
-        - name: Authorization
-          in: header
-          description: 'An Authorisation Token as per https://tools.ietf.org/html/rfc6750'
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
       responses:
         '204':
           description: No Content
@@ -8489,6 +9124,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
+        default:
+          description: Error Response
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/OBErrorResponse1'
 components:
   schemas:
     OBReadRefundAccount1Code:
@@ -12213,5 +12854,27 @@ components:
       description: Application's Id
       name: Client-Id
       in: header
+    Authorization-Code-Token:
+      type: oauth2
+      description: OAuth2 Authorization Code Flow
+      flows:
+        authorizationCode:
+          authorizationUrl: https://my.nbg.gr/identity/connect/authorize
+          tokenUrl: https://my.nbg.gr/identity/connect/token
+          scopes:
+            sandbox-uk-payments-api-v1 offline_access: Sandbox Scope
+            payments offline_access: Production Scope
+    Client-Credentials-Token:
+      type: oauth2
+      description: OAuth2 Client Credentials Flow
+      flows:
+        clientCredentials: 
+          tokenUrl: https://my.nbg.gr/identity/connect/token
+          scopes:
+            sandbox-uk-payments-api-v1: Sandbox Scope
+            payments: Production Scope
 security:
   - Client-Id: []
+    Authorization-Code-Token:
+      - sandbox-uk-payments-api-v1 offline_access
+      - payments offline_access
