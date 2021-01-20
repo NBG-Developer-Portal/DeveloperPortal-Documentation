@@ -2,13 +2,15 @@ openapi: 3.0.1
 info:
   title: Confirmation of Funds API Specification - UK
   description: "## Functionality at a glance\r\n\r\nThe NBG \"UK OPB - Confirmation of Funds v3.1.5\" API follows the [UK Open Banking Specification\r\n    v3.1.5](https://openbankinguk.github.io/read-write-api-site3/v3.1.5/profiles/confirmation-of-funds-api-profile.html)\r\n\r\nThis Confirmation of Funds API Specification describes the flows and payloads for validating if an account has enough balance for a Card Based Payment.\r\n\r\nThe API endpoints described here allow a Card Based Payment Instrument Issuer ('CBPII') to:\r\n\r\n1. Register an intent to confirm funds by creating a \"funds confirmation consent\" resource with an ASPSP\r\n2. Confirm funds are available to perform a payment\r\n\r\n<br/>\r\n\r\n## Quick Getting Started\r\n\r\n\r\n1. **Login/Register** to the NBG Technology HUB\r\n\r\n2. Go to **\"APPS\"**\r\n\r\n3. Select your Organization and go to step 4. If you want to create a new Organization click **\\\"CREATE AN ORGANIZATION\\\"** and follow the steps below:\r\n\t1. Enter the title of your Organization\r\n\t2. Enter a short description of your Organization (optional)\r\n\t3. Click **\"SUBMIT\"**\r\n\r\n4. Select the Organization of choice and click **\"ADD AN APPLICATION\"** \r\n\t  1. Fill in the forms (title and short description)\r\n\t  2. Check **\\\"Authorization Code\\\" and \\\"Client Credentials\\\"** \r\n\t  3. Enter the **OAuth Redirect and Post Logout URIs** (these are the URIs that we will redirect the user upon logging in and logging out respectively)\r\n\t\t  \r\n\t\t  You can use the following redirect URL to easily test the API through the portal: *https://developer.nbg.gr/oauth2/redoc-callback*\r\n\t  4. Click **\"SUBMIT\"**\r\n\t  5. Store the APPs **\"Client ID\"** and **\"Client Secret\"**\r\n5. Go to **\"API PRODUCTS\"** and select the **CONFIRMATION OF FUNDS - UK OPEN BANKING API**\r\n\r\n6. Click **\\\"START USING THIS API\\\"**, choose your app and click\r\n**\"SUBSCRIBE\"**\r\n\r\n7. Get an Access Token using the Access Token Flow and the API scopes provided in the Authentication and Authorization (OAuth2) section below\r\n\r\n8. Create a Sandbox\r\n\r\n9. Play with the API\r\n\r\n<br/>\r\n\r\n### Sandbox Flow\r\n\r\nThe Sandbox Flow matches the Production Flow. The difference lies into the Data used. Instead of live\r\ndata, the Sandbox flow uses mocked data.\r\n\r\n\r\n### Production Flow  \r\n\r\nThe Production Flow is described in the [UK Open Banking v3.1.5\r\nSpecification](https://openbankinguk.github.io/read-write-api-site3/v3.1.5/profiles/confirmation-of-funds-api-profile.html)\r\n\r\n\r\n<br/>\r\n\r\n## Authentication and Authorization (OAuth2)\r\n\r\nThis API version uses the OAuth2 protocol for authentication and authorization, which means that a\r\nBearer (access token) should be acquired. An access token can be retrieved using the client_id and\r\nclient_secret of the APP that you created and subscribed in this API, and your own credentials\r\n(username, password) that you use to sign in the NBG Technology HUB. The scopes are defined below:\r\n\r\n\r\n**Authorization Endpoint:** \r\n\r\n\t\thttps://my.nbg.gr/identity/connect/authorize\r\n\r\n**Token Endpoint:** \r\n\r\n\t\thttps://my.nbg.gr/identity/connect/token\r\n\r\n### Authorization Code ###\r\n\r\n**Sandbox Scopes:** \r\n\r\n\t\tsandbox-uk-fundsconfirmations-api-v1 offline_access\r\n\r\n\r\n**Production Scopes:** \r\n\r\n\t\tfundsconfirmations offline_access\r\n\r\n### Client Credentials ###\r\n\r\n**Sandbox Scopes:** \r\n\r\n\t\tsandbox-uk-fundsconfirmations-api-v1\r\n\r\n\r\n**Production Scopes:** \r\n\r\n\t\tfundsconfirmations\r\n\r\n\r\nSee more [here](https://developer.nbg.gr/oauth-document)\r\n\r\n## QWAC Certificates\r\n\r\nTPPs are required to present a QWAC certificate during API consumption. The API checks that this certificate has been provided and is valid. In sandbox mode the certificate validations are optional. To validate your certificate in sandbox implementation, please send us your QWAC certificate at developer@nbg.gr and set the HTTP Header **\\\"x-sandbox-qwac-certificate-check\\\"** with the value **\\\"true\\\"** in your requests. \r\n\r\n## Create your Sandbox\r\n\r\nCreate a new Sandbox application by invoking the POST /sandbox. This call will generate a new Sandbox\r\nwith a unique sandbox-id.\r\n\r\n\r\nWhen you create a sandbox, users and sandbox specific data are generated as sample data.\r\n\r\n\r\n**_Important!_** Don't lose your sandbox_id, since you will need it for all the API calls. Sandbox\r\nendpoints are not included in the production version API.\r\n\r\n\r\n\r\n\r\n## Start Testing\r\n\r\nOnce you have your sandbox-id, you can start invoking the rest of the operations by providing the\r\nmandatory http header **sandbox-id**  and the http headers described below.\r\n\r\n\r\n## Important notes\r\n\r\n\r\n**Request headers**\r\n\r\n\r\nThe following HTTP header parameters are required for every call:\r\n\r\n\r\n1. Authorization. The OAuth2 Token\r\n\r\n2. sandbox-id. Your Sandbox ID\r\n\r\n\r\n**Consent**\r\n\r\n\r\nIn order to be able to effectively start using the Endpoints the appropriate Consent needs to be\r\ncreated and set to the 'Authorised' status. \r\n\r\n\r\n## Error Codes\r\n\r\nThe error codes and their description can be found\r\n[here](https://openbankinguk.github.io/read-write-api-site3/v3.1.5/profiles/read-write-data-api-profile.html#error-response-structure)\r\n\r\n\r\n# Implementation Specifics \r\n\r\nBelow you may find more specific information & limitations regarding the implementation followed in\r\nthe Production API.\r\n\r\n## Token Endpoint Client Authentication\r\n\r\nAt this point the supported __Client Authentication__ method is \"__Client Secret Basic__\" - usage of\r\n\"Client ID\" & \"Client Secret\".\r\n\r\n## Consent Authorization\r\n\r\nFor a PSU to Authorize a Consent, they need to be redirected to the appropriate Consent UI.\r\n\r\nFor this redirection to take place the TPP needs to follow the Authorization Endpoint by amending the generated \"Consent ID\", like this: https://my.nbg.gr/identity/connect/authorize?consent_id={{consent_id}}&client_id={{client_id}}&scope={{scope}}&redirect_uri={{redirect_uri}}&response_type=code\r\n\r\nOnce the PSU is redirected to the Consent Authorization Screen, they need to enter their IBank (Production) or Developer Portal (Sandbox) Credentials and either Authorize or Reject the Consent.\r\n\r\nAt this point the Consent is binded with the PSU.\r\n\r\n# Feedback and Questions\r\n\r\nWe would love to hear your feedback and answer your questions. Send us at\r\n[developer@nbg.gr](developer@nbg.gr)\r\n\r\n\r\n\r\nCheck out our [Sandbox Postman\r\nCollection](https://github.com/NBG-Developer-Portal/Confirmation-of-Funds-UK-Open-Banking)\r\n ________________________________________\r\n\r\nCreated by [**NBG**](https://www.nbg.gr/).\r\n"
-  version: v3.1.5
   contact:
+    name: NBG
+    url: https://developer.nbg.gr/
     email: developer@nbg.gr
+  version: v3.1.5
 servers:
-  - url: 'https://apis.nbg.gr/sandbox/uk.openbanking.fundsconfirmation/oauth2/v3.1.5'
+  - url: https://apis.nbg.gr/sandbox/uk.openbanking.fundsconfirmation/oauth2/v3.1.5
     description: Sandbox Server
-  - url: 'https://services.nbg.gr/apis/open-banking/v3.1.5/cbpii'
+  - url: https://services.nbg.gr/apis/open-banking/v3.1.5/cbpii
     description: Production Server
 paths:
   /funds-confirmation-consents:
@@ -17,11 +19,6 @@ paths:
         - Consents
       summary: Create Funds Confirmation Consent
       description: Create Funds Confirmation Consent
-      security:
-        - Client-Id: []
-          Client-Credentials-Token:
-            - sandbox-uk-fundsconfirmations-api-v1
-            - fundsconfirmations
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -173,30 +170,17 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+      security:
+        - Client-Id: [ ]
+          Client-Credentials-Token:
+            - sandbox-uk-fundsconfirmations-api-v1
+            - fundsconfirmations
   '/funds-confirmation-consents/{consentId}':
     get:
       tags:
         - Consents
       summary: Get Funds Confirmation Consent
       description: Get Funds Confirmation Consent by Consent ID
-      security:
-        - Client-Id: []
-          Client-Credentials-Token:
-            - sandbox-uk-fundsconfirmations-api-v1
-            - fundsconfirmations
       parameters:
         - name: consentId
           in: path
@@ -290,8 +274,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        '404':
-          description: Not found
         '405':
           description: Method Not Allowed
           headers:
@@ -341,29 +323,16 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+      security:
+        - Client-Id: [ ]
+          Client-Credentials-Token:
+            - sandbox-uk-fundsconfirmations-api-v1
+            - fundsconfirmations
     delete:
       tags:
         - Consents
       summary: Delete Funds Confirmation Consent
       description: Delete Funds Confirmation Consent by Consent ID
-      security:
-        - Client-Id: []
-          Client-Credentials-Token:
-            - sandbox-uk-fundsconfirmations-api-v1
-            - fundsconfirmations
       parameters:
         - name: consentId
           in: path
@@ -499,25 +468,17 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+      security:
+        - Client-Id: [ ]
+          Client-Credentials-Token:
+            - sandbox-uk-fundsconfirmations-api-v1
+            - fundsconfirmations
   /funds-confirmations:
     post:
       tags:
         - Funds
       summary: Create Funds Confirmation
-      description: Create Funds Confirmation
+      description: Request for funds availability
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -669,19 +630,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   /sandbox:
     post:
       tags:
@@ -712,10 +660,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
         '403':
@@ -731,21 +679,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
     put:
       tags:
         - Sandbox
       summary: Import Sandbox
-      description: Import Sandboxx
+      description: Import Sandbox
       requestBody:
         description: Sandbox
         content:
@@ -763,10 +705,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
         '403':
@@ -784,22 +726,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
   '/sandbox/{sandboxId}':
     get:
       tags:
         - Sandbox
-      summary: Get Sandbox
-      description: Get Sandbox
+      summary: Export Sandbox
+      description: Export Sandbox
       parameters:
         - name: sandboxId
           in: path
@@ -824,10 +760,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
         '403':
@@ -845,16 +781,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       tags:
         - Sandbox
@@ -877,10 +807,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
         '403':
@@ -898,16 +828,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
     OBCashAccountDebtor4:
@@ -1313,6 +1237,13 @@ components:
           nullable: true
       additionalProperties: false
       description: Sandbox model
+    ErrorResponse:
+      type: object
+      properties:
+        errorMessage:
+          type: string
+          nullable: true
+      additionalProperties: false
   securitySchemes:
     Client-Id:
       type: apiKey
@@ -1333,13 +1264,13 @@ components:
       type: oauth2
       description: OAuth2 Client Credentials Flow
       flows:
-        clientCredentials: 
+        clientCredentials:
           tokenUrl: https://my.nbg.gr/identity/connect/token
           scopes:
             sandbox-uk-fundsconfirmations-api-v1: Sandbox Scope
             fundsconfirmations: Production Scope
 security:
-  - Client-Id: []
+  - Client-Id: [ ]
     Authorization-Code-Token:
       - sandbox-uk-fundsconfirmations-api-v1 offline_access
       - fundsconfirmations offline_access
