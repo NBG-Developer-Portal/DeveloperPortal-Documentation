@@ -2,13 +2,15 @@ openapi: 3.0.1
 info:
   title: Account and Transaction API Specification - UK
   description: "## Functionality at a glance\r\n\r\nThe NBG \"UK OPB - Account and Transaction v3.1.5\" API follows the [UK Open Banking Specification\r\n    v3.1.5](https://openbankinguk.github.io/read-write-api-site3/v3.1.5/profiles/account-and-transaction-api-profile.html)\r\n\r\nThis Account and Transaction API Specification describes the flows and payloads for retrieving a list of accounts and their transactions.\r\n\r\nThe API endpoints described here allow a AISP to:  \r\n\r\n* Create the Consent with the appropriate permissions in order to be able to access the API Endpoints\r\n\r\n* Retrieve the list of accounts\r\n\r\n* Retrieve an account's details\r\n\r\n* Retrieve an account's balances\r\n\r\n* Retrieve an account's transactions\r\n\r\n* Retrieve an account's beneficiaries\r\n\r\n* Retrieve an account's standing orders\r\n\r\n* Retrieve an account's party\r\n\r\n* Retrieve an account's scheduled payments\r\n\r\n* Retrieve an account's statements\r\n\r\n\r\n\r\n## Quick Getting Started\r\n\r\n\r\n1. **Login/Register** to the NBG Technology HUB\r\n\r\n2. Go to **\"APPS\"**\r\n\r\n3. Select your Organization and go to step 4. If you want to create a new Organization click **\\\"CREATE AN ORGANIZATION\\\"** and follow the steps below:\r\n\t1. Enter the title of your Organization\r\n\t2. Enter a short description of your Organization (optional)\r\n\t3. Click **\"SUBMIT\"**\r\n\r\n4. Select the Organization of choice and click **\"ADD AN APPLICATION\"** \r\n\t  1. Fill in the forms (title and short description)\r\n\t  2. Check **\\\"Authorization Code\\\" and \\\"Client Credentials\\\"** \r\n\t  3. Enter the **OAuth Redirect and Post Logout URIs** (these are the URIs that we will redirect the user upon logging in and logging out respectively)\r\n\t\t  \r\n\t\t  You can use the following redirect URL to easily test the API through the portal: *https://developer.nbg.gr/oauth2/redoc-callback*\r\n\t  4. Click **\"SUBMIT\"**\r\n\t  5. Store the APPs **\"Client ID\"** and **\"Client Secret\"**\r\n5. Go to **\"API PRODUCTS\"** and select the **ACCOUNT INFORMATION - UK OPEN BANKING API**\r\n\r\n6. Click **\\\"START USING THIS API\\\"**, choose your app and click\r\n**\"SUBSCRIBE\"**\r\n\r\n7. Get an Access Token using the Access Token Flow and the API scopes provided in the Authentication and Authorization (OAuth2) section below\r\n\r\n8. Create a Sandbox\r\n\r\n9. Play with the API \r\n\r\n\r\n### Sandbox Flow\r\n\r\nThe Sandbox Flow matches the Production Flow. The difference lies into the Data used. Instead of live\r\ndata, the Sandbox flow uses mocked data.\r\n\r\n\r\n### Production Flow  \r\n\r\nThe Production Flow is described in the [UK Open Banking v3.1.5\r\nSpecification](https://openbankinguk.github.io/read-write-api-site3/v3.1.5/profiles/account-and-transaction-api-profile.html)\r\n\r\nMore details about the implementation specifics followed, please visit section **UK OPB Implementation\r\nSpecifics**\r\n\r\n\r\n## Authentication and Authorization (OAuth2)\r\n\r\nThis API version uses the OAuth2 protocol for authentication and authorization, which means that a\r\nBearer (access token) should be acquired. An access token can be retrieved using the client_id and\r\nclient_secret of the APP that you created and subscribed in this API, and your own credentials\r\n(username, password) that you use to sign in the NBG Technology HUB. The scopes are defined below:\r\n\r\n**Authorization Endpoint:** \r\n\r\n\t  https://my.nbg.gr/identity/connect/authorize\r\n\r\n\r\n**Token Endpoint:** \r\n\r\n\t  https://my.nbg.gr/identity/connect/token\r\n\r\n### Authorization Code ###\r\n\r\n**Sandbox Scopes:** \r\n\r\n\t  sandbox-uk-account-info-api-v1 offline_access\r\n\r\n\r\n**Production Scopes:** \r\n\r\n\t  accounts offline_access\r\n\r\n### Client Credentials ###\r\n\r\n**Sandbox Scopes:** \r\n\r\n\t  sandbox-uk-account-info-api-v1\r\n\r\n\r\n**Production Scopes:** \r\n\r\n\t  accounts\r\n\r\n\r\nSee more [here](https://developer.nbg.gr/oauth-document)\r\n\r\n## QWAC Certificates\r\n\r\nTPPs are required to present a QWAC certificate during API consumption. The API checks that this certificate has been provided and is valid. In sandbox mode the certificate validations are optional. To validate your certificate in sandbox implementation, please send us your QWAC certificate at developer@nbg.gr and set the HTTP Header **\\\"x-sandbox-qwac-certificate-check\\\"** with the value **\\\"true\\\"** in your requests. \r\n\r\n## SMS Challenge (One Time Password)\r\n\r\nIn order to successfully authorize an Accounts Access you will need to provide the SMS OTP (One Time Password) in the corresponding Accounts Consent UI Screen.\r\n\r\nBy default the SMS OTP will be sent to the mobile number declared upon singing up in the NBG Technology HUB. \r\n\r\n\r\n\r\n## Create your Sandbox\r\n\r\nCreate a new Sandbox application by invoking the POST /sandbox. This call will generate a new Sandbox\r\nwith a unique sandbox-id.\r\n\r\n\r\n__Important!__ Before proceeding save the sandbox id you just created.\r\n\r\n\r\nWhen you create a sandbox, users and sandbox specific data are generated as sample data.\r\n\r\n\r\n## Start Testing\r\n\r\nOnce you have your sandbox-id, you can start invoking the rest of the operations by providing the\r\nmandatory http header **sandbox-id**  and the http headers described below.\r\n\r\n\r\n## Important notes\r\n\r\n\r\n**Request headers**\r\n\r\n\r\nThe following HTTP header parameters are required for every call:\r\n\r\n\r\n1. Authorization. The Auth2 Token\r\n\r\n2. sandbox-id. Your Sandbox ID\r\n\r\n\r\n**Consent**\r\n\r\n\r\nIn order to be able to effectively start using the Endpoints the appropriate Consent needs to be\r\ncreated and set to the 'Authorised' status. \r\n\r\n\r\nIn order to create the Consent you need to at least set the required **permissions** and the **Risk**\r\nsections. \r\n\r\n\r\nOptionally you may set the \r\n\r\n\r\n1. ExpirationDateTime. When the Consent expires \r\n\r\n\r\n2. TransactionFromDateTime. Start Date to retrieve the transactions \r\n\r\n\r\n3. TransactionToDateTime. End Date to retrieve the transactions \r\n\r\n**Not Implemented Endpoints**\r\n\r\nThe following endpoints are not implemented in the API\r\n\r\n1. GET /balances\r\n2. GET /transactions\r\n3. GET /beneficiaries\r\n4. GET /accounts/\\{AccountId\\}/direct-debits\r\n5. GET /direct-debits\r\n6. GET /standing-orders\r\n7. GET /accounts/\\{AccountId\\}/product\r\n8. GET /products\r\n9. GET /accounts/\\{AccountId\\}/offers\r\n10. GET /offers\r\n11. GET /scheduled-payments\r\n12. GET /statements\r\n\r\n\r\n## Error Codes\r\n\r\nThe error codes and their description can be found\r\n[here](https://openbankinguk.github.io/read-write-api-site3/v3.1.5/profiles/read-write-data-api-profile.html#error-response-structure)\r\n\r\n\r\n# UK OPB Implementation Specifics \r\n\r\nBelow you may find more specific information & limitations regarding the implementation followed in the Production API.\r\n\r\n\r\n## Token Endpoint Client Authentication\r\n\r\nAt this point the supported __Client Authentication__ method is \"__Client Secret Basic__\" - usage of \"Client ID\" & \"Client Secret\".\r\n\r\n\r\n## Consent Authorization\r\n\r\nFor a PSU to Authorize a Consent, they need to be redirected to the appropriate Consent UI.\r\n\r\nFor this redirection to take place the TPP needs to follow the Authorization Endpoint by amending the generated \"Consent ID\", like this: https://my.nbg.gr/identity/connect/authorize?consent_id={{consent_id}}&client_id={{client_id}}&scope={{scope}}&redirect_uri={{redirect_uri}}&response_type=code\r\n\r\nOnce the PSU is redirected to the Consent Authorization Screen, they need to enter their IBank (Production) or Developer Portal (Sandbox) Credentials and either Authorize or Reject the Consent.\r\n\r\nAt this point the Consent is binded with the PSU.\r\n\r\n\r\n## Debtor Account\r\nCurrently, only the \"UK.OBIE.IBAN\" scheme is supported.\r\n\r\n\r\n\r\n# Feedback and Questions\r\n\r\nWe would love to hear your feedback and answer your questions. Send us at\r\n[developer@nbg.gr](developer@nbg.gr)\r\n\r\n\r\nCheck out our [Sandbox Postman\r\nCollection](https://github.com/NBG-Developer-Portal/Account-Information-UK-Open-Banking)!\r\n\r\n\r\n________________________________________\r\n\r\nCreated by [**NBG**](https://www.nbg.gr/)."
-  version: v3.1.5
   contact:
+    name: NBG
+    url: https://developer.nbg.gr/
     email: developer@nbg.gr
+  version: v3.1.5
 servers:
-  - url: 'https://apis.nbg.gr/sandbox/uk.openbanking.accountinfo/oauth2/v3.1.5'
+  - url: https://apis.nbg.gr/sandbox/uk.openbanking.accountinfo/oauth2/v3.1.5
     description: Sandbox Server
-  - url: 'https://services.nbg.gr/apis/open-banking/v3.1.5/aisp'
+  - url: https://services.nbg.gr/apis/open-banking/v3.1.5/aisp
     description: Production Server
 paths:
   /account-access-consents:
@@ -17,11 +19,6 @@ paths:
         - AccountAccess
       summary: Create Account Access Consents
       description: Create Account Access Consents
-      security:
-        - Client-Id: []
-          Client-Credentials-Token:
-            - sandbox-uk-account-info-api-v1
-            - accounts
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -174,30 +171,17 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+      security:
+        - Client-Id: [ ]
+          Client-Credentials-Token:
+            - sandbox-uk-account-info-api-v1
+            - accounts
   '/account-access-consents/{consentId}':
     get:
       tags:
         - AccountAccess
       summary: Get Account Access Consents
       description: Get Account Access Consents by Consent ID
-      security:
-        - Client-Id: []
-          Client-Credentials-Token:
-            - sandbox-uk-account-info-api-v1
-            - accounts
       parameters:
         - name: consentId
           in: path
@@ -340,29 +324,16 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+      security:
+        - Client-Id: [ ]
+          Client-Credentials-Token:
+            - sandbox-uk-account-info-api-v1
+            - accounts
     delete:
       tags:
         - AccountAccess
       summary: Delete Account Access Consents
       description: Delete Account Access Consents by Consent ID
-      security:
-        - Client-Id: []
-          Client-Credentials-Token:
-            - sandbox-uk-account-info-api-v1
-            - accounts
       parameters:
         - name: consentId
           in: path
@@ -498,19 +469,11 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+      security:
+        - Client-Id: [ ]
+          Client-Credentials-Token:
+            - sandbox-uk-account-info-api-v1
+            - accounts
   /accounts:
     get:
       tags:
@@ -602,8 +565,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        '404':
-          description: Not Found
         '405':
           description: Method Not Allowed
           headers:
@@ -653,19 +614,8 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+        '404':
+          description: Not Found
   '/accounts/{accountId}':
     get:
       tags:
@@ -814,19 +764,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   /balances:
     get:
       tags:
@@ -976,19 +913,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/balances':
     get:
       tags:
@@ -1137,19 +1061,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   /beneficiaries:
     get:
       tags:
@@ -1299,19 +1210,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/beneficiaries':
     get:
       tags:
@@ -1469,19 +1367,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   /direct-debits:
     get:
       tags:
@@ -1631,19 +1516,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/direct-debits':
     get:
       tags:
@@ -1801,19 +1673,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   /offers:
     get:
       tags:
@@ -1963,19 +1822,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/offers':
     get:
       tags:
@@ -2133,19 +1979,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   /party:
     get:
       tags:
@@ -2295,25 +2128,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/party':
     get:
       tags:
         - Parties
       summary: Get Party
-      description:  Get Party by Account ID
+      description: Get Party by Account ID
       parameters:
         - name: accountId
           in: path
@@ -2465,25 +2285,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/parties':
     get:
       tags:
         - Parties
       summary: Get Parties
-      description:  Get Parties by Account ID
+      description: Get Parties by Account ID
       parameters:
         - name: accountId
           in: path
@@ -2635,19 +2442,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   /products:
     get:
       tags:
@@ -2797,19 +2591,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/product':
     get:
       tags:
@@ -2967,19 +2748,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   /sandbox:
     post:
       tags:
@@ -3010,10 +2778,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
         '403':
@@ -3029,16 +2797,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
     put:
       tags:
         - Sandbox
@@ -3061,10 +2823,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
         '403':
@@ -3082,22 +2844,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
   '/sandbox/{sandboxId}':
     get:
       tags:
         - Sandbox
-      summary: Get Sandbox
-      description: Get Sandbox
+      summary: Export Sandbox
+      description: Export Sandbox
       parameters:
         - name: sandboxId
           in: path
@@ -3122,10 +2878,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
         '403':
@@ -3143,16 +2899,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       tags:
         - Sandbox
@@ -3175,10 +2925,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
         '403':
@@ -3196,16 +2946,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
+                $ref: '#/components/schemas/ErrorResponse'
   /scheduled-payments:
     get:
       tags:
@@ -3355,19 +3099,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/scheduled-payments':
     get:
       tags:
@@ -3525,19 +3256,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   /standing-orders:
     get:
       tags:
@@ -3687,19 +3405,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/standing-orders':
     get:
       tags:
@@ -3857,19 +3562,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   /statements:
     get:
       tags:
@@ -4035,19 +3727,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/statements':
     get:
       tags:
@@ -4221,19 +3900,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/statements/{statementId}':
     get:
       tags:
@@ -4399,25 +4065,12 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/statements/{statementId}/file':
     get:
       tags:
         - Statements
       summary: Get Statements
-      description: Get Statements by Account ID and Statement ID (File)
+      description: Get Statement PDF File by Account ID and Statement ID
       parameters:
         - name: accountId
           in: path
@@ -4566,19 +4219,6 @@ paths:
             application/pdf:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   /transactions:
     get:
       tags:
@@ -4744,19 +4384,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/transactions':
     get:
       tags:
@@ -4930,19 +4557,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
   '/accounts/{accountId}/statements/{statementId}/transactions':
     get:
       tags:
@@ -5108,19 +4722,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OBErrorResponse1'
-        default:
-          description: Error Response
-          headers:
-            x-fapi-interaction-id:
-              description: An RFC4122 UID used as a correlation id
-              schema:
-                type: string
-                description: An RFC4122 UID used as a correlation id
-                format: ''
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/OBErrorResponse1'
 components:
   schemas:
     OBExternalPermissions1Code:
@@ -7632,10 +7233,17 @@ components:
           type: number
           description: Account's available balance
           format: double
+          nullable: true
         ledgerBalance:
           type: number
           description: Account's ledger balance
           format: double
+          nullable: true
+        overdraftLimit:
+          type: number
+          description: Account's overdraft limit
+          format: double
+          nullable: true
       additionalProperties: false
       description: General account information
     SandboxParty:
@@ -7750,6 +7358,10 @@ components:
     SandboxTransaction:
       type: object
       properties:
+        reference:
+          type: string
+          description: Transaction reference
+          nullable: true
         amount:
           type: number
           description: Amount
@@ -7779,6 +7391,18 @@ components:
           type: number
           description: Balance
           format: double
+        relatedAccount:
+          type: string
+          description: Related account
+          nullable: true
+        relatedName:
+          type: string
+          description: Related account
+          nullable: true
+        transactionCode:
+          type: string
+          description: Transaction code
+          nullable: true
       additionalProperties: false
       description: Transaction information
     SandboxBankAccount:
@@ -7856,10 +7480,17 @@ components:
           type: number
           description: Available balance
           format: double
+          nullable: true
         ledgerBalance:
           type: number
           description: Ledger balance
           format: double
+          nullable: true
+        creditLimit:
+          type: number
+          description: Credit limit ( applicable to credit cards )
+          format: double
+          nullable: true
       additionalProperties: false
       description: Sandbox card information
     SandboxCard:
@@ -7927,6 +7558,13 @@ components:
           nullable: true
       additionalProperties: false
       description: Sandbox model
+    ErrorResponse:
+      type: object
+      properties:
+        errorMessage:
+          type: string
+          nullable: true
+      additionalProperties: false
     OBExternalScheduleType1Code:
       enum:
         - Arrival
@@ -8700,13 +8338,13 @@ components:
       type: oauth2
       description: OAuth2 Client Credentials Flow
       flows:
-        clientCredentials: 
+        clientCredentials:
           tokenUrl: https://my.nbg.gr/identity/connect/token
           scopes:
             sandbox-uk-account-info-api-v1: Sandbox Scope
             accounts: Production Scope
 security:
-  - Client-Id: []
+  - Client-Id: [ ]
     Authorization-Code-Token:
       - sandbox-uk-account-info-api-v1 offline_access
       - accounts offline_access
