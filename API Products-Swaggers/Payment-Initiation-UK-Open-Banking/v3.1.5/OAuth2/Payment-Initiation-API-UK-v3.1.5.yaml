@@ -18,6 +18,7 @@ paths:
       tags:
         - DomesticPayments
       summary: Create Domestic Payment Consents
+      description: Create Domestic Payment Consents
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -218,6 +219,7 @@ paths:
       tags:
         - DomesticPayments
       summary: Get Domestic Payment Consents
+      description: Get Domestic Payment Consent by Consent Id
       parameters:
         - name: consentId
           in: path
@@ -394,6 +396,7 @@ paths:
       tags:
         - DomesticPayments
       summary: Get Domestic Payment Consents Funds Confirmation
+      description: Confirm funds for domestic payment by consent id
       parameters:
         - name: consentId
           in: path
@@ -565,6 +568,7 @@ paths:
       tags:
         - DomesticPayments
       summary: Create Domestic Payments
+      description: Create Domestic Payments
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -760,6 +764,7 @@ paths:
       tags:
         - DomesticPayments
       summary: Get Domestic Payments
+      description: Get Domestic Payment by Payment Id
       parameters:
         - name: domesticPaymentId
           in: path
@@ -936,6 +941,7 @@ paths:
       tags:
         - DomesticPayments
       summary: Get Payment Details
+      description: Get Payment Details by Payment Id
       parameters:
         - name: domesticPaymentId
           in: path
@@ -1121,6 +1127,7 @@ paths:
       tags:
         - DomesticScheduledPayments
       summary: Create Domestic Scheduled Payment Consents
+      description: Create Domestic Scheduled Payment Consents
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -1330,6 +1337,7 @@ paths:
       tags:
         - DomesticScheduledPayments
       summary: Get Domestic Scheduled Payment Consents
+      description: Get Domestic Scheduled Payment Consent by Consent Id
       parameters:
         - name: consentId
           in: path
@@ -1515,6 +1523,7 @@ paths:
       tags:
         - DomesticScheduledPayments
       summary: Create Domestic Scheduled Payments
+      description: Create Domestic Scheduled Payment
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -1719,6 +1728,7 @@ paths:
       tags:
         - DomesticScheduledPayments
       summary: Get Domestic Scheduled Payments
+      description: Get Domestic Scheduled Payment by Payment Id
       parameters:
         - name: domesticScheduledPaymentId
           in: path
@@ -1904,6 +1914,7 @@ paths:
       tags:
         - DomesticScheduledPayments
       summary: Get Payment Details
+      description: Get Payment Details by Payment Id
       parameters:
         - name: domesticScheduledPaymentId
           in: path
@@ -2089,6 +2100,7 @@ paths:
       tags:
         - DomesticStandingOrders
       summary: Create Domestic Standing Order Consents
+      description: Create Domestic Standing Order Consents
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -2298,6 +2310,7 @@ paths:
       tags:
         - DomesticStandingOrders
       summary: Get Domestic Standing Order Consents
+      description: Get Domestic Standing Order Consent by Consent Id
       parameters:
         - name: consentId
           in: path
@@ -2483,6 +2496,7 @@ paths:
       tags:
         - DomesticStandingOrders
       summary: Create Domestic Standing Orders
+      description: Create Domestic Standing Orders
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -2687,6 +2701,7 @@ paths:
       tags:
         - DomesticStandingOrders
       summary: Get Domestic Standing Orders
+      description: Get Domestic Standing Order by Order Id
       parameters:
         - name: domesticStandingOrderId
           in: path
@@ -2872,6 +2887,7 @@ paths:
       tags:
         - DomesticStandingOrders
       summary: Get Payment Details
+      description: Get Payment Details by Payment Id
       parameters:
         - name: domesticStandingOrderId
           in: path
@@ -3057,6 +3073,7 @@ paths:
       tags:
         - FilePayments
       summary: Create File Payment Consents
+      description: Create File Payment Consents
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -3266,6 +3283,7 @@ paths:
       tags:
         - FilePayments
       summary: Get File Payment Consents
+      description: Get File Payment Consent by Consent Id
       parameters:
         - name: consentId
           in: path
@@ -3451,6 +3469,7 @@ paths:
       tags:
         - FilePayments
       summary: Create File Payment Consents
+      description: Create File Payment Consent
       parameters:
         - name: consentId
           in: path
@@ -3658,6 +3677,7 @@ paths:
       tags:
         - FilePayments
       summary: Get File Payment Consents
+      description: Get File Payment Consent
       parameters:
         - name: consentId
           in: path
@@ -3855,6 +3875,7 @@ paths:
       tags:
         - FilePayments
       summary: Create File Payments
+      description: Create File Payments
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -4059,6 +4080,7 @@ paths:
       tags:
         - FilePayments
       summary: Get File Payments
+      description: Get File Payment by Payment Id
       parameters:
         - name: filePaymentId
           in: path
@@ -4244,6 +4266,7 @@ paths:
       tags:
         - FilePayments
       summary: Get File Payments
+      description: Get Report File
       parameters:
         - name: filePaymentId
           in: path
@@ -4418,6 +4441,7 @@ paths:
       tags:
         - FilePayments
       summary: Get Payment Details
+      description: Get Payment Details by Payment Id
       parameters:
         - name: filePaymentId
           in: path
@@ -4603,6 +4627,7 @@ paths:
       tags:
         - InternationalPayments
       summary: Create International Payment Consents
+      description: Create International Payment Consent
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -4812,6 +4837,7 @@ paths:
       tags:
         - InternationalPayments
       summary: Get International Payment Consents
+      description: Get International Payment Consent by Consent Id
       parameters:
         - name: consentId
           in: path
@@ -4997,6 +5023,7 @@ paths:
       tags:
         - InternationalPayments
       summary: Get International Payment Consents Funds Confirmation
+      description: Confirm funds for international payment by consent id
       parameters:
         - name: consentId
           in: path
@@ -5177,6 +5204,7 @@ paths:
       tags:
         - InternationalPayments
       summary: Create International Payments
+      description: Create International Payment
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -5381,6 +5409,7 @@ paths:
       tags:
         - InternationalPayments
       summary: Get International Payments
+      description: Get International Payment by Payment Id
       parameters:
         - name: internationalPaymentId
           in: path
@@ -5566,6 +5595,7 @@ paths:
       tags:
         - InternationalPayments
       summary: Get Payment Details
+      description: Get Payment Details by Payment Id
       parameters:
         - name: internationalPaymentId
           in: path
@@ -5751,6 +5781,7 @@ paths:
       tags:
         - InternationalScheduledPayments
       summary: Create International Scheduled Payment Consents
+      description: Create International Scheduled Payment Consents
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -6002,6 +6033,7 @@ paths:
       tags:
         - InternationalScheduledPayments
       summary: Get International Scheduled Payment Consents
+      description: Get International Scheduled Payment Consents
       parameters:
         - name: consentId
           in: path
@@ -6222,6 +6254,7 @@ paths:
       tags:
         - InternationalScheduledPayments
       summary: Get International Scheduled Payment Consents Funds Confirmation
+      description: Get International Scheduled Payment Consents Funds Confirmation
       parameters:
         - name: consentId
           in: path
@@ -6437,6 +6470,7 @@ paths:
       tags:
         - InternationalScheduledPayments
       summary: Create International Scheduled Payments
+      description: Create International Scheduled Payments
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -6683,6 +6717,7 @@ paths:
       tags:
         - InternationalScheduledPayments
       summary: Get International Scheduled Payments
+      description: Get International Scheduled Payments
       parameters:
         - name: internationalScheduledPaymentId
           in: path
@@ -6903,6 +6938,7 @@ paths:
       tags:
         - InternationalScheduledPayments
       summary: Get Payment Details
+      description: Get Payment Details by Payment Id
       parameters:
         - name: internationalScheduledPaymentId
           in: path
@@ -7123,6 +7159,7 @@ paths:
       tags:
         - InternationalStandingOrders
       summary: Create International Standing Order Consents
+      description: Create International Standing Order Consents
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -7332,6 +7369,7 @@ paths:
       tags:
         - InternationalStandingOrders
       summary: Get International Standing Order Consents
+      description: Get International Standing Order Consents
       parameters:
         - name: consentId
           in: path
@@ -7517,6 +7555,7 @@ paths:
       tags:
         - InternationalStandingOrders
       summary: Create International Standing Orders
+      description: Create International Standing Orders
       parameters:
         - name: x-fapi-auth-date
           in: header
@@ -7721,6 +7760,7 @@ paths:
       tags:
         - InternationalStandingOrders
       summary: Get International Standing Orders
+      description: Get International Standing Orders
       parameters:
         - name: internationalStandingOrderId
           in: path
@@ -7906,6 +7946,7 @@ paths:
       tags:
         - InternationalStandingOrders
       summary: Get Payment Details
+      description: Get Payment Details by Payment Id
       parameters:
         - name: internationalStandingOrderId
           in: path
@@ -8091,6 +8132,7 @@ paths:
       tags:
         - Sandbox
       summary: Create Sandbox
+      description: Create Sandbox
       requestBody:
         description: SandboxRequest
         content:
@@ -8142,6 +8184,7 @@ paths:
       tags:
         - Sandbox
       summary: Import Sandbox
+      description: Import Sandbox
       requestBody:
         description: Sandbox
         content:
@@ -8188,7 +8231,8 @@ paths:
     get:
       tags:
         - Sandbox
-      summary: Get Sandbox
+      summary: Export Sandbox
+      description: Export Sandbox
       parameters:
         - name: sandboxId
           in: path
@@ -8242,6 +8286,7 @@ paths:
       tags:
         - Sandbox
       summary: Delete Sandbox
+      description: Delete Sandbox
       parameters:
         - name: sandboxId
           in: path
