@@ -18,6 +18,7 @@ paths:
       tags:
         - 1. SEPA Payment Initiation
       summary: Initiates a sepa credit transfer
+      description: Initiates a sepa credit transfer
       operationId: InitiateSepaCreditTransfer
       parameters:
         - name: X-Request-ID
@@ -145,6 +146,7 @@ paths:
       tags:
         - 1. SEPA Payment Initiation
       summary: Retrieves a sepa credit transfer
+      description: Retrieves a sepa credit transfer
       operationId: GetSepaCreditTransfer
       parameters:
         - name: paymentId
@@ -265,6 +267,7 @@ paths:
       tags:
         - 1. SEPA Payment Initiation
       summary: Retrieves a sepa credit transfer status
+      description: Retrieves a sepa credit transfer status
       operationId: GetSepaCreditTransferStatus
       parameters:
         - name: paymentId
@@ -385,6 +388,7 @@ paths:
       tags:
         - 2. Periodical SEPA Payment Initiation
       summary: Initiates a periodical sepa credit transfer
+      description: Initiates a periodical sepa credit transfer
       operationId: InitiatePeriodicalSepaCreditTransfer
       parameters:
         - name: X-Request-ID
@@ -512,6 +516,7 @@ paths:
       tags:
         - 2. Periodical SEPA Payment Initiation
       summary: Retrieves a periodical sepa credit transfer
+      description: Retrieves a periodical sepa credit transfer
       operationId: GetPeriodicalSepaCreditTransfer
       parameters:
         - name: paymentId
@@ -632,6 +637,7 @@ paths:
       tags:
         - 2. Periodical SEPA Payment Initiation
       summary: Retrieves a periodical sepa credit transfer status
+      description: Retrieves a periodical sepa credit transfer status
       operationId: GetPeriodicalSepaCreditTransferStatus
       parameters:
         - name: paymentId
@@ -752,6 +758,7 @@ paths:
       tags:
         - 3. Cross Border Payment Initiation
       summary: Initiates a cross border credit transfer
+      description: Initiates a cross border credit transfer
       operationId: InitiateCrossBorderCreditTransfer
       parameters:
         - name: X-Request-ID
@@ -879,6 +886,7 @@ paths:
       tags:
         - 3. Cross Border Payment Initiation
       summary: Retrieves a cross border credit transfer
+      description: Retrieves a cross border credit transfer
       operationId: GetCrossBorderCreditTransfer
       parameters:
         - name: paymentId
@@ -999,6 +1007,7 @@ paths:
       tags:
         - 3. Cross Border Payment Initiation
       summary: Retrieves a cross border credit transfer status
+      description: Retrieves a cross border credit transfer status
       operationId: GetCrossBorderCreditTransferStatus
       parameters:
         - name: paymentId
@@ -1119,6 +1128,7 @@ paths:
       tags:
         - 4. Periodical Cross Border Payment Initiation
       summary: Initiates a periodical cross border credit transfer
+      description: Initiates a periodical cross border credit transfer
       operationId: InitiatePeriodicalCrossBorderCreditTransfer
       parameters:
         - name: X-Request-ID
@@ -1246,6 +1256,7 @@ paths:
       tags:
         - 4. Periodical Cross Border Payment Initiation
       summary: Retrieves a periodical cross border credit transfer
+      description: Retrieves a periodical cross border credit transfer
       operationId: GetPeriodicalCrossBorderCreditTransfer
       parameters:
         - name: paymentId
@@ -1366,6 +1377,7 @@ paths:
       tags:
         - 4. Periodical Cross Border Payment Initiation
       summary: Retrieves a periodical cross border credit transfer status
+      description: Retrieves a periodical cross border credit transfer status
       operationId: GetPeriodicalCrossBorderCreditTransferStatus
       parameters:
         - name: paymentId
@@ -1486,6 +1498,7 @@ paths:
       tags:
         - 5. Bulk Payment Initiation
       summary: Initiates bulk pain001 sepa credit transfers
+      description: Initiates bulk pain001 sepa credit transfers
       operationId: InitiateBulkPainSepaCreditTransfer
       parameters:
         - name: X-Request-ID
@@ -1616,6 +1629,7 @@ paths:
       tags:
         - 5. Bulk Payment Initiation
       summary: Retrieves bulk pain sepa credit transfer
+      description: Retrieves bulk pain sepa credit transfer
       operationId: GetBulkPainSepaCreditTransfers
       parameters:
         - name: paymentId
@@ -1736,6 +1750,7 @@ paths:
       tags:
         - 5. Bulk Payment Initiation
       summary: Retrieves bulk pain sepa credit transfer status
+      description: Retrieves bulk pain sepa credit transfer status
       operationId: GetBulkPainSepaCreditTransfersStatus
       parameters:
         - name: paymentId
