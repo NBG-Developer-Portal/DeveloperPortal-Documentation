@@ -2341,20 +2341,20 @@ components:
       description: Category of the TPP message category.
     MessageCode400PIS:
       enum:
-        - FORMAT_ERROR
+        - MISSING_HEADER
         - PARAMETER_NOT_CONSISTENT
-        - PARAMETER_NOT_SUPPORTED
-        - SERVICE_INVALID
-        - RESOURCE_UNKNOWN
-        - RESOURCE_EXPIRED
-        - RESOURCE_BLOCKED
-        - TIMESTAMP_INVALID
-        - PERIOD_INVALID
-        - SCA_METHOD_UNKNOWN
-        - SCA_INVALID
-        - CONSENT_UNKNOWN
-        - PAYMENT_FAILED
+        - INSUFFICIENT_FUNDS
         - EXECUTION_DATE_INVALID
+        - INVALID_USER_ACCOUNT
+        - INVALID_CHARGE_BEARER
+        - INVALID_TOTAL_AMOUNT
+        - INVALID_TRANSACTIONS_NUMBER
+        - INVALID_PAYMENTS_NUMBER
+        - INVALID_CURRENCY
+        - INVALID_FREQUENCY
+        - INVALID_IBAN
+        - NON_NBG_IBAN
+        - INVALID_PRIORITY
       type: string
       description: Message codes defined for PIS for HTTP Error code 400 (BAD_REQUEST).
     TppMessage400PIS:
@@ -2392,7 +2392,6 @@ components:
     MessageCode404PIS:
       enum:
         - RESOURCE_UNKNOWN
-        - PRODUCT_UNKNOWN
       type: string
       description: Message codes defined for PIS for HTTP Error code 404 (NOT FOUND).
     TppMessage404PIS:
