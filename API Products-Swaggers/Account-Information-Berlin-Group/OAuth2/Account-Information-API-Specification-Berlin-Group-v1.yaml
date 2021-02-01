@@ -54,511 +54,6 @@ paths:
             schema:
               $ref: '#/components/schemas/AccountAccessConsentRequest'
       responses:
-        '201':
-          description: Account Access Consent Created
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-            Location:
-              description: Location of the created resource.
-              schema:
-                type: string
-                description: Location of the created resource.
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountAccessConsentResponse'
-        '400':
-          description: Bad request
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error400NGAIS'
-        '401':
-          description: Unauthorized
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '403':
-          description: Forbidden
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '405':
-          description: Method Not Allowed
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '406':
-          description: Not Acceptable
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '415':
-          description: Unsupported Media Type
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '500':
-          description: Internal Server Error
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-      security:
-        - Client-Id: [ ]
-          Client-Credentials-Token:
-            - sandbox-bg-ob-accounts
-            - bg-ob-accounts
-  '/consents/{consentId}':
-    get:
-      tags:
-        - Account Access Consent
-      summary: Retrieves information for an account access consent
-      description: 'Returns the content of an account information consent object.  This is returning the data for the TPP especially in cases,  where the consent was directly managed between ASPSP and PSU e.g. in a redirect SCA Approach.'
-      operationId: GetAccountAccessConsentInformation
-      parameters:
-        - name: consentId
-          in: path
-          description: Consent Id
-          required: true
-          schema:
-            type: string
-            description: Consent Id
-            nullable: true
-        - name: X-Request-ID
-          in: header
-          description: 'ID of the request, unique to the call, as determined by the initiating party.'
-          required: true
-          schema:
-            type: string
-            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
-        - name: PSU-IP-Address
-          in: header
-          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
-          schema:
-            type: string
-            example: 192.168.8.78
-        - name: sandbox-id
-          in: header
-          description: The unique id of the sandbox to be used
-          required: true
-          schema:
-            type: string
-            example: my-accounts-sandbox
-      responses:
-        '200':
-          description: Account Access Consent Information Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountAccessConsentInformationResponse'
-        '400':
-          description: Bad request
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error400NGAIS'
-        '401':
-          description: Unauthorized
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '403':
-          description: Forbidden
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '404':
-          description: Not Found
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error404NGAIS'
-        '405':
-          description: Method Not Allowed
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '406':
-          description: Not Acceptable
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '500':
-          description: Internal Server Error
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-    delete:
-      tags:
-        - Account Access Consent
-      summary: Deletes an account access consent
-      description: The TPP can delete an account information consent object if needed.
-      operationId: DeleteAccountAccessConsent
-      parameters:
-        - name: consentId
-          in: path
-          description: Consent Id
-          required: true
-          schema:
-            type: string
-            description: Consent Id
-            nullable: true
-        - name: X-Request-ID
-          in: header
-          description: 'ID of the request, unique to the call, as determined by the initiating party.'
-          required: true
-          schema:
-            type: string
-            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
-        - name: PSU-IP-Address
-          in: header
-          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
-          schema:
-            type: string
-            example: 192.168.8.78
-        - name: sandbox-id
-          in: header
-          description: The unique id of the sandbox to be used
-          required: true
-          schema:
-            type: string
-            example: my-accounts-sandbox
-      responses:
-        '204':
-          description: No Content
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '400':
-          description: Bad request
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error400NGAIS'
-        '401':
-          description: Unauthorized
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '403':
-          description: Forbidden
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '404':
-          description: Not Found
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error404NGAIS'
-        '405':
-          description: Method Not Allowed
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '406':
-          description: Not Acceptable
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '500':
-          description: Internal Server Error
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-  '/consents/{consentId}/status':
-    get:
-      tags:
-        - Account Access Consent
-      summary: Retrieves status for an account access consent
-      description: Read the status of an account information consent resource.
-      operationId: GetAccountAccessConsentStatus
-      parameters:
-        - name: consentId
-          in: path
-          description: Consent Id
-          required: true
-          schema:
-            type: string
-            description: Consent Id
-            nullable: true
-        - name: X-Request-ID
-          in: header
-          description: 'ID of the request, unique to the call, as determined by the initiating party.'
-          required: true
-          schema:
-            type: string
-            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
-        - name: PSU-IP-Address
-          in: header
-          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
-          schema:
-            type: string
-            example: 192.168.8.78
-        - name: sandbox-id
-          in: header
-          description: The unique id of the sandbox to be used
-          required: true
-          schema:
-            type: string
-            example: my-accounts-sandbox
-      responses:
-        '200':
-          description: Account Access Consent Status Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountAccessConsentsStatusResponse'
-        '400':
-          description: Bad request
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error400NGAIS'
-        '401':
-          description: Unauthorized
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '403':
-          description: Forbidden
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '404':
-          description: Not Found
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error404NGAIS'
-        '405':
-          description: Method Not Allowed
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '406':
-          description: Not Acceptable
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-        '500':
-          description: Internal Server Error
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-  /accounts:
-    get:
-      tags:
-        - Accounts
-      summary: Read account list
-      description: "Read the identifiers of the available payment account together with  booking balance information, depending on the consent granted.<br /><br />\r\nIt is assumed that a consent of the PSU to this access is already given and stored on the ASPSP system.\r\nThe addressed list of accounts depends then on the PSU ID and the stored consent addressed by consentId, respectively the OAuth2 access token.<br /><br />\r\nReturns all identifiers of the accounts, to which an account access has been granted to through  the /consents endpoint by the PSU.  In addition, relevant information about the accounts and hyperlinks to corresponding account  information resources are provided if a related consent has been already granted.<br /><br />\r\n**Remark:** Note that the /consents endpoint optionally offers to grant an access on all available  payment accounts of a PSU.  In this case, this endpoint will deliver the information about all available payment accounts  of the PSU at this ASPSP."
-      operationId: GetAccountList
-      parameters:
-        - name: withBalance
-          in: query
-          description: 'If contained, this function reads the list of accessible payment accounts including the booking balance,  if granted by the PSU in the related consent and available by the ASPSP.  This parameter might be ignored by the ASPSP.'
-          schema:
-            type: boolean
-            description: 'If contained, this function reads the list of accessible payment accounts including the booking balance,  if granted by the PSU in the related consent and available by the ASPSP.  This parameter might be ignored by the ASPSP.'
-            nullable: true
-        - name: X-Request-ID
-          in: header
-          description: 'ID of the request, unique to the call, as determined by the initiating party.'
-          required: true
-          schema:
-            type: string
-            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
-        - name: Consent-ID
-          in: header
-          description: Acquired consent value.
-          required: true
-          schema:
-            type: string
-            example: 24457C13-CFBF-40C4-8E23-669BC437A676
-        - name: PSU-IP-Address
-          in: header
-          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
-          schema:
-            type: string
-            example: 192.168.8.78
-        - name: sandbox-id
-          in: header
-          description: The unique id of the sandbox to be used
-          required: true
-          schema:
-            type: string
-            example: my-accounts-sandbox
-      responses:
-        '200':
-          description: Accounts
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountList'
         '400':
           description: Bad request
           headers:
@@ -634,8 +129,560 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '429':
-          description: Too Many Requests
+        '201':
+          description: Account Access Consent Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountAccessConsentResponse'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+      security:
+        - Client-Id: [ ]
+          Client-Credentials-Token:
+            - sandbox-bg-ob-accounts
+            - bg-ob-accounts
+  '/consents/{consentId}':
+    get:
+      tags:
+        - Account Access Consent
+      summary: Retrieves information for an account access consent
+      description: 'Returns the content of an account information consent object.  This is returning the data for the TPP especially in cases,  where the consent was directly managed between ASPSP and PSU e.g. in a redirect SCA Approach.'
+      operationId: GetAccountAccessConsentInformation
+      parameters:
+        - name: consentId
+          in: path
+          description: Consent Id
+          required: true
+          schema:
+            type: string
+            description: Consent Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-accounts-sandbox
+      responses:
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGAIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403NGAIS'
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGAIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '200':
+          description: Account Access Consent Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountAccessConsentInformationResponse'
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
+    delete:
+      tags:
+        - Account Access Consent
+      summary: Deletes an account access consent
+      description: The TPP can delete an account information consent object if needed.
+      operationId: DeleteAccountAccessConsent
+      parameters:
+        - name: consentId
+          in: path
+          description: Consent Id
+          required: true
+          schema:
+            type: string
+            description: Consent Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-accounts-sandbox
+      responses:
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGAIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403NGAIS'
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGAIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '204':
+          description: No Content
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
+  '/consents/{consentId}/status':
+    get:
+      tags:
+        - Account Access Consent
+      summary: Retrieves status for an account access consent
+      description: Read the status of an account information consent resource.
+      operationId: GetAccountAccessConsentStatus
+      parameters:
+        - name: consentId
+          in: path
+          description: Consent Id
+          required: true
+          schema:
+            type: string
+            description: Consent Id
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-accounts-sandbox
+      responses:
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGAIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403NGAIS'
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGAIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '200':
+          description: Account Access Consent Status Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountAccessConsentsStatusResponse'
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
+  /accounts:
+    get:
+      tags:
+        - Accounts
+      summary: Read account list
+      description: "Read the identifiers of the available payment account together with  booking balance information, depending on the consent granted.<br /><br />\r\nIt is assumed that a consent of the PSU to this access is already given and stored on the ASPSP system.\r\nThe addressed list of accounts depends then on the PSU ID and the stored consent addressed by consentId, respectively the OAuth2 access token.<br /><br />\r\nReturns all identifiers of the accounts, to which an account access has been granted to through  the /consents endpoint by the PSU.  In addition, relevant information about the accounts and hyperlinks to corresponding account  information resources are provided if a related consent has been already granted.<br /><br />\r\n**Remark:** Note that the /consents endpoint optionally offers to grant an access on all available  payment accounts of a PSU.  In this case, this endpoint will deliver the information about all available payment accounts  of the PSU at this ASPSP."
+      operationId: GetAccountList
+      parameters:
+        - name: withBalance
+          in: query
+          description: 'If contained, this function reads the list of accessible payment accounts including the booking balance,  if granted by the PSU in the related consent and available by the ASPSP.  This parameter might be ignored by the ASPSP.'
+          schema:
+            type: boolean
+            description: 'If contained, this function reads the list of accessible payment accounts including the booking balance,  if granted by the PSU in the related consent and available by the ASPSP.  This parameter might be ignored by the ASPSP.'
+            nullable: true
+        - name: X-Request-ID
+          in: header
+          description: 'ID of the request, unique to the call, as determined by the initiating party.'
+          required: true
+          schema:
+            type: string
+            example: 88579F09-1FE5-4286-9DE4-4EE5270A3667
+        - name: Consent-ID
+          in: header
+          description: Acquired consent value.
+          required: true
+          schema:
+            type: string
+            example: 24457C13-CFBF-40C4-8E23-669BC437A676
+        - name: PSU-IP-Address
+          in: header
+          description: 'The forwarded IP Address header field consists of the corresponding http request IP Address field between PSU and TPP. If not available, the TPP shall use the IP Address used by the TPP when submitting this request.'
+          schema:
+            type: string
+            example: 192.168.8.78
+        - name: sandbox-id
+          in: header
+          description: The unique id of the sandbox to be used
+          required: true
+          schema:
+            type: string
+            example: my-accounts-sandbox
+      responses:
+        '400':
+          description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400NGAIS'
+        '401':
+          description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '403':
+          description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403NGAIS'
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGAIS'
+        '405':
+          description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '406':
+          description: Not Acceptable
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '500':
+          description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '200':
+          description: Accounts
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountList'
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
   '/accounts/{accountId}':
     get:
       tags:
@@ -687,19 +734,6 @@ paths:
             type: string
             example: my-accounts-sandbox
       responses:
-        '200':
-          description: Accounts
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountDetailsResponse'
         '400':
           description: Bad request
           headers:
@@ -775,8 +809,24 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '429':
-          description: Too Many Requests
+        '200':
+          description: Accounts
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetailsResponse'
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
   '/accounts/{accountId}/balances':
     get:
       tags:
@@ -821,19 +871,6 @@ paths:
             type: string
             example: my-accounts-sandbox
       responses:
-        '200':
-          description: Accounts
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BalanceDetailsResponse'
         '400':
           description: Bad request
           headers:
@@ -909,8 +946,24 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '429':
-          description: Too Many Requests
+        '200':
+          description: Accounts
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceDetailsResponse'
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
   '/card-accounts/{accountId}/balances':
     get:
       tags:
@@ -955,19 +1008,6 @@ paths:
             type: string
             example: my-accounts-sandbox
       responses:
-        '200':
-          description: Accounts
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BalanceDetailsResponse'
         '400':
           description: Bad request
           headers:
@@ -1043,8 +1083,24 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '429':
-          description: Too Many Requests
+        '200':
+          description: Accounts
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceDetailsResponse'
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
   /card-accounts:
     get:
       tags:
@@ -1081,19 +1137,6 @@ paths:
             type: string
             example: my-accounts-sandbox
       responses:
-        '200':
-          description: Accounts
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CardAccountList'
         '400':
           description: Bad request
           headers:
@@ -1169,8 +1212,24 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '429':
-          description: Too Many Requests
+        '200':
+          description: Accounts
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardAccountList'
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
   '/card-accounts/{accountId}':
     get:
       tags:
@@ -1215,19 +1274,6 @@ paths:
             type: string
             example: my-accounts-sandbox
       responses:
-        '200':
-          description: Accounts
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CardDetailsResponse'
         '400':
           description: Bad request
           headers:
@@ -1303,13 +1349,30 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '429':
-          description: Too Many Requests
+        '200':
+          description: Accounts
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardDetailsResponse'
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
   /sandbox:
     post:
       tags:
         - Sandbox Operations
       summary: Create Sandbox
+      description: Create Sandbox
       requestBody:
         description: SandboxRequest
         content:
@@ -1320,17 +1383,15 @@ paths:
             schema:
               $ref: '#/components/schemas/SandboxRequest'
       responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Sandbox'
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Sandbox'
         '400':
           description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1340,16 +1401,65 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '403':
           description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGAIS'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404NGAIS'
         '405':
           description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '406':
           description: Not Acceptable
-        '415':
-          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '500':
           description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1357,10 +1467,47 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '201':
+          description: Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
     put:
       tags:
         - Sandbox Operations
       summary: Import Sandbox
+      description: Import Sandbox
       requestBody:
         description: Sandbox
         content:
@@ -1371,10 +1518,15 @@ paths:
             schema:
               $ref: '#/components/schemas/Sandbox'
       responses:
-        '204':
-          description: No Content
         '400':
           description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1384,18 +1536,58 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '403':
           description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '404':
           description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '405':
           description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '406':
           description: Not Acceptable
-        '415':
-          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '500':
           description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1403,11 +1595,35 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '204':
+          description: No Content
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '415':
+          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
   '/sandbox/{sandboxId}':
     get:
       tags:
         - Sandbox Operations
       summary: Export Sandbox
+      description: Export Sandbox
       parameters:
         - name: sandboxId
           in: path
@@ -1418,17 +1634,15 @@ paths:
             description: Sandbox Id
             nullable: true
       responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Sandbox'
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Sandbox'
         '400':
           description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1438,18 +1652,58 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '403':
           description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '404':
           description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '405':
           description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '406':
           description: Not Acceptable
-        '415':
-          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '500':
           description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1457,10 +1711,32 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
     delete:
       tags:
         - Sandbox Operations
       summary: Delete Sandbox
+      description: Delete Sandbox
       parameters:
         - name: sandboxId
           in: path
@@ -1471,10 +1747,15 @@ paths:
             description: Sandbox Id
             nullable: true
       responses:
-        '204':
-          description: No Content
         '400':
           description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1484,18 +1765,58 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '403':
           description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '404':
           description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '405':
           description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '406':
           description: Not Acceptable
-        '415':
-          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '500':
           description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1503,6 +1824,20 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '204':
+          description: No Content
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
   '/accounts/{accountId}/transactions':
     get:
       tags:
@@ -1570,19 +1905,6 @@ paths:
             type: string
             example: my-accounts-sandbox
       responses:
-        '200':
-          description: Accounts
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccountTransactionsResponse'
         '400':
           description: Bad request
           headers:
@@ -1658,8 +1980,24 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '429':
-          description: Too Many Requests
+        '200':
+          description: Accounts
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountTransactionsResponse'
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
   '/card-accounts/{accountId}/transactions':
     get:
       tags:
@@ -1727,19 +2065,6 @@ paths:
             type: string
             example: my-accounts-sandbox
       responses:
-        '200':
-          description: Accounts
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CardTransactionsResponse'
         '400':
           description: Bad request
           headers:
@@ -1815,8 +2140,24 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '429':
-          description: Too Many Requests
+        '200':
+          description: Accounts
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardTransactionsResponse'
+      security:
+        - Client-Id: [ ]
+          Authorization-Code-Token:
+            - sandbox-bg-ob-accounts offline_access
+            - bg-ob-accounts offline_access
 components:
   schemas:
     AccountReference:
@@ -1903,53 +2244,6 @@ components:
           example: false
       additionalProperties: false
       description: Content of the body of a consent request.
-    AccountAccessConsentStatus:
-      enum:
-        - received
-        - rejected
-        - valid
-        - revokedByPsu
-        - expired
-        - terminatedByTpp
-        - partiallyAuthorised
-      type: string
-      description: "This is the overall lifecycle status of the consent.\r\nValid values are:\r\n- 'received': The consent data have been received and are technically correct. The data is not authorised yet.\r\n- 'rejected': The consent data have been rejected e.g. since no successful authorisation has taken place.\r\n- 'valid': The consent is accepted and valid for GET account data calls and others as specified in the consent object.\r\n- 'revokedByPsu': The consent has been revoked by the PSU towards the ASPSP.\r\n- 'expired': The consent expired.\r\n- 'terminatedByTpp': The corresponding TPP has terminated the consent by applying the DELETE method to the consent resource.\r\n- 'partiallyAuthorised': The consent is due to a multi-level authorisation, some but not all mandated authorisations have been performed yet.\r\nThe ASPSP might add further codes. These codes then shall be contained in the ASPSP's documentation of the XS2A interface  and has to be added to this API definition as well."
-    HrefType:
-      type: object
-      properties:
-        href:
-          type: string
-          description: ''
-          nullable: true
-      additionalProperties: false
-      description: Link to a resource.
-    LinksConsent:
-      type: object
-      properties:
-        scaRedirect:
-          $ref: '#/components/schemas/HrefType'
-        self:
-          $ref: '#/components/schemas/HrefType'
-        status:
-          $ref: '#/components/schemas/HrefType'
-      additionalProperties: false
-      description: "A list of hyperlinks to be recognised by the TPP. The actual hyperlinks used in the response depend on the dynamical decisions of the ASPSP when processing the request.\r\n<br /><b>Remark:</b> All links can be relative or full links, to be decided by the ASPSP.<br />\r\nType of links admitted in this response, (further links might be added for ASPSP defined extensions):\r\n- 'scaRedirect': In case of an SCA Redirect Approach, the ASPSP is transmitting the link to which to redirect the PSU browser.\r\n- 'self': The link to the payment initiation resource created by this request.This link can be used to retrieve the resource data.\r\n- 'status': The link to retrieve the transaction status of the payment initiation."
-    AccountAccessConsentResponse:
-      required:
-        - _links
-        - consentId
-        - consentStatus
-      type: object
-      properties:
-        consentId:
-          type: string
-          description: ID of the corresponding consent object as returned by an account information consent request
-        consentStatus:
-          $ref: '#/components/schemas/AccountAccessConsentStatus'
-        _links:
-          $ref: '#/components/schemas/LinksConsent'
-      additionalProperties: false
-      description: Content of the body of a consent request.
     TppMessageCategory:
       enum:
         - ERROR
@@ -2004,6 +2298,128 @@ components:
           nullable: true
       additionalProperties: false
       description: NextGenPSD2 specific definition of reporting error information in case of a HTTP error code 400.
+    MessageCode403AIS:
+      enum:
+        - CONSENT_UNKNOWN
+        - SERVICE_BLOCKED
+        - RESOURCE_UNKNOWN
+        - RESOURCE_EXPIRED
+      type: string
+      description: Message codes defined for AIS for HTTP Error code 403 (FORBIDDEN).
+    TppMessage403AIS:
+      required:
+        - category
+        - code
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/TppMessageCategory'
+        code:
+          $ref: '#/components/schemas/MessageCode403AIS'
+        path:
+          type: string
+          description: ''
+          nullable: true
+        text:
+          type: string
+          description: Additional explaining text to the TPP
+          nullable: true
+      additionalProperties: false
+      description: ''
+    Error403NGAIS:
+      type: object
+      properties:
+        tppMessages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TppMessage403AIS'
+          description: Gets or Sets TppMessages
+          nullable: true
+      additionalProperties: false
+      description: NextGenPSD2 specific definition of reporting error information in case of a HTTP error code 403.
+    MessageCode404AIS:
+      enum:
+        - RESOURCE_UNKNOWN
+      type: string
+      description: Message codes defined for AIS for HTTP Error code 404 (NOT FOUND).
+    TppMessage404AIS:
+      required:
+        - category
+        - code
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/TppMessageCategory'
+        code:
+          $ref: '#/components/schemas/MessageCode404AIS'
+        path:
+          type: string
+          description: ''
+          nullable: true
+        text:
+          type: string
+          description: Additional explaining text to the TPP
+          nullable: true
+      additionalProperties: false
+      description: ''
+    Error404NGAIS:
+      type: object
+      properties:
+        tppMessages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TppMessage404AIS'
+          description: Gets or Sets TppMessages
+          nullable: true
+      additionalProperties: false
+      description: NextGenPSD2 specific definition of reporting error information in case of a HTTP error code 400.
+    AccountAccessConsentStatus:
+      enum:
+        - received
+        - rejected
+        - valid
+        - revokedByPsu
+        - expired
+        - terminatedByTpp
+        - partiallyAuthorised
+      type: string
+      description: "This is the overall lifecycle status of the consent.\r\nValid values are:\r\n- 'received': The consent data have been received and are technically correct. The data is not authorised yet.\r\n- 'rejected': The consent data have been rejected e.g. since no successful authorisation has taken place.\r\n- 'valid': The consent is accepted and valid for GET account data calls and others as specified in the consent object.\r\n- 'revokedByPsu': The consent has been revoked by the PSU towards the ASPSP.\r\n- 'expired': The consent expired.\r\n- 'terminatedByTpp': The corresponding TPP has terminated the consent by applying the DELETE method to the consent resource.\r\n- 'partiallyAuthorised': The consent is due to a multi-level authorisation, some but not all mandated authorisations have been performed yet.\r\nThe ASPSP might add further codes. These codes then shall be contained in the ASPSP's documentation of the XS2A interface  and has to be added to this API definition as well."
+    HrefType:
+      type: object
+      properties:
+        href:
+          type: string
+          description: ''
+          nullable: true
+      additionalProperties: false
+      description: Link to a resource.
+    LinksConsent:
+      type: object
+      properties:
+        scaRedirect:
+          $ref: '#/components/schemas/HrefType'
+        self:
+          $ref: '#/components/schemas/HrefType'
+        status:
+          $ref: '#/components/schemas/HrefType'
+      additionalProperties: false
+      description: "A list of hyperlinks to be recognised by the TPP. The actual hyperlinks used in the response depend on the dynamical decisions of the ASPSP when processing the request.\r\n<br /><b>Remark:</b> All links can be relative or full links, to be decided by the ASPSP.<br />\r\nType of links admitted in this response, (further links might be added for ASPSP defined extensions):\r\n- 'scaRedirect': In case of an SCA Redirect Approach, the ASPSP is transmitting the link to which to redirect the PSU browser.\r\n- 'self': The link to the payment initiation resource created by this request.This link can be used to retrieve the resource data.\r\n- 'status': The link to retrieve the transaction status of the payment initiation."
+    AccountAccessConsentResponse:
+      required:
+        - _links
+        - consentId
+        - consentStatus
+      type: object
+      properties:
+        consentId:
+          type: string
+          description: ID of the corresponding consent object as returned by an account information consent request
+        consentStatus:
+          $ref: '#/components/schemas/AccountAccessConsentStatus'
+        _links:
+          $ref: '#/components/schemas/LinksConsent'
+      additionalProperties: false
+      description: Content of the body of a consent request.
     AccountAccessConsentInformationResponse:
       required:
         - access
@@ -2042,42 +2458,6 @@ components:
           format: date-time
       additionalProperties: false
       description: Body of the JSON response for a successfull get consent request.
-    MessageCode404AIS:
-      enum:
-        - RESOURCE_UNKNOWN
-      type: string
-      description: Message codes defined for AIS for HTTP Error code 404 (NOT FOUND).
-    TppMessage404AIS:
-      required:
-        - category
-        - code
-      type: object
-      properties:
-        category:
-          $ref: '#/components/schemas/TppMessageCategory'
-        code:
-          $ref: '#/components/schemas/MessageCode404AIS'
-        path:
-          type: string
-          description: ''
-          nullable: true
-        text:
-          type: string
-          description: Additional explaining text to the TPP
-          nullable: true
-      additionalProperties: false
-      description: ''
-    Error404NGAIS:
-      type: object
-      properties:
-        tppMessages:
-          type: array
-          items:
-            $ref: '#/components/schemas/TppMessage404AIS'
-          description: Gets or Sets TppMessages
-          nullable: true
-      additionalProperties: false
-      description: NextGenPSD2 specific definition of reporting error information in case of a HTTP error code 400.
     AccountAccessConsentsStatusResponse:
       required:
         - consentId
@@ -2229,45 +2609,6 @@ components:
           description: ''
       additionalProperties: false
       description: List of accounts with details.
-    MessageCode403AIS:
-      enum:
-        - CONSENT_UNKNOWN
-        - SERVICE_BLOCKED
-        - RESOURCE_UNKNOWN
-        - RESOURCE_EXPIRED
-      type: string
-      description: Message codes defined for AIS for HTTP Error code 403 (FORBIDDEN).
-    TppMessage403AIS:
-      required:
-        - category
-        - code
-      type: object
-      properties:
-        category:
-          $ref: '#/components/schemas/TppMessageCategory'
-        code:
-          $ref: '#/components/schemas/MessageCode403AIS'
-        path:
-          type: string
-          description: ''
-          nullable: true
-        text:
-          type: string
-          description: Additional explaining text to the TPP
-          nullable: true
-      additionalProperties: false
-      description: ''
-    Error403NGAIS:
-      type: object
-      properties:
-        tppMessages:
-          type: array
-          items:
-            $ref: '#/components/schemas/TppMessage403AIS'
-          description: Gets or Sets TppMessages
-          nullable: true
-      additionalProperties: false
-      description: NextGenPSD2 specific definition of reporting error information in case of a HTTP error code 403.
     AccountDetailsResponse:
       required:
         - account
@@ -2333,6 +2674,12 @@ components:
           $ref: '#/components/schemas/AccountStatus'
         usage:
           $ref: '#/components/schemas/UsageType'
+        details:
+          maxLength: 500
+          minLength: 1
+          type: string
+          description: "Specifications that might be provided by the ASPSP:\r\ncharacteristics of the account,\r\ncharacteristics of the relevant card"
+          nullable: true
         creditLimit:
           $ref: '#/components/schemas/Amount'
         balances:
@@ -2377,6 +2724,13 @@ components:
           description: Sandbox id
       additionalProperties: false
       description: Sandbox request
+    ErrorResponse:
+      type: object
+      properties:
+        errorMessage:
+          type: string
+          nullable: true
+      additionalProperties: false
     SandboxRetryCacheEntry:
       type: object
       properties:
@@ -2726,13 +3080,6 @@ components:
           nullable: true
       additionalProperties: false
       description: Sandbox model
-    ErrorResponse:
-      type: object
-      properties:
-        errorMessage:
-          type: string
-          nullable: true
-      additionalProperties: false
     FrequencyCode:
       enum:
         - Monthly
@@ -2975,8 +3322,3 @@ components:
           scopes:
             sandbox-bg-ob-accounts: Sandbox Scope
             bg-ob-accounts: Production Scope
-security:
-  - Client-Id: [ ]
-    Authorization-Code-Token:
-      - sandbox-bg-ob-accounts offline_access
-      - bg-ob-accounts offline_access
