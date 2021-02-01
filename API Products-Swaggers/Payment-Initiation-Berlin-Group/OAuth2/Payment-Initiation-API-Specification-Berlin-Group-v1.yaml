@@ -55,25 +55,6 @@ paths:
             schema:
               $ref: '#/components/schemas/PaymentInitiationRequest'
       responses:
-        '201':
-          description: Payment Initiation Created
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-            Location:
-              description: Location of the created resource.
-              schema:
-                type: string
-                description: Location of the created resource.
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInformationResponse'
         '400':
           description: Bad request
           headers:
@@ -105,6 +86,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
         '405':
           description: Method Not Allowed
           headers:
@@ -123,8 +117,8 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '415':
-          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
           headers:
             X-Request-ID:
               description: 'ID of the request, unique to the call, as determined by the initiating party.'
@@ -132,8 +126,27 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '500':
-          description: Internal Server Error
+        '201':
+          description: Payment Initiation Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInformationResponse'
+        '415':
+          description: Unsupported Media Type
           headers:
             X-Request-ID:
               description: 'ID of the request, unique to the call, as determined by the initiating party.'
@@ -178,19 +191,6 @@ paths:
             type: string
             example: my-payments-sandbox
       responses:
-        '200':
-          description: Payment Information Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInformationResponse'
         '400':
           description: Bad request
           headers:
@@ -262,6 +262,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '200':
+          description: Payment Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInformationResponse'
   '/payments/sepa-credit-transfers/{paymentId}/status':
     get:
       tags:
@@ -299,19 +312,6 @@ paths:
             type: string
             example: my-payments-sandbox
       responses:
-        '200':
-          description: Payment Status Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentStatusResponse'
         '400':
           description: Bad request
           headers:
@@ -383,6 +383,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '200':
+          description: Payment Status Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
   /periodic-payments/sepa-credit-transfers:
     post:
       tags:
@@ -425,25 +438,6 @@ paths:
             schema:
               $ref: '#/components/schemas/PeriodicalPaymentInitiationRequest'
       responses:
-        '201':
-          description: Periodical Payment Initiation Created
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-            Location:
-              description: Location of the created resource.
-              schema:
-                type: string
-                description: Location of the created resource.
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
         '400':
           description: Bad request
           headers:
@@ -475,6 +469,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
         '405':
           description: Method Not Allowed
           headers:
@@ -493,8 +500,8 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '415':
-          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
           headers:
             X-Request-ID:
               description: 'ID of the request, unique to the call, as determined by the initiating party.'
@@ -502,8 +509,27 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '500':
-          description: Internal Server Error
+        '201':
+          description: Periodical Payment Initiation Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
+        '415':
+          description: Unsupported Media Type
           headers:
             X-Request-ID:
               description: 'ID of the request, unique to the call, as determined by the initiating party.'
@@ -548,19 +574,6 @@ paths:
             type: string
             example: my-payments-sandbox
       responses:
-        '200':
-          description: Payment Information Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
         '400':
           description: Bad request
           headers:
@@ -632,6 +645,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '200':
+          description: Payment Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
   '/periodic-payments/sepa-credit-transfers/{paymentId}/status':
     get:
       tags:
@@ -669,19 +695,6 @@ paths:
             type: string
             example: my-payments-sandbox
       responses:
-        '200':
-          description: Payment Status Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentStatusResponse'
         '400':
           description: Bad request
           headers:
@@ -753,6 +766,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '200':
+          description: Payment Status Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
   /payments/cross-border-credit-transfers:
     post:
       tags:
@@ -795,25 +821,6 @@ paths:
             schema:
               $ref: '#/components/schemas/PaymentInitiationRequest'
       responses:
-        '201':
-          description: Payment Initiation Created
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-            Location:
-              description: Location of the created resource.
-              schema:
-                type: string
-                description: Location of the created resource.
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInformationResponse'
         '400':
           description: Bad request
           headers:
@@ -845,6 +852,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
         '405':
           description: Method Not Allowed
           headers:
@@ -863,8 +883,8 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '415':
-          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
           headers:
             X-Request-ID:
               description: 'ID of the request, unique to the call, as determined by the initiating party.'
@@ -872,8 +892,27 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '500':
-          description: Internal Server Error
+        '201':
+          description: Payment Initiation Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInformationResponse'
+        '415':
+          description: Unsupported Media Type
           headers:
             X-Request-ID:
               description: 'ID of the request, unique to the call, as determined by the initiating party.'
@@ -918,19 +957,6 @@ paths:
             type: string
             example: my-payments-sandbox
       responses:
-        '200':
-          description: Payment Information Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentInformationResponse'
         '400':
           description: Bad request
           headers:
@@ -1002,6 +1028,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '200':
+          description: Payment Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInformationResponse'
   '/payments/cross-border-credit-transfers/{paymentId}/status':
     get:
       tags:
@@ -1039,19 +1078,6 @@ paths:
             type: string
             example: my-payments-sandbox
       responses:
-        '200':
-          description: Payment Status Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentStatusResponse'
         '400':
           description: Bad request
           headers:
@@ -1123,6 +1149,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '200':
+          description: Payment Status Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
   /periodic-payments/cross-border-credit-transfers:
     post:
       tags:
@@ -1165,25 +1204,6 @@ paths:
             schema:
               $ref: '#/components/schemas/PeriodicalPaymentInitiationRequest'
       responses:
-        '201':
-          description: Periodical Payment Initiation Created
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-            Location:
-              description: Location of the created resource.
-              schema:
-                type: string
-                description: Location of the created resource.
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
         '400':
           description: Bad request
           headers:
@@ -1215,6 +1235,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
         '405':
           description: Method Not Allowed
           headers:
@@ -1233,8 +1266,8 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '415':
-          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
           headers:
             X-Request-ID:
               description: 'ID of the request, unique to the call, as determined by the initiating party.'
@@ -1242,8 +1275,27 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '500':
-          description: Internal Server Error
+        '201':
+          description: Periodical Payment Initiation Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
+        '415':
+          description: Unsupported Media Type
           headers:
             X-Request-ID:
               description: 'ID of the request, unique to the call, as determined by the initiating party.'
@@ -1288,19 +1340,6 @@ paths:
             type: string
             example: my-payments-sandbox
       responses:
-        '200':
-          description: Payment Information Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
         '400':
           description: Bad request
           headers:
@@ -1372,6 +1411,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '200':
+          description: Payment Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PeriodicalPaymentInformationResponse'
   '/periodic-payments/cross-border-credit-transfers/{paymentId}/status':
     get:
       tags:
@@ -1409,19 +1461,6 @@ paths:
             type: string
             example: my-payments-sandbox
       responses:
-        '200':
-          description: Payment Status Information Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentStatusResponse'
         '400':
           description: Bad request
           headers:
@@ -1493,6 +1532,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '200':
+          description: Payment Status Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
   /bulk-payments/pain.001-sepa-credit-transfers:
     post:
       tags:
@@ -1538,25 +1590,6 @@ paths:
             schema:
               $ref: '#/components/schemas/Pain00100103'
       responses:
-        '201':
-          description: Payment Initiation Created
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-            Location:
-              description: Location of the created resource.
-              schema:
-                type: string
-                description: Location of the created resource.
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BulkPaymentInformationResponse'
         '400':
           description: Bad request
           headers:
@@ -1588,6 +1621,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
         '405':
           description: Method Not Allowed
           headers:
@@ -1606,8 +1652,8 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '415':
-          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
           headers:
             X-Request-ID:
               description: 'ID of the request, unique to the call, as determined by the initiating party.'
@@ -1615,8 +1661,27 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
-        '500':
-          description: Internal Server Error
+        '201':
+          description: Payment Initiation Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkPaymentInformationResponse'
+        '415':
+          description: Unsupported Media Type
           headers:
             X-Request-ID:
               description: 'ID of the request, unique to the call, as determined by the initiating party.'
@@ -1661,19 +1726,6 @@ paths:
             type: string
             example: my-payments-sandbox
       responses:
-        '200':
-          description: Payment Information Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BulkPaymentInformationResponse'
         '400':
           description: Bad request
           headers:
@@ -1745,6 +1797,19 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '200':
+          description: Payment Information Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkPaymentInformationResponse'
   '/bulk-payments/pain.001-sepa-credit-transfers/{paymentId}/status':
     get:
       tags:
@@ -1782,19 +1847,6 @@ paths:
             type: string
             example: my-payments-sandbox
       responses:
-        '200':
-          description: Payment Status Response
-          headers:
-            X-Request-ID:
-              description: 'ID of the request, unique to the call, as determined by the initiating party.'
-              schema:
-                type: string
-                description: 'ID of the request, unique to the call, as determined by the initiating party.'
-                format: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentStatusResponse'
         '400':
           description: Bad request
           headers:
@@ -1866,11 +1918,25 @@ paths:
                 type: string
                 description: 'ID of the request, unique to the call, as determined by the initiating party.'
                 format: ''
+        '200':
+          description: Payment Status Response
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
   /sandbox:
     post:
       tags:
         - Sandbox Operations
       summary: Create Sandbox
+      description: Create Sandbox
       requestBody:
         description: SandboxRequest
         content:
@@ -1881,17 +1947,15 @@ paths:
             schema:
               $ref: '#/components/schemas/SandboxRequest'
       responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Sandbox'
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Sandbox'
         '400':
           description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1901,16 +1965,65 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '403':
           description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '404':
+          description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error404NGPIS'
         '405':
           description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '406':
           description: Not Acceptable
-        '415':
-          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '500':
           description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1918,10 +2031,42 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '201':
+          description: Created
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+            Location:
+              description: Location of the created resource.
+              schema:
+                type: string
+                description: Location of the created resource.
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+        '415':
+          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
     put:
       tags:
         - Sandbox Operations
       summary: Import Sandbox
+      description: Import Sandbox
       requestBody:
         description: Sandbox
         content:
@@ -1932,10 +2077,15 @@ paths:
             schema:
               $ref: '#/components/schemas/Sandbox'
       responses:
-        '204':
-          description: No Content
         '400':
           description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1945,18 +2095,58 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '403':
           description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '404':
           description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '405':
           description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '406':
           description: Not Acceptable
-        '415':
-          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '500':
           description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1964,11 +2154,30 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '204':
+          description: No Content
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+        '415':
+          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
   '/sandbox/{sandboxId}':
     get:
       tags:
         - Sandbox Operations
       summary: Export Sandbox
+      description: Export Sandbox
       parameters:
         - name: sandboxId
           in: path
@@ -1979,17 +2188,15 @@ paths:
             description: Sandbox Id
             nullable: true
       responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Sandbox'
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/Sandbox'
         '400':
           description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -1999,18 +2206,58 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '403':
           description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '404':
           description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '405':
           description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '406':
           description: Not Acceptable
-        '415':
-          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '500':
           description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -2018,10 +2265,27 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '200':
+          description: OK
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
     delete:
       tags:
         - Sandbox Operations
       summary: Delete Sandbox
+      description: Delete Sandbox
       parameters:
         - name: sandboxId
           in: path
@@ -2032,10 +2296,15 @@ paths:
             description: Sandbox Id
             nullable: true
       responses:
-        '204':
-          description: No Content
         '400':
           description: Bad request
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -2045,18 +2314,58 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '403':
           description: Forbidden
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '404':
           description: Not Found
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '405':
           description: Method Not Allowed
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '406':
           description: Not Acceptable
-        '415':
-          description: Unsupported Media Type
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
         '500':
           description: Internal Server Error
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
           content:
             application/json:
               schema:
@@ -2064,6 +2373,15 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '204':
+          description: No Content
+          headers:
+            X-Request-ID:
+              description: 'ID of the request, unique to the call, as determined by the initiating party.'
+              schema:
+                type: string
+                description: 'ID of the request, unique to the call, as determined by the initiating party.'
+                format: ''
 components:
   schemas:
     AccountReference:
@@ -2216,6 +2534,99 @@ components:
           $ref: '#/components/schemas/PriorityCode'
       additionalProperties: false
       description: Body for a payment initation.
+    TppMessageCategory:
+      enum:
+        - ERROR
+        - WARNING
+      type: string
+      description: Category of the TPP message category.
+    MessageCode400PIS:
+      enum:
+        - MISSING_HEADER
+        - PARAMETER_NOT_CONSISTENT
+        - INSUFFICIENT_FUNDS
+        - EXECUTION_DATE_INVALID
+        - INVALID_USER_ACCOUNT
+        - INVALID_CHARGE_BEARER
+        - INVALID_TOTAL_AMOUNT
+        - INVALID_TRANSACTIONS_NUMBER
+        - INVALID_PAYMENTS_NUMBER
+        - INVALID_CURRENCY
+        - INVALID_FREQUENCY
+        - INVALID_IBAN
+        - NON_NBG_IBAN
+        - INVALID_PRIORITY
+      type: string
+      description: Message codes defined for PIS for HTTP Error code 400 (BAD_REQUEST).
+    TppMessage400PIS:
+      required:
+        - category
+        - code
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/TppMessageCategory'
+        code:
+          $ref: '#/components/schemas/MessageCode400PIS'
+        path:
+          type: string
+          description: ''
+          nullable: true
+        text:
+          maxLength: 500
+          minLength: 1
+          type: string
+          description: Additional explaining text to the TPP.
+          nullable: true
+      additionalProperties: false
+    Error400NGPIS:
+      type: object
+      properties:
+        tppMessages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TppMessage400PIS'
+          description: ''
+          nullable: true
+      additionalProperties: false
+      description: NextGenPSD2 specific definition of reporting error information in case of a HTTP error code 400.
+    MessageCode404PIS:
+      enum:
+        - RESOURCE_UNKNOWN
+      type: string
+      description: Message codes defined for PIS for HTTP Error code 404 (NOT FOUND).
+    TppMessage404PIS:
+      required:
+        - category
+        - code
+      type: object
+      properties:
+        category:
+          $ref: '#/components/schemas/TppMessageCategory'
+        code:
+          $ref: '#/components/schemas/MessageCode404PIS'
+        path:
+          type: string
+          description: ''
+          nullable: true
+        text:
+          maxLength: 500
+          minLength: 1
+          type: string
+          description: Additional explaining text to the TPP.
+          nullable: true
+      additionalProperties: false
+    Error404NGPIS:
+      type: object
+      properties:
+        tppMessages:
+          type: array
+          items:
+            $ref: '#/components/schemas/TppMessage404PIS'
+          description: ''
+          nullable: true
+      additionalProperties: false
+      description: NextGenPSD2 specific definition of reporting error information in case of a HTTP error code 404.
     TransactionStatus:
       enum:
         - ACCC
@@ -2233,7 +2644,7 @@ components:
         - PATC
         - PART
       type: string
-      description: "The transaction status is filled with codes of the ISO 20022 data table:\r\n- 'ACCC': 'AcceptedSettlementCompleted' -   Settlement on the creditor's account has been completed.\r\n- 'ACCP': 'AcceptedCustomerProfile' -    Preceding check of technical validation was successful.    Customer profile check was also successful.\r\n- 'ACSC': 'AcceptedSettlementCompleted' -    Settlement on the debtor's account has been completed.      **Usage:** this can be used by the first agent to report to the debtor that the transaction has been completed.       **Warning:** this status is provided for transaction status reasons, not for financial information.    It can only be used after bilateral agreement.\r\n- 'ACSP': 'AcceptedSettlementInProcess' -    All preceding checks such as technical validation and customer profile were successful and therefore the payment initiation has been accepted for execution.\r\n- 'ACTC': 'AcceptedTechnicalValidation' -    Authentication and syntactical and semantical validation are successful.\r\n- 'ACWC': 'AcceptedWithChange' -    Instruction is accepted but a change will be made, such as date or remittance not sent.\r\n- 'ACWP': 'AcceptedWithoutPosting' -    Payment instruction included in the credit transfer is accepted without being posted to the creditor customer's account.\r\n- 'RCVD': 'Received' -    Payment initiation has been received by the receiving agent.\r\n- 'PDNG': 'Pending' -    Payment initiation or individual transaction included in the payment initiation is pending.    Further checks and status update will be performed.\r\n- 'RJCT': 'Rejected' -    Payment initiation or individual transaction included in the payment initiation has been rejected.\r\n- 'CANC': 'Cancelled'   Payment initiation has been cancelled before execution   Remark: This code is accepted as new code by ISO20022.\r\n- 'ACFC': 'AcceptedFundsChecked' -   Preceding check of technical validation and customer profile was successful and an automatic funds check was positive .   Remark: This code is accepted as new code by ISO20022.\r\n- 'PATC': 'PartiallyAcceptedTechnical'   Correct The payment initiation needs multiple authentications, where some but not yet all have been performed. Syntactical and semantical validations are successful.   Remark: This code is accepted as new code by ISO20022.\r\n- 'PART': 'PartiallyAccepted' -   A number of transactions have been accepted, whereas another number of transactions have not yet achieved 'accepted' status.   Remark: This code may be used only in case of bulk payments. It is only used in a situation where all mandated authorisations have been applied, but some payments have been rejected."
+      description: "The transaction status is filled with codes of the ISO 20022 data table:\r\n- 'ACCC': 'AcceptedSettlementCompleted' -   Settlement on the creditor's account has been completed.\r\n- 'ACCP': 'AcceptedCustomerProfile' -    Preceding check of technical validation was successful.    Customer profile check was also successful.\r\n- 'ACSC': 'AcceptedSettlementCompleted' -    Settlement on the debtor's account has been completed.      **Usage:** this can be used by the first agent to report to the debtor that the transaction has been completed.       **Warning:** this status is provided for transaction status reasons, not for financial information.    It can only be used after bilateral agreement.\r\n- 'ACSP': 'AcceptedSettlementInProcess' -    All preceding checks such as technical validation and customer profile were successful and therefore the payment initiation has been accepted for execution.\r\n- 'ACTC': 'AcceptedTechnicalValidation' -    Authentication and syntactical and semantical validation are successful.\r\n- 'ACWC': 'AcceptedWithChange' -    Instruction is accepted but a change will be made, such as date or remittance not sent.\r\n- 'ACWP': 'AcceptedWithoutPosting' -    Payment instruction included in the credit transfer is accepted without being posted to the creditor customer's account.\r\n- 'RCVD': 'Received' -    Payment initiation has been received by the receiving agent.\r\n- 'PDNG': 'Pending' -    Payment initiation or individual transaction included in the payment initiation is pending.    Further checks and status update will be performed.\r\n- 'RJCT': 'Rejected' -    Payment initiation or individual transaction included in the payment initiation has been rejected.\r\n- 'CANC': 'Cancelled' -\tPayment initiation has been cancelled before execution   Remark: This code is accepted as new code by ISO20022.\r\n- 'ACFC': 'AcceptedFundsChecked' -   Preceding check of technical validation and customer profile was successful and an automatic funds check was positive .   Remark: This code is accepted as new code by ISO20022.\r\n- 'PATC': 'PartiallyAcceptedTechnical'   Correct The payment initiation needs multiple authentications, where some but not yet all have been performed. Syntactical and semantical validations are successful.   Remark: This code is accepted as new code by ISO20022.\r\n- 'PART': 'PartiallyAccepted' -   A number of transactions have been accepted, whereas another number of transactions have not yet achieved 'accepted' status.   Remark: This code may be used only in case of bulk payments. It is only used in a situation where all mandated authorisations have been applied, but some payments have been rejected."
     HrefType:
       type: object
       properties:
@@ -2333,99 +2744,6 @@ components:
           $ref: '#/components/schemas/Links'
       additionalProperties: false
       description: Generic JSON response body consistion of the corresponding payment initation JSON body together with an optional transaction status field.
-    TppMessageCategory:
-      enum:
-        - ERROR
-        - WARNING
-      type: string
-      description: Category of the TPP message category.
-    MessageCode400PIS:
-      enum:
-        - MISSING_HEADER
-        - PARAMETER_NOT_CONSISTENT
-        - INSUFFICIENT_FUNDS
-        - EXECUTION_DATE_INVALID
-        - INVALID_USER_ACCOUNT
-        - INVALID_CHARGE_BEARER
-        - INVALID_TOTAL_AMOUNT
-        - INVALID_TRANSACTIONS_NUMBER
-        - INVALID_PAYMENTS_NUMBER
-        - INVALID_CURRENCY
-        - INVALID_FREQUENCY
-        - INVALID_IBAN
-        - NON_NBG_IBAN
-        - INVALID_PRIORITY
-      type: string
-      description: Message codes defined for PIS for HTTP Error code 400 (BAD_REQUEST).
-    TppMessage400PIS:
-      required:
-        - category
-        - code
-      type: object
-      properties:
-        category:
-          $ref: '#/components/schemas/TppMessageCategory'
-        code:
-          $ref: '#/components/schemas/MessageCode400PIS'
-        path:
-          type: string
-          description: ''
-          nullable: true
-        text:
-          maxLength: 500
-          minLength: 1
-          type: string
-          description: Additional explaining text to the TPP.
-          nullable: true
-      additionalProperties: false
-    Error400NGPIS:
-      type: object
-      properties:
-        tppMessages:
-          type: array
-          items:
-            $ref: '#/components/schemas/TppMessage400PIS'
-          description: ''
-          nullable: true
-      additionalProperties: false
-      description: NextGenPSD2 specific definition of reporting error information in case of a HTTP error code 400.
-    MessageCode404PIS:
-      enum:
-        - RESOURCE_UNKNOWN
-      type: string
-      description: Message codes defined for PIS for HTTP Error code 404 (NOT FOUND).
-    TppMessage404PIS:
-      required:
-        - category
-        - code
-      type: object
-      properties:
-        category:
-          $ref: '#/components/schemas/TppMessageCategory'
-        code:
-          $ref: '#/components/schemas/MessageCode404PIS'
-        path:
-          type: string
-          description: ''
-          nullable: true
-        text:
-          maxLength: 500
-          minLength: 1
-          type: string
-          description: Additional explaining text to the TPP.
-          nullable: true
-      additionalProperties: false
-    Error404NGPIS:
-      type: object
-      properties:
-        tppMessages:
-          type: array
-          items:
-            $ref: '#/components/schemas/TppMessage404PIS'
-          description: ''
-          nullable: true
-      additionalProperties: false
-      description: NextGenPSD2 specific definition of reporting error information in case of a HTTP error code 404.
     PaymentStatusResponse:
       required:
         - transactionStatus
@@ -3684,6 +4002,13 @@ components:
           description: Sandbox id
       additionalProperties: false
       description: Sandbox request
+    ErrorResponse:
+      type: object
+      properties:
+        errorMessage:
+          type: string
+          nullable: true
+      additionalProperties: false
     SandboxPayment:
       type: object
       properties:
@@ -3761,13 +4086,6 @@ components:
           nullable: true
       additionalProperties: false
       description: Sandbox model
-    ErrorResponse:
-      type: object
-      properties:
-        errorMessage:
-          type: string
-          nullable: true
-      additionalProperties: false
   securitySchemes:
     Client-Id:
       type: apiKey
