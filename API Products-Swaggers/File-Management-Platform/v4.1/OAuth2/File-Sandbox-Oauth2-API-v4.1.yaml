@@ -123,7 +123,7 @@ info:
     \ your own credentials (username, password) that you use to sign in the NBG Technology\
     \ HUB. The scopes are defined below:\n\n
     **Sandbox Scopes**: openid profile ibank_profile\
-    \ sandbox-file-api-v4\n\n**Production Scopes**: openid profile ibank_profile file-api-v2\n\n
+    \ sandbox-file-api-v4\n\n**Production Scopes**: openid profile ibank_profile file-api-v4\n\n
     **Authorization Endpoint**: https://my.nbg.gr/identity/connect/authorize\n\n**Token\
     \ Endpoint**: https://my.nbg.gr/identity/connect/token\n\n
     See more [here](https://developer.nbg.gr/oauth-document#AuthorizationCodeflow)\n\
@@ -144,7 +144,7 @@ info:
     \ your questions. Send us at **developer@nbg.gr**.\n\n
     ------------------------------------------------------------------------------------------\n\n
     [Sandbox Postman\
-    \ Collection](https://github.com/NBG-Developer-Portal/File-API/tree/master/v4)\n------------------------------------------------------------------------------------------\n\nTo gain access to the Postman Collection please email us your Github account\
+    \ Collection](https://github.com/NBG-Developer-Portal/File-API/tree/master/v4.1)\n------------------------------------------------------------------------------------------\n\nTo gain access to the Postman Collection please email us your Github account\
     \ at **developer@nbg.gr** to invite you to our repository.\n"
   contact:
     name: NBG
@@ -152,9 +152,9 @@ info:
     email: developer@nbg.gr
   version: v4.1
 servers:
-  - url: 'https://apis.nbg.gr/sandbox/file/oauth2/v4'
-    description: Sandbox Server
-  - url: 'https://services.nbg.gr/apis/fileapi/v2'
+  - url: 'https://apis.nbg.gr/sandbox/file/oauth2/v4.1'
+    description: Sandbox File Api Server
+  - url: 'https://services.nbg.gr/apis/fileapi/v4.1'
     description: Production File Api Server
   - url: 'https://services.nbg.gr/apis/ethnofiles.cli.api/v1'
     description: Production Ethnofiles File Api Server
@@ -3057,8 +3057,8 @@ components:
         customerApplicationFiles:
           type: array
           items:
-            $ref: '#/components/schemas/ethnofiles.types.sandbox.CustomerApplicationFile'
-    ethnofiles.types.sandbox.CustomerApplicationFile:
+            $ref: '#/components/schemas/CustomerApplicationFile'
+    CustomerApplicationFile:
       type: object
       properties:
         id:
@@ -3188,10 +3188,10 @@ components:
     SepaConvertRequest_:
       type: object
       properties:
-        payload:
-          $ref: '#/components/schemas/SepaConvertRequest'
         header:
           $ref: '#/components/schemas/RequestHeader'
+        payload:
+          $ref: '#/components/schemas/SepaConvertRequest'
     SepaConvertRequest:
       type: object
       properties:
@@ -3246,10 +3246,10 @@ components:
     SepaSetFileStatusAsSentRequest_:
       type: object
       properties:
-        payload:
-          $ref: '#/components/schemas/SepaSetFileStatusAsSentRequest'
         header:
           $ref: '#/components/schemas/RequestHeader'
+        payload:
+          $ref: '#/components/schemas/SepaSetFileStatusAsSentRequest'
     SepaSetFileStatusAsSentRequest:
       type: object
       properties:
