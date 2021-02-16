@@ -11,7 +11,7 @@ paths:
       tags:
         - MassPayments
       summary: Get Commissions for a list of Mass Payments
-      description: "Retrieves the commissions for a list of payments.\r\n\r\nSample request:\r\n\r\n    POST /massCommission\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"debtorName\":\"MassDebtor\",\r\n        \"debtorTelephone\":\"2103578739\",\r\n        \"debtorIBAN\":\"GR7816570557954408\",\r\n        \"massPayments\":[\r\n        { \r\n           \"id\":\"58F02321-441C-4C95-87A2-295092851534\",\r\n           \"instrId\":\"5022f47c-c721-4bd7-ad8b-8a94a4c96bd7\",\r\n           \"fields\":{ \r\n              \"PAYMENT_CODE\": \"201700025173064076\",\r\n              \"EXPIRATION_DATE\":\"18.04.2017\",\r\n              \"CUSTOMER_NAME\":\"CUSTOMER\"\r\n           },\r\n           \"amount\": 53.00\r\n        },\r\n        { \r\n           \"id\":\"5B35B95D-ABF0-47BC-A1DB-DA73D48C3708\",\r\n           \"instrId\":\"31512305-6fea-43ad-9849-011b43333ecd\",\r\n           \"fields\":{ \r\n             \"PAYMENT_CODE\":\"00102203003201731023\"\t\t\r\n           },\r\n           \"amount\": 24.09\r\n        }\r\n        ]\r\n    }"
+      description: "Requests the retrieval of commissions for a list of payments.\r\n\r\nSample request:\r\n\r\n    POST /massCommission\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"debtorName\":\"MassDebtor\",\r\n        \"debtorTelephone\":\"2103578739\",\r\n        \"debtorIBAN\":\"GR7816570557954408\",\r\n        \"batchId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\",\r\n        \"massPayments\":[\r\n        { \r\n           \"id\":\"58F02321-441C-4C95-87A2-295092851534\",\r\n           \"instrId\":\"5022f47c-c721-4bd7-ad8b-8a94a4c96bd7\",\r\n           \"fields\":{ \r\n              \"PAYMENT_CODE\": \"201700025173064076\",\r\n              \"EXPIRATION_DATE\":\"18.04.2017\",\r\n              \"CUSTOMER_NAME\":\"CUSTOMER\"\r\n           },\r\n           \"amount\": 53.00\r\n        },\r\n        { \r\n           \"id\":\"5B35B95D-ABF0-47BC-A1DB-DA73D48C3708\",\r\n           \"instrId\":\"31512305-6fea-43ad-9849-011b43333ecd\",\r\n           \"fields\":{ \r\n             \"PAYMENT_CODE\":\"00102203003201731023\"\t\t\r\n           },\r\n           \"amount\": 24.09\r\n        }\r\n        ]\r\n    }"
       operationId: MassPayments_massCommission
       parameters:
         - name: sandbox_id
@@ -110,10 +110,8 @@ paths:
     post:
       tags:
         - MassPayments
-      summary: >-
-        Retrieves the commission of a list of payments of that were submitted as
-        a batch.
-      description: "Sample request:\r\n\r\n    POST /retrieveMassCommissions\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"batchId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
+      summary: Get Commissions for a list of payments that were submitted as a batch.
+      description: "Retrieves the commissions for a list of payments that were submitted as a batch from the endpoint /massCommission.\r\n\r\nSample request:\r\n\r\n    POST /retrieveMassCommissions\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"batchId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
       operationId: MassPayments_retrieveMassCommissions
       parameters:
         - name: sandbox_id
@@ -213,7 +211,7 @@ paths:
       tags:
         - MassPayments
       summary: Mass Execution for a list of Payments
-      description: "Sample request:\r\n\r\n    POST /massPay\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"debtorName\":\"MassDebtor\",\r\n        \"debtorTelephone\":\"2103578739\",\r\n        \"debtorIBAN\":\"GR7816570557954408\",\r\n        \"massPayments\":[\r\n        { \r\n           \"id\":\"58F02321-441C-4C95-87A2-295092851534\",\r\n           \"instrId\":\"5022f47c-c721-4bd7-ad8b-8a94a4c96bd7\",\r\n           \"fields\":{ \r\n              \"PAYMENT_CODE\": \"201700025173064076\",\r\n              \"EXPIRATION_DATE\":\"18.04.2017\",\r\n              \"CUSTOMER_NAME\":\"CUSTOMER\"\r\n           },\r\n           \"amount\": 53.00\r\n        },\r\n        { \r\n           \"id\":\"5B35B95D-ABF0-47BC-A1DB-DA73D48C3708\",\r\n           \"instrId\":\"31512305-6fea-43ad-9849-011b43333ecd\",\r\n           \"fields\":{ \r\n             \"PAYMENT_CODE\":\"00102203003201731023\"\t\t\r\n           },\r\n           \"amount\": 24.09\r\n        }\r\n        ]  \r\n    }"
+      description: "Performs the mass execution of a list of payments\r\n\r\nSample request:\r\n\r\n    POST /massPay\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"debtorName\":\"MassDebtor\",\r\n        \"debtorTelephone\":\"2103578739\",\r\n        \"debtorIBAN\":\"GR7816570557954408\",\r\n        \"batchId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\",                 \r\n        \"massPayments\":[\r\n        { \r\n           \"id\":\"58F02321-441C-4C95-87A2-295092851534\",\r\n           \"instrId\":\"5022f47c-c721-4bd7-ad8b-8a94a4c96bd7\",\r\n           \"fields\":{ \r\n              \"PAYMENT_CODE\": \"201700025173064076\",\r\n              \"EXPIRATION_DATE\":\"18.04.2017\",\r\n              \"CUSTOMER_NAME\":\"CUSTOMER\"\r\n           },\r\n           \"amount\": 53.00\r\n        },\r\n        { \r\n           \"id\":\"5B35B95D-ABF0-47BC-A1DB-DA73D48C3708\",\r\n           \"instrId\":\"31512305-6fea-43ad-9849-011b43333ecd\",\r\n           \"fields\":{ \r\n             \"PAYMENT_CODE\":\"00102203003201731023\"\t\t\r\n           },\r\n           \"amount\": 24.09\r\n        }\r\n        ]  \r\n    }"
       operationId: MassPayments_massPay
       parameters:
         - name: sandbox_id
@@ -315,7 +313,7 @@ paths:
       summary: >-
         Retrieves the outcome of a list of payments that were submitted as a
         batch.
-      description: "Sample request:\r\n\r\n    POST /retrieveMassPay\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"batchId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
+      description: "Retrieves the outcome for a list of payments that were executed as a batch from the endpoint /massPay.\r\n\r\nSample request:\r\n\r\n    POST /retrieveMassPay\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"batchId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
       operationId: MassPayments_retrieveMassPay
       parameters:
         - name: sandbox_id
@@ -415,7 +413,7 @@ paths:
       tags:
         - MassPayments
       summary: Mass Execution for Payments in a file
-      description: "Sample request:\r\n\r\n    POST /massPayWithFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"debtorName\":\"MassDebtor\",\r\n        \"debtorTelephone\":\"2103578739\",\r\n        \"debtorIBAN\":\"GR7816570557954408\",\r\n        \"fileId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
+      description: "Performs the mass execution of a list of payments from a file\r\n\r\nSample request:\r\n\r\n    POST /massPayWithFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"debtorName\":\"MassDebtor\",\r\n        \"debtorTelephone\":\"2103578739\",\r\n        \"debtorIBAN\":\"GR7816570557954408\",\r\n        \"fileId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
       operationId: MassPayments_massPayWithFile
       parameters:
         - name: sandbox_id
@@ -517,7 +515,7 @@ paths:
       summary: >-
         Retrieves the outcome of a list of payments that were submitted as a
         file.
-      description: "Sample request:\r\n\r\n    POST /retrieveMassPayWithFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"fileId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
+      description: "Retrieves the outcome for a list of payments that were executed via a file from the endpoint /massPayWithFile.\r\n\r\nSample request:\r\n\r\n    POST /retrieveMassPayWithFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"fileId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
       operationId: MassPayments_retrieveMassPayWithFile
       parameters:
         - name: sandbox_id
@@ -617,7 +615,7 @@ paths:
       tags:
         - MassPayments
       summary: Requests the retrieval of the status of specified payment(s)
-      description: "Sample request:\r\n\r\n    POST /requestIndividualPaymentsStatus\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"batchId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\",\r\n        \"instrIds\":[\"B161387C-6A86-4D5A-99BE-294F694A9284\", \"2EED566C-403C-47C7-935B-4734D3419CF1\" ]  \r\n    }"
+      description: "Requests the retrieval of the status of an individual payment(s) via batch       \r\n\r\nSample request:\r\n\r\n    POST /requestIndividualPaymentsStatus\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"batchId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\",\r\n        \"instrIds\":[\"B161387C-6A86-4D5A-99BE-294F694A9284\", \"2EED566C-403C-47C7-935B-4734D3419CF1\" ]  \r\n    }"
       operationId: MassPayments_requestIndividualPaymentsStatus
       parameters:
         - name: sandbox_id
@@ -717,9 +715,9 @@ paths:
       tags:
         - MassPayments
       summary: >-
-        Retrieves the status of specified payments, which had been requested by
-        endpoint /requestIndividualPaymentsStatus.
-      description: "Sample request:\r\n\r\n    POST /retrieveIndividualPaymentsStatus\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"batchId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
+        Get the status of specified payments, requested by endpoint
+        /requestIndividualPaymentsStatus.
+      description: "Retrieves the status of a specified payment, which had been requested by endpoint /requestIndividualPaymentsStatus.\r\n\r\nSample request:\r\n\r\n    POST /retrieveIndividualPaymentsStatus\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"batchId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
       operationId: MassPayments_retrieveIndividualPaymentsStatus
       parameters:
         - name: sandbox_id
@@ -818,10 +816,8 @@ paths:
     post:
       tags:
         - MassPayments
-      summary: >-
-        Requests the retrieval of the status of mass payments, whose
-        identification is provided in a file
-      description: "Sample request:\r\n\r\n    POST /requestMassPaymentsStatusWithFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"fileId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
+      summary: Requests the retrieval of the status of mass payments via a file
+      description: "Requests the retrieval of the status of mass payments, whose identification is provided in a file\r\n\r\nSample request:\r\n\r\n    POST /requestMassPaymentsStatusWithFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"fileId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
       operationId: MassPayments_requestMassPaymentsStatusWithFile
       parameters:
         - name: sandbox_id
@@ -920,8 +916,10 @@ paths:
     post:
       tags:
         - MassPayments
-      summary: "Retrieves the status of mass payments, which had been requested by endpoint /requestMassPaymentsStatusWithFile.\r\nThe outcomes are returned as a file."
-      description: "Sample request:\r\n\r\n    POST /retrieveMassPaymentsStatusWithFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"fileId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
+      summary: >-
+        Retrieves the status of mass payments, which had been requested via a
+        file.
+      description: "Retrieves the status of mass payments, which had been requested by endpoint /requestMassPaymentsStatusWithFile.\r\nThe outcomes are returned as a file.        \r\n\r\nSample request:\r\n\r\n    POST /retrieveMassPaymentsStatusWithFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"fileId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
       operationId: MassPayments_retrieveMassPaymentsStatusWithFile
       parameters:
         - name: sandbox_id
@@ -1021,9 +1019,9 @@ paths:
       tags:
         - MassPayments
       summary: >-
-        Generates a file that contains sample data for all types payments
+        Create a file that contains sample data for all types of payments
         supported by the system
-      description: "Sample request:\r\n\r\n    POST /generateMassPaymentsSampleFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"fileFormat\": \"JSON\"\r\n    }"
+      description: "Generates a file that contains sample data for all types of payments supported by the system\r\n\r\nSample request:\r\n\r\n    POST /generateMassPaymentsSampleFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"fileFormat\": \"JSON\"\r\n    }"
       operationId: MassPayments_generateMassPaymentsSampleFile
       parameters:
         - name: sandbox_id
@@ -1123,7 +1121,7 @@ paths:
       tags:
         - MassPayments
       summary: Validates a file that contains data for multiple payments
-      description: "Sample request:\r\n\r\n    POST /validateMassPaymentsFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"fileId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
+      description: "Validates a file that contains data for multiple payments        \r\n\r\nSample request:\r\n\r\n    POST /validateMassPaymentsFile\r\n    {\r\n        \"userId\":\"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"fileId\": \"702A7FBE-7BFC-479A-909E-A5835F12C451\"\r\n    }"
       operationId: MassPayments_validateMassPaymentsFile
       parameters:
         - name: sandbox_id
@@ -1218,105 +1216,6 @@ paths:
               schema:
                 $ref: >-
                   #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.ValidateMassPaymentsFileResponse
-  /OmniPayments/isTppPayment:
-    post:
-      tags:
-        - OmniPayments
-      summary: "Συναλλαγή που επιστρέφει ένδειξη για το αν μία συναλλαγή έχει εκτελεστεί μέσω του συστήματος.\r\nΑν η συναλλαγή ανήκει στο οικοσύστημα του καλούντος, επιστρέφονται και τα στοιχεία του καλούντος που είχε εκτελέσει αρχικά την πληρωμή."
-      operationId: OmniPayments_isTppPayment
-      parameters:
-        - name: sandbox_id
-          in: header
-          description: Sandbox ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: application_id
-          in: header
-          description: Application ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: user_id
-          in: header
-          description: User ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: username
-          in: header
-          description: User Name
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: provider_id
-          in: header
-          description: Provider ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: provider
-          in: header
-          description: Provider Name
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: phone_number
-          in: header
-          description: Phone Number
-          required: true
-          schema:
-            type: string
-            default: 'null'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.IsTppPaymentBaseRequest
-          text/json:
-            schema:
-              $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.IsTppPaymentBaseRequest
-          application/xml:
-            schema:
-              $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.IsTppPaymentBaseRequest
-          text/xml:
-            schema:
-              $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.IsTppPaymentBaseRequest
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.IsTppPaymentBaseRequest
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.IsTppPaymentResponse
-            text/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.IsTppPaymentResponse
-            application/xml:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.IsTppPaymentResponse
-            text/xml:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.IsTppPaymentResponse
   /Payments/paymentsList:
     post:
       tags:
@@ -1375,8 +1274,28 @@ paths:
             type: string
             default: 'null'
       requestBody:
-        $ref: >-
-          #/components/requestBodies/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
+          application/xml:
+            schema:
+              $ref: >-
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
+          text/xml:
+            schema:
+              $ref: >-
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: >-
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
+        required: true
       responses:
         '200':
           description: OK
@@ -2657,269 +2576,6 @@ paths:
               schema:
                 $ref: >-
                   #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.PaymentsListResponse
-  /Payments/ibPaymentsList:
-    post:
-      tags:
-        - Payments
-      summary: >-
-        Πληροφοριακή συναλλαγή άντλησης τύπων και μεταδεδομένων διαθέσιμων
-        πληρωμών για το τερματικό.
-      operationId: Payments_ibPaymentsList
-      parameters:
-        - name: sandbox_id
-          in: header
-          description: Sandbox ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: application_id
-          in: header
-          description: Application ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: user_id
-          in: header
-          description: User ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: username
-          in: header
-          description: User Name
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: provider_id
-          in: header
-          description: Provider ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: provider
-          in: header
-          description: Provider Name
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: phone_number
-          in: header
-          description: Phone Number
-          required: true
-          schema:
-            type: string
-            default: 'null'
-      requestBody:
-        $ref: >-
-          #/components/requestBodies/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.PaymentsListResponse
-            text/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.PaymentsListResponse
-            application/xml:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.PaymentsListResponse
-            text/xml:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.PaymentsListResponse
-  /Payments/ibPayment:
-    post:
-      tags:
-        - Payments
-      summary: >-
-        Πληροφοριακή συναλλαγή άντλησης τύπων και μεταδεδομένων διαθέσιμων
-        πληρωμών για το τερματικό.
-      operationId: Payments_ibPayment
-      parameters:
-        - name: sandbox_id
-          in: header
-          description: Sandbox ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: application_id
-          in: header
-          description: Application ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: user_id
-          in: header
-          description: User ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: username
-          in: header
-          description: User Name
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: provider_id
-          in: header
-          description: Provider ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: provider
-          in: header
-          description: Provider Name
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: phone_number
-          in: header
-          description: Phone Number
-          required: true
-          schema:
-            type: string
-            default: 'null'
-      requestBody:
-        $ref: >-
-          #/components/requestBodies/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.PaymentsListResponse
-            text/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.PaymentsListResponse
-            application/xml:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.PaymentsListResponse
-            text/xml:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.PaymentsListResponse
-  /Payments/operationsList:
-    post:
-      tags:
-        - Payments
-      summary: >-
-        Πληροφοριακή συναλλαγή άντλησης στοιχείων των διαθέσιμων υπηρεσιών για
-        το τερματικό.
-      operationId: Payments_operationsList
-      parameters:
-        - name: sandbox_id
-          in: header
-          description: Sandbox ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: application_id
-          in: header
-          description: Application ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: user_id
-          in: header
-          description: User ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: username
-          in: header
-          description: User Name
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: provider_id
-          in: header
-          description: Provider ID
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: provider
-          in: header
-          description: Provider Name
-          required: true
-          schema:
-            type: string
-            default: ''
-        - name: phone_number
-          in: header
-          description: Phone Number
-          required: true
-          schema:
-            type: string
-            default: 'null'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.OperationsListBpRequest
-          text/json:
-            schema:
-              $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.OperationsListBpRequest
-          application/xml:
-            schema:
-              $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.OperationsListBpRequest
-          text/xml:
-            schema:
-              $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.OperationsListBpRequest
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.OperationsListBpRequest
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.OperationsListResponse
-            text/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.OperationsListResponse
-            application/xml:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.OperationsListResponse
-            text/xml:
-              schema:
-                $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.OperationsListResponse
   /sandbox:
     post:
       tags:
@@ -3086,7 +2742,7 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: Sandbox ID
           required: true
           schema:
             type: string
@@ -3143,13 +2799,13 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: Sandbox ID
           required: true
           schema:
             type: string
         - name: user_id
           in: path
-          description: ''
+          description: User ID the account belongs to
           required: true
           schema:
             type: string
@@ -3182,13 +2838,13 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: Sandbox ID
           required: true
           schema:
             type: string
         - name: user_id
           in: path
-          description: ''
+          description: User ID the account belongs to
           required: true
           schema:
             type: string
@@ -3245,19 +2901,19 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: Sandbox ID
           required: true
           schema:
             type: string
         - name: user_id
           in: path
-          description: ''
+          description: User ID the account belongs to
           required: true
           schema:
             type: string
         - name: account_id
           in: path
-          description: ''
+          description: Account ID
           required: true
           schema:
             type: string
@@ -3314,19 +2970,19 @@ paths:
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: Sandbox ID
           required: true
           schema:
             type: string
         - name: user_id
           in: path
-          description: ''
+          description: User ID the account belongs to
           required: true
           schema:
             type: string
         - name: account_id
           in: path
-          description: ''
+          description: Account ID
           required: true
           schema:
             type: string
@@ -3339,12 +2995,12 @@ paths:
       tags:
         - Sandbox
       summary: Update Transaction
-      description: "Update transaction details. For example update transaction status for testing purposes. \r\nRequest fields are optional except for clrSysRef. Fields that are empty will not be updated. \r\n\r\nPossible status values:\r\n    - PENDING:  The online transaction information has been registered in the system but there has been no confirmation of the actual payment yet.\r\n    - COMPLETED: The online transaction was completed and the payment has been scheduled for clearance.\r\n    - FAILED: The online transaction failed to complete.\r\n    - CANCELLED: The previously completed online transaction has been successfully cancelled and the payment will not be scheduled for clearance.\r\n    - REVERTED: (Applies only to payments whose method is CARD) The transaction was initially registered in the bank's system, but due to a technical reversal request that occurred in the card transaction processing system, the payment was successfully reverted and a card transaction reversal was executed.\r\n    - REVFAILED: (Applies only to payments whose method is CARD)  The transaction was initially registered in the bank's system, but due to a technical reversal request that occurred in the card transaction processing system, a card transaction reversal was executed but the payment was not successfully reverted.\r\n    - SUSPECT: (Applies only to online TopUp transactions) The transaction was flagged as suspect, since the payment's clearance was performed in the bank's system, but an error occurred during the communication with the Provider, in order to acknowledge the successful billing.Therefore, the TopUp status is in need of further investigation.\r\n    - PARTIAL_PROCESS: (Applies only to only WIND TopUp transactions) The online transaction was completed and the payment's clearance was performed in the bank's system, but the Provider rejected the related transaction, so the TopUP failed."
+      description: "Update transaction details. For example update transaction status for testing purposes. \r\nRequest fields are optional except for clrSysRef. Fields that are empty will not be updated. \r\n\r\nPossible status values:\r\n- PENDING:  The online transaction information has been registered in the system but there has been no confirmation of the actual payment yet. \r\n- COMPLETED: The online transaction was completed and the payment has been scheduled for clearance.\r\n- FAILED: The online transaction failed to complete.\r\n- CANCELLED: The previously completed online transaction has been successfully cancelled and the payment will not be scheduled for clearance.\r\n- REVERTED: (Applies only to payments whose method is CARD) The transaction was initially registered in the bank's system, but due to a technical reversal request that occurred in the card transaction processing system, the payment was successfully reverted and a card transaction reversal was executed.\r\n- REVFAILED: (Applies only to payments whose method is CARD)  The transaction was initially registered in the bank's system, but due to a technical reversal request that occurred in the card transaction processing system, a card transaction reversal was executed but the payment was not successfully reverted.\r\n- SUSPECT: (Applies only to online TopUp transactions) The transaction was flagged as suspect, since the payment's clearance was performed in the bank's system, but an error occurred during the communication with the Provider, in order to acknowledge the successful billing. Therefore, the TopUp status is in need of further investigation.\r\n- PARTIAL_PROCESS: (Applies only to only WIND TopUp transactions) The online transaction was completed and the payment's clearance was performed in the bank's system, but the Provider rejected the related transaction, so the TopUP failed.\r\n- DEFERRED: The transaction has been registered in the system successfully and will be executed at the specified date."
       operationId: Sandbox_UpdateTransaction
       parameters:
         - name: sandbox_id
           in: path
-          description: ''
+          description: Sandbox ID
           required: true
           schema:
             type: string
@@ -3392,7 +3048,7 @@ paths:
                 $ref: >-
                   #/components/schemas/thirdpartypayments.sandbox.types.SpotMachineTransaction
 security:
-  - Client_Id: []
+  - Client-Id: []
 servers:
   - url: 'https://apis.nbg.gr/sandbox/billpayments/headers/v3.0'
     description: Sandbox Server
@@ -3400,29 +3056,6 @@ servers:
     description: Production Server
 components:
   requestBodies:
-    ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest:
-      content:
-        application/json:
-          schema:
-            $ref: >-
-              #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
-        text/json:
-          schema:
-            $ref: >-
-              #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
-        application/xml:
-          schema:
-            $ref: >-
-              #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
-        text/xml:
-          schema:
-            $ref: >-
-              #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
-        application/x-www-form-urlencoded:
-          schema:
-            $ref: >-
-              #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest
-      required: true
     ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.TopRecentTransactionsBpRequest:
       content:
         application/json:
@@ -3447,7 +3080,7 @@ components:
               #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.TopRecentTransactionsBpRequest
       required: true
   securitySchemes:
-    Client_Id:
+    Client-Id:
       type: apiKey
       description: Application's Id
       in: header
@@ -4415,81 +4048,6 @@ components:
           type: array
           items:
             type: string
-    ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.IsTppPaymentBaseRequest:
-      required:
-        - header
-        - payload
-      type: object
-      properties:
-        header:
-          $ref: '#/components/schemas/ibank.Hosting.WebApi.RequestHeader'
-        payload:
-          $ref: '#/components/schemas/ibank.ThirdParty.Types.IsTppPaymentBaseRequest'
-    ibank.ThirdParty.Types.IsTppPaymentBaseRequest:
-      description: >-
-        Request to check whether the transaction was executed in the TPP system
-        and retrieve the initial origin, if the transaction belongs to the
-        requester's ecosystem
-      type: object
-      properties:
-        paymentIdentification:
-          $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentIdentification'
-    ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.IsTppPaymentResponse:
-      type: object
-      properties:
-        payload:
-          $ref: '#/components/schemas/ibank.ThirdParty.Types.IsTppPaymentResponse'
-        exception:
-          $ref: '#/components/schemas/bUtility.ResponseMessage'
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/bUtility.ResponseMessage'
-        executionTime:
-          format: double
-          type: number
-    ibank.ThirdParty.Types.IsTppPaymentResponse:
-      type: object
-      properties:
-        isTppPayment:
-          description: Indicates whether the transaction was executed in the TPP system
-          type: boolean
-        status:
-          description: "The status of the transaction\r\nValues:\r\nPENDING:  The online transaction information has been registered in the system but there has been no confirmation of the actual payment yet. \r\nCOMPLETED: The online transaction was completed and the payment has been scheduled for clearance.\r\nFAILED: The online transaction failed to complete.\r\nCANCELLED: The previously completed online transaction has been successfully cancelled and the payment will not be scheduled for clearance.\r\nREVERTED: (Applies only to payments whose method is CARD) The transaction was initially registered in the bank's system, but due to a technical reversal request that occurred in the card transaction processing system, the payment was successfully reverted and a card transaction reversal was executed.\r\nREVFAILED: (Applies only to payments whose method is CARD)  The transaction was initially registered in the bank's system, but due to a technical reversal request that occurred in the card transaction processing system, a card transaction reversal was executed but the payment was not successfully reverted.\r\nSUSPECT: (Applies only to online TopUp transactions) The transaction was flagged as suspect, since the payment's clearance was performed in the bank's system, but an error occurred during the communication with the Provider, in order to acknowledge the successful billing. Therefore, the TopUp status is in need of further investigation.\r\nPARTIAL_PROCESS: (Applies only to only WIND TopUp transactions) The online transaction was completed and the payment's clearance was performed in the bank's system, but the Provider rejected the related transaction, so the TopUP failed.\r\nDEFERRED: The transaction has been registered in the system successfully and will be executed at the specified date."
-          type: string
-        origin:
-          $ref: '#/components/schemas/ibank.ThirdParty.Types.SpotMachineOrigin'
-    ibank.ThirdParty.Types.SpotMachineOrigin:
-      type: object
-      properties:
-        NetworkId:
-          format: uuid
-          type: string
-          example: 00000000-0000-0000-0000-000000000000
-        SpotId:
-          format: uuid
-          type: string
-          example: 00000000-0000-0000-0000-000000000000
-        SpotMachineId:
-          format: uuid
-          type: string
-          example: 00000000-0000-0000-0000-000000000000
-        MachineType:
-          type: string
-        MachineId:
-          type: string
-        ImpersonatorId:
-          format: uuid
-          type: string
-          example: 00000000-0000-0000-0000-000000000000
-        ImpersonatorMachineType:
-          type: string
-        NetworkMode:
-          type: string
-        UserId:
-          type: string
-        UserType:
-          type: string
     ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest:
       required:
         - header
@@ -6178,100 +5736,11 @@ components:
             The RF Payment Code that will be used to specify which organizations
             are related
           type: string
-    ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.OperationsListBpRequest:
-      required:
-        - header
-        - payload
-      type: object
-      properties:
-        header:
-          $ref: '#/components/schemas/ibank.Hosting.WebApi.RequestHeader'
-        payload:
-          $ref: '#/components/schemas/ibank.ThirdParty.Types.OperationsListBpRequest'
-    ibank.ThirdParty.Types.OperationsListBpRequest:
-      description: Request to get supported payments and their metadata
-      type: object
-      properties:
-        userId:
-          type: string
-        operationId:
-          format: uuid
-          description: >-
-            Identification of the operation, in case of search for a particular
-            operation's details.
-          type: string
-          example: 00000000-0000-0000-0000-000000000000
-    ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.OperationsListResponse:
-      type: object
-      properties:
-        payload:
-          $ref: '#/components/schemas/ibank.ThirdParty.Types.OperationsListResponse'
-        exception:
-          $ref: '#/components/schemas/bUtility.ResponseMessage'
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/bUtility.ResponseMessage'
-        executionTime:
-          format: double
-          type: number
-    ibank.ThirdParty.Types.OperationsListResponse:
-      description: The supported operation(s) with necessary information for the execution
-      type: object
-      properties:
-        operations:
-          description: Details of the supported operation(s)
-          type: array
-          items:
-            $ref: '#/components/schemas/ibank.ThirdParty.Types.OperationInfo'
-    ibank.ThirdParty.Types.OperationInfo:
-      description: Basic information about an operation
-      type: object
-      properties:
-        id:
-          format: uuid
-          description: Operation's unique identifier
-          type: string
-          example: 00000000-0000-0000-0000-000000000000
-        name:
-          description: "Operation's name\r\nSupported values:\r\nBillPayment,\r\nLoanPayment,\r\nDeposit,\r\nCreditCardPayment"
-          type: string
-        description:
-          description: Operation's desciprtion
-          type: string
-        sortOrder:
-          format: int32
-          description: >-
-            The order in which operation(s) are displayed in the list (higher
-            ordering means better position)
-          type: integer
-        supportedPaymentMethods:
-          description: "The payment method(s) supported for the operation.\r\nFor the selected payment method, the value of the field 'name' needs to be send during the operation execution, in the field 'settlementInfo.method'."
-          type: array
-          items:
-            $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentMethodBase'
-    ibank.ThirdParty.Types.PaymentMethodBase:
-      description: Basic Payment method details and metadata
-      type: object
-      properties:
-        name:
-          description: "Payment method's name\r\nSupported Values:\r\nCASH = Payment via Cash\r\nCARD = Payment via Card\r\nACCT = Payment directly via Account\r\nDBCACCT = Payment directly via an Account related to an NBG Debit Card\r\nVPOSCARD = Payment via Credit Card with use of Virtual POS\r\nNBGCARD = Payment via NBG Credit Card"
-          type: string
-        maxAllowedPaymentAmount:
-          format: double
-          description: >-
-            Max allowed payment amount. If value is set then payment amount
-            should not exceed the defined amount
-          type: number
-        media:
-          description: "Metadata and details of the Media files associated with the organization/service and the payment method.\r\nCan be used to define the url, from where the client can retrieve a media file (e.g. logo) associated to the payment method of the organization/service.\r\nMoreover, it can be used as a guidance on the payment categories the organization belongs, in case the network will not use the generic categories that exist in the system and it requires network-specific payment categories.\r\nThese categories can be retrieved as an example, through the key 'ui-group' and the categories can be retrieved from the annotations list."
-          type: array
-          items:
-            $ref: '#/components/schemas/ibank.ThirdParty.Types.MediaMetadata'
     thirdpartypayments.sandbox.types.SandboxRequest:
       type: object
       properties:
         sandboxId:
+          description: The id of the sandbox
           type: string
     ibank.Hosting.WebApi.Response.thirdpartypayments.sandbox.types.SandboxDataModel:
       type: object
@@ -6292,12 +5761,15 @@ components:
       type: object
       properties:
         sandboxID:
+          description: The id of the sandbox
           type: string
         users:
+          description: The users created for the sandbox
           type: array
           items:
             $ref: '#/components/schemas/thirdpartypayments.sandbox.types.SandboxUser'
         networks:
+          description: The networks created for the sandbox
           type: array
           items:
             $ref: '#/components/schemas/thirdpartypayments.sandbox.types.Network'
@@ -6308,20 +5780,26 @@ components:
       type: object
       properties:
         userId:
+          description: The id of the user
           type: string
         userName:
+          description: The name of the user
           type: string
         providerId:
+          description: The id of the provider for the user
           type: string
         provider:
+          description: The name of the provider for the user
           type: string
         userType:
+          description: The type of the user
           enum:
             - IBANK_USER
             - MACHINE
             - MEDIATOR
           type: string
         userAccounts:
+          description: Accounts related to the user
           type: array
           items:
             $ref: >-
@@ -6331,42 +5809,55 @@ components:
       properties:
         id:
           format: uuid
+          description: Network's Id
           type: string
           example: 00000000-0000-0000-0000-000000000000
         name:
+          description: Network's name
           type: string
         commercialName:
+          description: Network's commercial name
           type: string
         paymentChannel:
           format: uuid
+          description: Network's paymentchannel Id
           type: string
           example: 00000000-0000-0000-0000-000000000000
         startDate:
           format: date-time
+          description: Network's start date
           type: string
         endDate:
           format: date-time
+          description: >-
+            Network's end date. If end date is prior to the current date, the
+            network is considered iactive.
           type: string
         networkMetadata:
+          description: Network's metadata
           type: array
           items:
             $ref: >-
               #/components/schemas/thirdpartypayments.sandbox.types.NetworkMetadata
         networkAccounts:
+          description: Accounts related to the network
           type: array
           items:
             $ref: >-
               #/components/schemas/thirdpartypayments.sandbox.types.NetworkAccount
         networkLimits:
+          description: Limits related to the network
           type: array
           items:
             $ref: '#/components/schemas/thirdpartypayments.sandbox.types.NetworkLimit'
         networkMessages:
+          description: Messages related to the network
           type: array
           items:
             $ref: >-
               #/components/schemas/thirdpartypayments.sandbox.types.NetworkMessage
         spots:
+          description: Spots that belong to the network
           type: array
           items:
             $ref: '#/components/schemas/thirdpartypayments.sandbox.types.Spot'
@@ -6374,6 +5865,7 @@ components:
       type: object
       properties:
         massPaymentsJobs:
+          description: List with the jobs for mass payments execution
           type: array
           items:
             $ref: >-
@@ -6383,125 +5875,168 @@ components:
       properties:
         accountId:
           format: uuid
+          description: Account Id
           type: string
           example: 00000000-0000-0000-0000-000000000000
         balance:
           format: double
+          description: Account's available balance
           type: number
         accountType:
+          description: Account's Type. Use IBAN for account and PAN for card.
           enum:
             - IBAN
             - PAN
           type: string
         accountTypeValue:
+          description: Account's number.
           type: string
     thirdpartypayments.sandbox.types.NetworkMetadata:
       type: object
       properties:
         id:
           format: uuid
+          description: Network's metadata Id
           type: string
           example: 00000000-0000-0000-0000-000000000000
         fieldKey:
+          description: Network's key
           type: string
         fieldValue:
+          description: Network's value
           type: string
     thirdpartypayments.sandbox.types.NetworkAccount:
       type: object
       properties:
         id:
           format: uuid
+          description: Network's account Id
           type: string
           example: 00000000-0000-0000-0000-000000000000
         IBANorBBAN:
+          description: Network's account number
           type: string
         PAN:
+          description: Network's pan number
           type: string
         accountType:
+          description: Network's account type
           type: string
     thirdpartypayments.sandbox.types.NetworkLimit:
       type: object
       properties:
         id:
           format: uuid
+          description: Limit Id
           type: string
           example: 00000000-0000-0000-0000-000000000000
         limitType:
+          description: Limit type. Currently only REVERSAL supported.
           type: string
         limitScope:
+          description: "Limit scope. \r\nPossible values:\r\n- NETWORK\r\n- SPOTMACHINE_DEFAULT\r\n- SPOT\r\n- SPOTMACHINE"
           type: string
         interval:
           format: int32
+          description: Limit interval in days
           type: integer
         maxCount:
           format: int32
+          description: Limit maximum number allowed (e.g. 5 cancellations allowed per day)
           type: integer
         maxAmount:
           format: double
+          description: >-
+            Limit maximum amount allowed (e.g. 1000 euros allowed for
+            cancellations allowed per day)
           type: number
         startDate:
           format: date-time
+          description: Limit start date
           type: string
         endDate:
           format: date-time
+          description: Limit end date
           type: string
     thirdpartypayments.sandbox.types.NetworkMessage:
       type: object
       properties:
         id:
           format: uuid
+          description: Message Id
           type: string
           example: 00000000-0000-0000-0000-000000000000
         category:
+          description: Message category (e.g. WELCOME)
           type: string
         content:
+          description: Message content
           type: string
         contentType:
+          description: Message type
           type: string
         bitmapContent:
+          description: Message bitmap content
           type: string
         endDate:
           format: date-time
+          description: Message end date
           type: string
         startDate:
           format: date-time
+          description: Message start date
           type: string
     thirdpartypayments.sandbox.types.Spot:
       type: object
       properties:
         id:
           format: uuid
+          description: Spot's Id
           type: string
           example: 00000000-0000-0000-0000-000000000000
         name:
+          description: Spot's name
           type: string
         comments:
+          description: Spot's comments
           type: string
         address:
+          description: Spot's address
           type: string
         startDate:
           format: date-time
+          description: Spot's start date
           type: string
         endDate:
           format: date-time
+          description: Spot's end date
           type: string
         ownerIBUserId:
+          description: Spot's owner user id (i-bank)
           type: string
         ssn:
+          description: Spot's owner tax number
           type: string
         status:
+          description: "Spot's status\r\nPossible values:\r\n- ENABLED\r\n- DISABLED\r\n- UNAUTHORIZED\r\n- PENDING"
           type: string
         authorizationUpdateLvl:
+          description: >-
+            Spot's authorization update level. Defines authorization to
+            enable/disable a spot.
           type: string
         spotMachines:
+          description: Terminals/Machines that belong to the spot
           type: array
           items:
             $ref: '#/components/schemas/thirdpartypayments.sandbox.types.SpotMachine'
         spotNetworkLimits:
+          description: Limits related to the spot
           type: array
           items:
             $ref: '#/components/schemas/thirdpartypayments.sandbox.types.NetworkLimit'
         spotNetworkMessages:
+          description: Messages related to the spot
           type: array
           items:
             $ref: >-
@@ -6551,53 +6086,72 @@ components:
       properties:
         id:
           format: uuid
+          description: Machine's Id
           type: string
           example: 00000000-0000-0000-0000-000000000000
         machineId:
+          description: Machine's name
           type: string
         serialNo:
+          description: Machine's serial number
           type: string
         machineType:
+          description: "Machine's type.\r\nPossible values:\r\n- TransactionTerminal\r\n- Mediator\r\n- NetworkAdministrationTerminal"
           type: string
         description:
+          description: Machine's description
           type: string
         installedSoftware:
+          description: Machine's installed software
           type: string
         installedDate:
           format: date-time
+          description: Machine's installation date
           type: string
         startDate:
           format: date-time
+          description: Machine's start date
           type: string
         endDate:
           format: date-time
+          description: Machine's end date
           type: string
         status:
+          description: "Machine's status\r\nPossible values:\r\n- ENABLED\r\n- DISABLED\r\n- OTT_UNAUTHORIZED\r\n- PENDING"
           type: string
         authorizationUpdateLvl:
+          description: >-
+            Machine's authorization update level. Defines authorization to
+            enable/disable a spot.
           type: string
         store:
+          description: Store that the machine belongs to
           type: string
         spotMachineOTTs:
+          description: One Time Tokens issued for the machine
           type: array
           items:
             $ref: >-
               #/components/schemas/thirdpartypayments.sandbox.types.SpotMachineOtt
         spotMachineTransactions:
+          description: Transactions related to the machine
           type: array
           items:
             $ref: >-
               #/components/schemas/thirdpartypayments.sandbox.types.SpotMachineTransaction
         spotMachineAccounts:
+          description: Accounts related to the machine
           type: array
           items:
             $ref: >-
               #/components/schemas/thirdpartypayments.sandbox.types.SpotMachineAccount
         spotMachineNetworkLimits:
+          description: Limits related to the machine
           type: array
           items:
             $ref: '#/components/schemas/thirdpartypayments.sandbox.types.NetworkLimit'
         spotMachineNetworkMessage:
+          description: Messages related to the machine
           type: array
           items:
             $ref: >-
@@ -6610,98 +6164,146 @@ components:
       properties:
         id:
           format: uuid
+          description: One Time Token id
           type: string
           example: 00000000-0000-0000-0000-000000000000
         oneTimeToken:
+          description: One Time Token value
           type: string
         requestTimestamp:
           format: date-time
+          description: One Time Token requested timestamp
           type: string
         executeTimestamp:
           format: date-time
+          description: One Time Token executed timestamp
           type: string
         status:
+          description: "One Time Token status\r\nPossible values:\r\n- COMPLETED\r\n- FAILED\r\n- PENDING"
           type: string
         statusReason:
+          description: One Time Token status reason
           type: string
     thirdpartypayments.sandbox.types.SpotMachineTransaction:
       type: object
       properties:
         id:
           format: uuid
+          description: Id of the transaction
           type: string
           example: 00000000-0000-0000-0000-000000000000
         txId:
           format: uuid
+          description: 'TxId of the transaction, used by HOST'
           type: string
           example: 00000000-0000-0000-0000-000000000000
         instrId:
+          description: 'Unique Id of the transaction, provided by the client'
           type: string
         endToEndId:
+          description: Unique Id of the transaction provided by the bank
           type: string
         paymentCode:
           format: uuid
+          description: >-
+            Unique Id of organization related to the transaction. Supported
+            organizations can be found in endpoint /paymentsList.
           type: string
           example: 00000000-0000-0000-0000-000000000000
         ccy:
+          description: Transaction's currency
           type: string
         amount:
           format: double
+          description: Transaction's amount
           type: number
         method:
+          description: >-
+            Transaction's payment method. Supported payment methods can be found
+            in endpoint /paymentsList.
           type: string
         creditorBankBIC:
+          description: Transaction's creditor bank BIC
           type: string
         creditorBankName:
+          description: Transaction's creditor bank name
           type: string
         creditorBankIBAN:
+          description: Transaction's creditor bank IBAN
           type: string
         debtorName:
+          description: Transaction's debtor name
           type: string
         debtorTelephone:
+          description: Transaction's debtor telephone
           type: string
         paymentType:
+          description: 'Transaction''s payment type, related to the organization'
           type: string
         debitAccount:
+          description: Transaction's debit account
           type: string
         branch:
+          description: >-
+            Transaction's branch, 3-digit code that corresponds to the payment
+            channel
           type: string
         userId:
+          description: Transaction's related user id
           type: string
         sendCutOffTime:
           format: date-time
+          description: >-
+            Transaction's cut-off time. Cancellations are allowed up to this
+            time. If null, no cancellation is allowed.
           type: string
         commNBG:
           format: double
+          description: NBG Commission for the transaction
           type: number
         commUltimateDebtor:
           format: double
+          description: Spot Owner's Commission for the transaction
           type: number
         commThirdParty:
           format: double
+          description: Network Commission for the transaction
           type: number
         commOther:
           format: double
+          description: Other Commissions for the transaction
           type: number
         clearSysRef:
+          description: Unique Id of the transaction provided by the bank
           type: string
         status:
+          description: >-
+            Status of the transaction. Please refer to endpoint's /status
+            documentation for possible values.
           type: string
         failureReason:
+          description: Reason in case of transaction failure
           type: string
         timestamp:
           format: date-time
+          description: Timestamp that the transaction was received
           type: string
         subBranch:
+          description: >-
+            Transaction's subbranch, 2-digit code that corresponds to the
+            payment channel
           type: string
         impersonator:
           format: uuid
+          description: 'Id of the mediator machine, in case of Centralized network'
           type: string
           example: 00000000-0000-0000-0000-000000000000
         commSubAgent:
           format: double
+          description: Payment Institution Commission for the transaction
           type: number
         spotMachineTransactionDetails:
+          description: Details for the transaction
           type: array
           items:
             $ref: >-
@@ -6711,46 +6313,60 @@ components:
       properties:
         id:
           format: uuid
+          description: SpotMachine's account Id
           type: string
           example: 00000000-0000-0000-0000-000000000000
         IBANorBBAN:
+          description: SpotMachine's account number
           type: string
         PAN:
+          description: SpotMachine's pan number
           type: string
     thirdpartypayments.sandbox.types.SpotMachineLocation:
       type: object
       properties:
         id:
           format: uuid
+          description: Id of the machine's location
           type: string
           example: 00000000-0000-0000-0000-000000000000
         latitude:
+          description: Latitude of the machine's location
           type: string
         longitude:
+          description: Longitude of the machine's location
           type: string
         coordinatesSystem:
+          description: Coordinates System of the machine's location
           type: string
         address:
+          description: Address the machine is located
           type: string
     thirdpartypayments.sandbox.types.SpotMachineTransactionDetails:
       type: object
       properties:
         fieldKey:
+          description: Details key
           type: string
         fieldValue:
+          description: Details value
           type: string
     thirdpartypayments.sandbox.types.CreateUserRequest:
       type: object
       properties:
         userName:
+          description: The name of the user
           type: string
         userType:
+          description: The type of the user
           type: string
         networkId:
           format: uuid
+          description: 'The id of the network, the user will belong to'
           type: string
           example: 00000000-0000-0000-0000-000000000000
         spotMachineType:
+          description: The type of the machine to be created for the user
           type: string
     ibank.Hosting.WebApi.Response.thirdpartypayments.sandbox.types.CreateSandboxUserResponse:
       type: object
@@ -6779,13 +6395,16 @@ components:
       properties:
         balance:
           format: double
+          description: Account's balance
           type: number
         accountType:
+          description: Account's type
           enum:
             - IBAN
             - PAN
           type: string
         accountTypeValue:
+          description: Account's number
           type: string
     ibank.Hosting.WebApi.Response.thirdpartypayments.sandbox.types.SandboxAccount:
       type: object
@@ -6823,6 +6442,7 @@ components:
       properties:
         balance:
           format: double
+          description: Account's balance
           type: number
     thirdpartypayments.sandbox.types.UpdateTransactionRequest:
       type: object
@@ -6830,43 +6450,68 @@ components:
         paymentIdentification:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentIdentification'
         debtorName:
+          description: Debtor name for the transaction
           type: string
         debtorTelephone:
+          description: Debtor telephone for the transaction
           type: string
         debitAccount:
+          description: Debit account for the transaction
           type: string
         creditorBankBIC:
+          description: Creditor bank BIC
           type: string
         creditorBankName:
+          description: Creditor bank name
           type: string
         creditorBankIBAN:
+          description: Creditor bank IBAN
           type: string
         branch:
+          description: >-
+            Transaction's branch, 3-digit code that corresponds to the payment
+            channel
           type: string
         subBranch:
+          description: >-
+            Transaction's branch, 2-digit code that corresponds to the payment
+            channel
           type: string
         sendCutOffTime:
           format: date-time
+          description: >-
+            Transaction's cut-off time. Cancellations are allowed up to this
+            time. If null, no cancellation is allowed.
           type: string
         status:
+          description: >-
+            Status of the transaction. Please refer to endpoint's /status
+            documentation for possible values.
           type: string
         failureReason:
+          description: Reason in case of transaction failure
           type: string
         timestamp:
           format: date-time
+          description: Timestamp that the transaction was received
           type: string
         commNBG:
           format: double
+          description: NBG Commission for the transaction
           type: number
         commUltimateDebtor:
           format: double
+          description: Spot Owner's Commission for the transaction
           type: number
         commThirdParty:
           format: double
+          description: Network Commission for the transaction
           type: number
         commOther:
           format: double
+          description: Other Commissions for the transaction
           type: number
         commSubAgent:
           format: double
+          description: Payment Institution Commission for the transaction
           type: number
