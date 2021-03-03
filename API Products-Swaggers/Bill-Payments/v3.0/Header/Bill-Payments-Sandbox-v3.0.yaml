@@ -2021,7 +2021,7 @@ paths:
       tags:
         - Payments
       summary: Get Daily Transactions
-      description: "Retrieves the list of the executed transactions on transactionDate by a network terminal.\r\n\r\n\r\nSample request:\r\n\r\n    POST /dailyTransactions\r\n    {\r\n        \"userId\": \"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"transactionDate\": \"2018-03-09T13:32:19.197Z\"\r\n    }"
+      description: "Retrieves the list of the executed transactions on transactionDate by a user.\r\n\r\n\r\nSample request:\r\n\r\n    POST /dailyTransactions\r\n    {\r\n        \"userId\": \"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"transactionDate\": \"2018-03-09T13:32:19.197Z\"\r\n    }"
       operationId: Payments_dailyTransactions
       parameters:
         - name: sandbox_id
@@ -2116,6 +2116,106 @@ paths:
               schema:
                 $ref: >-
                   #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.DailyTransactionsResponse
+  /Payments/dailyTransactionsLight:
+    post:
+      tags:
+        - Payments
+      summary: Get Daily Transactions (Lighter version)
+      description: "Retrieves the list of basic details for the executed transactions on transactionDate by a user.\r\n\r\n\r\nSample request:\r\n\r\n    POST /dailyTransactionsLight\r\n    {\r\n        \"userId\": \"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"transactionDate\": \"2018-03-09T13:32:19.197Z\"\r\n    }"
+      operationId: Payments_dailyTransactionsLight
+      parameters:
+        - name: sandbox_id
+          in: header
+          description: Sandbox ID
+          required: true
+          schema:
+            type: string
+            default: ''
+        - name: application_id
+          in: header
+          description: Application ID
+          required: true
+          schema:
+            type: string
+            default: ''
+        - name: user_id
+          in: header
+          description: User ID
+          required: true
+          schema:
+            type: string
+            default: ''
+        - name: username
+          in: header
+          description: User Name
+          required: true
+          schema:
+            type: string
+            default: ''
+        - name: provider_id
+          in: header
+          description: Provider ID
+          required: true
+          schema:
+            type: string
+            default: ''
+        - name: provider
+          in: header
+          description: Provider Name
+          required: true
+          schema:
+            type: string
+            default: ''
+        - name: phone_number
+          in: header
+          description: Phone Number
+          required: true
+          schema:
+            type: string
+            default: 'null'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.DailyTransactionsLightBpRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.DailyTransactionsLightBpRequest
+          application/xml:
+            schema:
+              $ref: >-
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.DailyTransactionsLightBpRequest
+          text/xml:
+            schema:
+              $ref: >-
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.DailyTransactionsLightBpRequest
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: >-
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.DailyTransactionsLightBpRequest
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.DailyTransactionsLightResponse
+            text/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.DailyTransactionsLightResponse
+            application/xml:
+              schema:
+                $ref: >-
+                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.DailyTransactionsLightResponse
+            text/xml:
+              schema:
+                $ref: >-
+                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.DailyTransactionsLightResponse
   /Payments/commission:
     post:
       tags:
@@ -3048,7 +3148,7 @@ paths:
                 $ref: >-
                   #/components/schemas/thirdpartypayments.sandbox.types.SpotMachineTransaction
 security:
-  - Client-Id: []
+  - Client_Id: []
 servers:
   - url: 'https://apis.nbg.gr/sandbox/billpayments/headers/v3.0'
     description: Sandbox Server
@@ -3080,7 +3180,7 @@ components:
               #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.TopRecentTransactionsBpRequest
       required: true
   securitySchemes:
-    Client-Id:
+    Client_Id:
       type: apiKey
       description: Application's Id
       in: header
@@ -3544,7 +3644,7 @@ components:
             /paymentsList endpoint)
           type: number
         method:
-          description: "Payment Method \r\nAvailable Values:\r\n-CASH: Via Cash,\r\n-CARD: Via use of CARD,\r\n-ACCT: Via use of Bank Account,\r\n-VPOSCARD: Via use of CARD on a Virtual POS\r\n-NBGCARD: Via use of an NBG CARD (exclusive to IB)"
+          description: "Payment Method \r\nSupported Values:\r\n- CASH = Payment via Cash\r\n- CARD = Payment via use of Card on a POS device\r\n- ACCT = Payment directly via Account\r\n- DBCACCT = Payment directly via an Account related to an NBG Debit Card\r\n- VPOSCARD = Payment via NBG Credit Card with use of a Virtual POS\r\n- NBGCARD = Payment via NBG Credit Card\r\n- LNEXACCT: Payment directly via an Express Loan Account\r\n- CARDAUTH: Do not use this value, currently it is meant for internal purposes only"
           enum:
             - CASH
             - CARD
@@ -3553,6 +3653,7 @@ components:
             - VPOSCARD
             - NBGCARD
             - DBCACCT
+            - LNEXACCT
           type: string
     ibank.ThirdParty.Types.Additional:
       description: 'Additional details, eg. account balance'
@@ -4226,7 +4327,7 @@ components:
       type: object
       properties:
         name:
-          description: "Payment method's name\r\nSupported Values:\r\nCASH = Payment via Cash\r\nCARD = Payment via Card\r\nACCT = Payment directly via Account\r\nDBCACCT = Payment directly via an Account related to an NBG Debit Card\r\nVPOSCARD = Payment via Credit Card with use of Virtual POS\r\nNBGCARD = Payment via NBG Credit Card"
+          description: "Payment method's name\r\n\r\nSupported Values:\r\n- CASH = Payment via Cash\r\n- CARD = Payment via use of Card on a POS device\r\n- ACCT = Payment directly via Account\r\n- DBCACCT = Payment directly via an Account related to an NBG Debit Card\r\n- VPOSCARD = Payment via NBG Credit Card with use of a Virtual POS\r\n- NBGCARD = Payment via NBG Credit Card\r\n- LNEXACCT: Payment directly via an Express Loan Account"
           type: string
         otp:
           description: >-
@@ -5497,6 +5598,106 @@ components:
           type: string
         deferred:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.DeferredRequest'
+    ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.DailyTransactionsLightBpRequest:
+      required:
+        - header
+        - payload
+      type: object
+      properties:
+        header:
+          $ref: '#/components/schemas/ibank.Hosting.WebApi.RequestHeader'
+        payload:
+          $ref: >-
+            #/components/schemas/ibank.ThirdParty.Types.DailyTransactionsLightBpRequest
+    ibank.ThirdParty.Types.DailyTransactionsLightBpRequest:
+      description: >-
+        Request for getting the basic details of transaction(s) executed within
+        a date
+      type: object
+      properties:
+        userId:
+          description: The ID of the user
+          type: string
+        transactionDate:
+          format: date-time
+          description: >-
+            Transaction(s)' execution date. If not specified defaults to the
+            current date
+          type: string
+    ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.DailyTransactionsLightResponse:
+      type: object
+      properties:
+        payload:
+          $ref: >-
+            #/components/schemas/ibank.ThirdParty.Types.DailyTransactionsLightResponse
+        exception:
+          $ref: '#/components/schemas/bUtility.ResponseMessage'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/bUtility.ResponseMessage'
+        executionTime:
+          format: double
+          type: number
+    ibank.ThirdParty.Types.DailyTransactionsLightResponse:
+      description: >-
+        A List of basic details for transaction(s) executed within a requested
+        day
+      type: object
+      properties:
+        transactions:
+          description: The transaction(s) executed within the requested day
+          type: array
+          items:
+            $ref: '#/components/schemas/ibank.ThirdParty.Types.TransactionLight'
+    ibank.ThirdParty.Types.TransactionLight:
+      description: The transaction basic details
+      type: object
+      properties:
+        instrId:
+          description: "Originator's unique identifier of the transaction max(36)\r\nProduced from the client"
+          type: string
+        endtoendId:
+          description: "Unique identifier of the transaction, to be sent to the creditor max(35)  \r\nUsed in cases of payment method via CARD"
+          type: string
+        txId:
+          format: uuid
+          description: "Unique transaction code that exists in the header and is used to check for dublicate executions max(36)        \r\nProduced from the client"
+          type: string
+          example: 00000000-0000-0000-0000-000000000000
+        clrSysRef:
+          description: 'Transactions reference number, produced from the clearance system'
+          type: string
+        ccy:
+          description: Currency (e.g. EUR)
+          type: string
+        amount:
+          format: double
+          description: Amount
+          type: number
+        totalCommission:
+          format: double
+          description: Total commission sum
+          type: number
+        method:
+          description: "Payment Method \r\nSupported Values:\r\n- CASH = Payment via Cash\r\n- CARD = Payment via use of Card on a POS device\r\n- ACCT = Payment directly via Account\r\n- DBCACCT = Payment directly via an Account related to an NBG Debit Card\r\n- VPOSCARD = Payment via NBG Credit Card with use of a Virtual POS\r\n- NBGCARD = Payment via NBG Credit Card\r\n- LNEXACCT: Payment directly via an Express Loan Account\r\n- CARDAUTH: Do not use this value, currently it is meant for internal purposes only"
+          enum:
+            - CASH
+            - CARD
+            - ACCT
+            - CARDAUTH
+            - VPOSCARD
+            - NBGCARD
+            - DBCACCT
+            - LNEXACCT
+          type: string
+        status:
+          description: The status of the transaction
+          type: string
+        timestamp:
+          format: date-time
+          description: Transaction's datetime
+          type: string
     ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpRequest:
       required:
         - header
