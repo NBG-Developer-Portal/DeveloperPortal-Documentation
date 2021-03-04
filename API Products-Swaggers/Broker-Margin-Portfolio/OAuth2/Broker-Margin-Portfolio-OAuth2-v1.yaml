@@ -1,0 +1,1777 @@
+---
+openapi: 3.0.0
+info:
+  title: Broker Margin Portfolio API
+  version: v1
+  description: "## Functionality at a glance \nA group of Services to support Ordering,\
+    \ Portfolio Position, Margin Evaluation for a specific Margin Portfolio. It is\
+    \ called by a Broker's Order Management System.\n \n## Quick Getting Started\n\
+    1. **Login/Register** to the NBG Technology HUB\n2. Go to **\"APPS\"**\n3. Select\
+    \ your Organization and go to step 4. If you want to create a new Organization\
+    \ click **\\\"CREATE AN ORGANIZATION\\\"** and follow the steps below:\n    1.\
+    \ Enter the title of your Organization\n    2. Enter a short description of your\
+    \ Organization (optional)\n    3. Click **\"SUBMIT\"**\n\n4. Select the Organization\
+    \ of choice and click **\"ADD AN APPLICATION\"** \n      1. Fill in the forms\
+    \ (title and short description)\n      2. Check **\\\"Authorization Code\\\" and\
+    \ \\\"Client Credentials\\\"** \n      3. Enter the **OAuth Redirect and Post\
+    \ Logout URIs** (these are the URIs that we will redirect the user upon logging\
+    \ in and logging out respectively)\n          \n          You can use the following\
+    \ redirect URL to easily test the API through the portal: *https://developer.nbg.gr/oauth2/redoc-callback*\n\
+    \      4. Click **\"SUBMIT\"**\n      5. Store the APPs **\"Client ID\"** and\
+    \ **\"Client Secret\"**\n5. Go to **\"API PRODUCTS\"** and select the **Broker Margin Portfolio API** \n6. Click **\\\"START USING THIS API\\\"**, choose your app and\
+    \ click **\"SUBSCRIBE\"**\n7. Get an Access Token using the Access Token Flow\
+    \ and the API scopes provided in the Authentication and Authorization (OAuth2)\
+    \ section below\n8. Create a Sandbox\n9. Play with the API\n\n## Authentication\
+    \ and Authorization (OAuth2)\nThis API version uses the OAuth2 protocol for authentication\
+    \ and authorization, which means that a Bearer (access token) should be acquired.\
+    \ An access token can be retrieved using the client_id and client_secret of the\
+    \ APP that you created and subscribed in this API, and your own credentials (username,\
+    \ password) that you use to sign in the NBG Technology HUB. The scopes are defined\
+    \ below:\n\n**Sandbox Scopes**:\n\n\t sandbox-broker-margin-portfolio-api \n\n\
+    **Production Scopes**:\n\n\t broker-margin-portfolio-api \n\t \n     \n\
+    **Token Endpoint**:\n\n\t https://my.nbg.gr/identity/connect/token \n\nSee more\
+    \ [here](https://developer.nbg.gr/oauth-document)\n\n## Create your Sandbox \n\
+    Sandboxes are self - contained testing environments that provide a simple way\
+    \ of testing the API without any real impact, meaning that no personal or financial\
+    \ data is used. You can create your Sandbox by invoking the POST / api / Sandbox\
+    \ / sandbox_id call by simply providing an id as your sandbox id and naming it\
+    \ almost anything you like.\n\n**Important!** Don't lose your sandbox_id, since\
+    \ you will need it for all the API calls.\n\n## Start Testing\n Once you have\
+    \ your sandbox_id, you can start invoking the rest of the operations by providing\
+    \ the mandatory http header **sandbox_id** and the other required information\
+    \ on the request body payload (e.g. userId).\n\n## Error Codes\n* Result:-20000,\
+    \ Message:REQUIRED_FIELD_MISSING \n* Result:-20001, Message:INCORRECT_REQUEST_TYPE\n\
+    * Result:-20002, Message:INVALID_AMOUNTS \n* Result:-20003, Message:INVALID_INSTRUMENT_DEPOSITORY\
+    \ \n* Result:-20004, Message:MARGIN_DISTRIBUTION_INVALID\n* Result:-20005, Message:NEGATIVE_QUANTITY_NOT_ALLOWED\
+    \ \n* Result:-20006, Message:PORTFOLIO_TYPE_NOT_VALID_FOR_FINANCIALMARKET \n*\
+    \ Result:-20007, Message:TRADETYPE_NOT_VALID\n* Result:-30000, Message:BROKERAGE_ACCOUNT_DOES_NOT_EXIST\n\
+    * Result:-30001, Message:CURRENCY_NOT_FOUND \n* Result:-30002, Message:DEPOSITORYACCOUNT_NOTFOUND\
+    \ \n* Result:-30003, Message:INSTRUMENT_NOT_FOUND \n* Result:-30004, Message:OMNIBUS_ACCOUNT_DOES_NOT_EXIST\n\
+    * Result:-30005, Message:PARTY_NOT_FOUND \n* Result:-30006, Message:PORTFOLIO_NOTFOUND\n\
+    * Result:-30007, Message:REQUIRED_INV_SERVICE_NOTFOUND \n* Result:-30008, Message:SECURITY_ACCOUNT_DOES_NOT_EXIST\
+    \ \n* Result:-30009, Message:TRADETYPE_NOT_FOUND \n* Result:-30010, Message:TRANSACTION_NOTFOUND\
+    \ \n* Result:-40000, Message:CONFIRMATION_AMOUNT_NOT_SAME \n* Result:-40001, Message:CROSS_TRADING_IS_NOT_ALLOWED\
+    \ \n* Result:-40002, Message:CURRENCY_NOT_ALLOWED_FOR_MARGIN \n* Result:-40003,\
+    \ Message:DEPOSITORYACCOUNT_NOT_ACTIVE \n* Result:-40004, Message:EXECUTION_REFERENCE_EXISTS\
+    \ \n* Result:-40005, Message:INACTIVE_PORTFOLIO \n* Result:-40006, Message:INSTRUMENT_IS_INACTIVE\
+    \ \n* Result:-40007, Message:MARGIN_CALCULATION_COULD_NOT_EXECUTE\n* Result:-40008,\
+    \ Message:MARGIN_CALCULATION_ERROR \n* Result:-40009, Message:MARGIN_CALCULATION_FAILED\
+    \ \n* Result:-40010, Message:MARGIN_CALL \n* Result:-40011, Message:PARTY_MIFID_INSTRUMENT_CATEGORY_NOTELIGIBLE\n\
+    * Result:-40012, Message:PARTY_MIFID_INSTRUMENT_CATEGORY_NOTSET \n* Result:-40013,\
+    \ Message:PRICE_IS_OUT_OF_LIMITS \n* Result:-40014, Message:REQUIRES_CONFIRMATION\
+    \ \n* Result:-40015, Message:SAME_PORTFOLIO_NOT_ALLOWED \n* Result:-40016, Message:SAT_QUANTITY_NOT_MATCHED\
+    \ \n* Result:-40017, Message:TRADE_NOT_ALLOWED \n* Result:-40018, Message:TRADETYPE_NOT_ALLOWED_ON_DEPOSITORY_ACCOUNT\n\
+    * Result:-49999, Message:GENERIC_ERROR \n* \n## Feedback and Questions\n Have\
+    \ feedback or questions? Send it to [developer@nbg.gr](developer@nbg.gr).\n\n\
+    Check out our [Sandbox Postman Collection](https://github.com/NBG-Developer-Portal/Broker-Margin-Portfolio-API/tree/main/v1/oauth)!"
+  contact:
+    email: developer@nbg.gr
+servers:
+- url: https://apis.nbg.gr/sandbox/broker.margin.portfolio/oauth2/v1
+  description: Sandbox Server
+paths:
+  /GetPortfolio:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetPortfolioRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/GetPortfolioRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/GetPortfolioRequest'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/GetPortfolioRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GetPortfolioRequest'
+        required: true
+      tags:
+      - Margin
+      parameters:
+      - name: sandbox_id
+        description: The unique name of your Sandbox
+        schema:
+          type: string
+        in: header
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPortfolioResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GetPortfolioResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GetPortfolioResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GetPortfolioResponse'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error Response
+      deprecated: false
+      operationId: Margin_GetPortfolio
+      summary: Returns the position of the Investor's portfolio
+      description: "Returns the position of the investor's portfolio, which is unique\
+        \ per customer (investor)\n"
+  /GetBalance:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetBalanceRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/GetBalanceRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/GetBalanceRequest'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/GetBalanceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GetBalanceRequest'
+        required: true
+      tags:
+      - Margin
+      parameters:
+      - name: sandbox_id
+        description: The unique name of your Sandbox
+        schema:
+          type: string
+        in: header
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBalanceResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/GetBalanceResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/GetBalanceResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/GetBalanceResponse'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error Response
+      deprecated: false
+      operationId: Margin_GetBalance
+      summary: Returns the current valuation of the Investor's portfolio.
+      description: Returns the current valuation of the Investor's portfolio.
+  /CancelOrder:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/CancelOrderRequest'
+      tags:
+      - Margin
+      parameters:
+      - name: sandbox_id
+        description: The unique name of your Sandbox
+        schema:
+          type: string
+        in: header
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelOrderResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/CancelOrderResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CancelOrderResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/CancelOrderResponse'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error Response
+      deprecated: false
+      operationId: Margin_CancelOrder
+      summary: Request to notify NBG system of the Cancellation of an Order in OASIS
+        system
+      description: "It is called by the customer to notify the NBG System of the cancellation\
+        \ of an order, in case of:\n 1. the cancellation of an open or partially executed\
+        \ order in the OASIS system or\n 2. a failure request of a new order to OASIS.\n\
+        \nThe response contains the latest state of the order in the application with\
+        \ the orderId that was filled in the request. In case of a successful processing,\
+        \ the response contains the updated order info, after the transaction is inserted\
+        \ in the application. Otherwise, it contains the current state of the order\
+        \ (this might happen in case of a duplicate order)."
+  /InsertOrder:
+    summary: InsertOrder
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/InsertOrderRequest'
+      tags:
+      - Margin
+      parameters:
+      - name: sandbox_id
+        description: The unique name of your Sandbox
+        schema:
+          type: string
+        in: header
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsertOrderResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/InsertOrderResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/InsertOrderResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/InsertOrderResponse'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error Response
+      deprecated: false
+      operationId: Margin_InsertOrder
+      summary: Request to enter a new order.
+      description: "Request to enter a new order. Needs to be called by the customer\
+        \ **before** sending the order to OASIS. The customer needs to forward the\
+        \ order to OASIS only if the application accepts it.\n The response contains\
+        \ the latest state of the order in the application with the orderId that was\
+        \ filled in the request. In case of a successful processing, the response\
+        \ contains the updated order info, after the transaction is inserted in the\
+        \ application. Otherwise, it contains the current state of the order (this\
+        \ might happen in case of a duplicate order)."
+  /QueryOrder:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryOrderRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/QueryOrderRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/QueryOrderRequest'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/QueryOrderRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/QueryOrderRequest'
+        required: true
+      tags:
+      - Margin
+      parameters:
+      - name: sandbox_id
+        description: The unique name of your Sandbox
+        schema:
+          type: string
+        in: header
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryOrderResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/QueryOrderResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/QueryOrderResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/QueryOrderResponse'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error Response
+      deprecated: false
+      operationId: Margin_QueryOrder
+      summary: Request for Order Confirmation
+      description: "It is called by the customer to confirm the status of an order.\r\
+        \n The response contains the latest state of the order in NBG system, corresponding\
+        \ to the OrderID filled in the request. If no order can be found with the\
+        \ specific OrderID, then operation returns error message indicating 'NOT_EXISTS'."
+  /Trade:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TradeRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/TradeRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/TradeRequest'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/TradeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TradeRequest'
+        required: true
+      tags:
+      - Margin
+      parameters:
+      - name: sandbox_id
+        description: The unique name of your Sandbox
+        schema:
+          type: string
+        in: header
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TradeResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/TradeResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/TradeResponse'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error Response
+      deprecated: false
+      operationId: Margin_Trade
+      summary: Request to advise NBG system of the transaction posted at the OASIS
+        system.
+      description: "It is called by the customer to advise the NBG system that the\
+        \ transaction has been posted in OASIS system. \r\nThe response contains the\
+        \ current state of the order with the Order ID indicated in the request. \r\
+        \nIn case of a successful processing, the response contains the details of\
+        \ the transaction entered in at the application, otherwise it contains the\
+        \ current state of the order."
+  /sandbox:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
+        required: true
+      tags:
+      - Sandbox
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error Response
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+          description: OK
+      operationId: Sandbox_CreateSandbox
+      summary: Create a sandbox.
+      description: A Sandbox with default data is created. Simply call by providing
+        an “id” as your sandbox id and naming it almost anything you like.
+  /sandbox/{sandbox_id}:
+    get:
+      tags:
+      - Sandbox
+      parameters:
+      - name: sandbox_id
+        description: The unique name of your Sandbox
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error Response
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+          description: OK
+      operationId: Sandbox_DownloadSandbox
+      summary: Export a sandbox.
+      description: Exports Sandbox data specified by sandbox id.
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SandboxImportRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SandboxImportRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SandboxImportRequest'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/SandboxImportRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SandboxImportRequest'
+        required: true
+      tags:
+      - Sandbox
+      parameters:
+      - name: sandbox_id
+        description: The unique name of your Sandbox
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error Response
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxResponse'
+          description: OK
+      operationId: Sandbox_UpdateSandbox
+      summary: Import a sandbox.
+      description: Imports sandbox data specified by sandbox id.
+    delete:
+      tags:
+      - Sandbox
+      parameters:
+      - name: sandbox_id
+        description: The unique name of your Sandbox
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Error Response
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SandboxResponseBoolean'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SandboxResponseBoolean'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxResponseBoolean'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxResponseBoolean'
+          description: OK
+      operationId: Sandbox_DeleteSandbox
+      summary: Delete a sandbox.
+      description: Deletes the Sandbox specified by sandbox id.
+components:
+  schemas:
+    InsertOrderRequest:
+      description: DTO of InsertOrder request
+      required:
+      - reqId
+      - trdClientId
+      - dssAccountId
+      - dssInvestorShare
+      - orderId
+      - side
+      - price
+      - quantity
+      - instrument
+      - clrSubAcctId
+      - checkOnly
+      type: object
+      properties:
+        reqId:
+          description: Unique Request ID
+          type: string
+        brokerId:
+          description: Broker's Id
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Investor DSS Account Number
+          type: string
+        dssInvestorShare:
+          description: Investor DSS Share Code
+          type: string
+        orderId:
+          description: Unique Order ID created by Customer's System
+          type: string
+        side:
+          description: B/S  for Buy/Sell
+          type: string
+        price:
+          format: double
+          description: Order's price
+          type: number
+        quantity:
+          format: double
+          description: Quantity
+          type: number
+        instrument:
+          description: Ticker Symbol of Instrument (English)
+          type: string
+        clrSubAcctId:
+          description: Clearing sub-account in which the order will be registered
+            e.g. NB27
+          type: string
+        checkOnly:
+          description: "Y -&gt; Order validation without actual entry in the application\r\
+            \nΝ -&gt; The order will be entered and will take amount from the available\
+            \ credit"
+          type: string
+    InsertOrderResponse:
+      description: DTO of InsertOrder response
+      required:
+      - reqId
+      - trnId
+      - timestamp
+      - orderId
+      - result
+      type: object
+      properties:
+        reqId:
+          description: "Unique Request ID, corresponding to the Request ID of the\
+            \ request"
+          type: string
+        trnId:
+          description: Unique Transaction ID in NBG system
+          type: string
+        timestamp:
+          description: Timestamp of the transaction's acceptance
+          type: string
+        orderId:
+          description: "Unique Order ID created by Customer's System, corresponding\
+            \ to the Order ID of the request"
+          type: string
+        result:
+          format: int32
+          description: "0 -&gt; Order found\r\n-1 -&gt; Order not found\r\n...<0 -&gt;\
+            \ Other Error (for example in case of duplicate order)"
+          type: integer
+        message:
+          description: Error Message
+          type: string
+        lastTrnId:
+          description: Latest Transaction ID of the order in NBG system
+          type: string
+        lastAction:
+          description: "I -&gt; Insert\r\n            T -&gt; Trade\r\n          \
+            \  C -&gt; Cancel"
+          type: string
+        side:
+          description: B/S  for Buy/Sell
+          type: string
+        price:
+          format: double
+          description: Order's price
+          type: number
+        instrument:
+          description: Ticker Symbol of Instrument (English)
+          type: string
+        clrSubAcctId:
+          description: Clearing sub-account in which the order will be registered
+            e.g. NB27
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Investor DSS Account Number
+          type: string
+        dssInvestorShare:
+          description: Investor DSS Share Code
+          type: string
+        totalQty:
+          format: double
+          description: Total Quantity of the Order
+          type: number
+        lastQty:
+          format: double
+          description: |+
+            Valid Quantity of the Order in the market place
+
+          type: number
+        execQty:
+          format: double
+          description: 'Executed Quantity of the Order '
+          type: number
+        cancelQty:
+          format: double
+          description: Canceled Quantity of the Order
+          type: number
+        meanPx:
+          format: double
+          description: Average Execution Price of the Order
+          type: number
+        creditPolicy:
+          description: Description of the credit policy for the specific customer
+            (field filled only when the field checkOnly has value 'true' in the request)
+          type: string
+        portfolioAmt:
+          format: double
+          description: |-
+            Weighted average portfolio value
+             (field filled only when the field checkOnly has value 'true' in the request)
+          type: number
+        cashAmt:
+          format: double
+          description: "Cash amount \n(field filled only when the field checkOnly\
+            \ has value 'true' in the request)"
+          type: number
+        unweightedAmt:
+          format: double
+          description: "Unweighted portfolio value \n(field filled only when the field\
+            \ checkOnly has value 'true' in the request)"
+          type: number
+        creditLine:
+          format: double
+          description: Additional Credit Line given to the Customer in excess of Margin
+            (field when checkOnly is true)
+          type: number
+        orderAmt:
+          format: double
+          description: |-
+            Total Blocked Amount from orders
+            (field filled only when the field checkOnly has value 'true' in the request)
+          type: number
+        buyAmt:
+          format: double
+          description: "Total Blocked Amount from Buy Orders \n(field filled only\
+            \ when the field checkOnly has value 'true' in the request)"
+          type: number
+        sellAmt:
+          format: double
+          description: "Amount to be credited by Sell Orders \n(field filled only\
+            \ when the field checkOnly has value 'true' in the request)"
+          type: number
+        available:
+          format: double
+          description: "Available amount for orders \n(field filled only when the\
+            \ field checkOnly has value 'true' in the request)"
+          type: number
+        marginSurplus:
+          format: double
+          description: "Surplus / Deficit of Margin\n (field filled only when the\
+            \ field checkOnly has value 'true' in the request)\n "
+          type: number
+        marginSell:
+          format: double
+          description: "Available amount for sales \n(field filled only when the field\
+            \ checkOnly has value 'true' in the request)"
+          type: number
+        marginBuy:
+          format: double
+          description: |-
+            Available amount for purchases
+             (field filled only when the field checkOnly has value 'true' in the request)
+          type: number
+        initialPct:
+          format: double
+          description: "Initial margin (%) \n(field filled only when the field checkOnly\
+            \ has value 'true' in the request)"
+          type: number
+        preservePct:
+          format: double
+          description: "Preserved margin (%) \n(field filled only when the field checkOnly\
+            \ has value 'true' in the request)"
+          type: number
+        marginPct:
+          format: double
+          description: "Current margin rate (%) \n(field filled only when the field\
+            \ checkOnly has value 'true' in the request)"
+          type: number
+    CancelOrderRequest:
+      description: ""
+      required:
+      - reqId
+      - brokerId
+      - trdClientId
+      - dssAccountId
+      - dssInvestorShare
+      - side
+      - orderId
+      - price
+      - quantity
+      - instrument
+      - clrSubAcctId
+      - checkOnly
+      type: object
+      properties:
+        reqId:
+          description: Unique Request ID
+          type: string
+        brokerId:
+          description: Unique Broker's ID
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Investor DSS Account Number
+          type: string
+        dssInvestorShare:
+          description: Investor DSS Account Number
+          type: string
+        orderId:
+          description: Unique Order ID
+          type: string
+        side:
+          description: B/S  for Buy/Sell
+          type: string
+        price:
+          format: double
+          description: Order's price
+          type: number
+        quantity:
+          format: double
+          description: Quantity
+          type: number
+        instrument:
+          description: Ticker Symbol of Instrument (English)
+          type: string
+        clrSubAcctId:
+          description: Clearing sub-account in which the order will be registered
+            e.g. NB27
+          type: string
+        checkOnly:
+          description: "Y -&gt; Order validation without actual entry in the application\r\
+            \nΝ -&gt; The order will be entered and will take amount from the available\
+            \ credit"
+          type: string
+    CancelOrderResponse:
+      description: 'DTO of CancelOrder response. '
+      required:
+      - reqId
+      - trnId
+      - timestamp
+      - orderId
+      - result
+      type: object
+      properties:
+        reqId:
+          description: "Unique Request ID, corresponding to the Request ID of the\
+            \ request"
+          type: string
+        trnId:
+          description: "Unique Request ID, corresponding to the Request ID of the\
+            \ request"
+          type: string
+        timestamp:
+          description: Timestamp of the transaction's acceptance
+          type: string
+        orderId:
+          description: "Unique Order ID created by Customer's System, corresponding\
+            \ to the Order ID of the request"
+          type: string
+        result:
+          format: int32
+          description: "0 -&gt; Order found\r\n-1 -&gt; Order not found (i.e. NOT_EXISTS)\r\
+            \n<0 -&gt; Other Error (i.e. in case of duplicate order)"
+          type: integer
+        message:
+          description: Error Message
+          type: string
+        lastTrnId:
+          description: Latest Transaction ID of the order
+          type: string
+        lastAction:
+          description: "I -&gt; Insert\r\n            T -&gt; Trade\r\n          \
+            \  C -&gt; Cancel"
+          type: string
+        side:
+          description: B/S  for Buy/Sell
+          type: string
+        price:
+          format: double
+          description: Order's price
+          type: number
+        instrument:
+          description: Ticker Symbol of Instrument (English)
+          type: string
+        clrSubAcctId:
+          description: Clearing sub-account in which the order will be registered
+            e.g. NB27
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Investor DSS Account Number
+          type: string
+        dssInvestorShare:
+          description: Investor DSS Share Code
+          type: string
+        totalQty:
+          format: double
+          description: Total Quantity of the order
+          type: number
+        lastQty:
+          format: double
+          description: |+
+            Valid Quantity of the Order in the market place
+
+          type: number
+        execQty:
+          format: double
+          description: 'Executed Quantity of the Order '
+          type: number
+        cancelQty:
+          format: double
+          description: Canceled Quantity of the Order
+          type: number
+        meanPx:
+          format: double
+          description: Average Execution Price of the Order
+          type: number
+    QueryOrderRequest:
+      description: DTO of QueryOrder request
+      required:
+      - reqId
+      - trdClientId
+      - dssAccountId
+      - dssInvestorShare
+      - orderId
+      type: object
+      properties:
+        reqId:
+          description: Unique Request ID
+          type: string
+        brokerId:
+          description: Broker's Id
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Investor DSS Account Number
+          type: string
+        dssInvestorShare:
+          description: Investor DSS Share Code
+          type: string
+        orderId:
+          description: Unique Order ID created by Customer's System
+          type: string
+    QueryOrderResponse:
+      description: DTO of QueryOrder response
+      required:
+      - reqId
+      - orderId
+      - result
+      type: object
+      properties:
+        reqId:
+          description: "Unique Request ID, corresponding το Request ID of the request"
+          type: string
+        orderId:
+          description: "Unique Order ID, corresponding to the Order ID of the request"
+          type: string
+        result:
+          format: int32
+          description: "0 -&gt; Order found\r\n            -1 -&gt; Order not found\
+            \ (NOT_EXISTS)"
+          type: integer
+        side:
+          description: B/S  for Buy/Sell
+          type: string
+        price:
+          format: double
+          description: Price of the Order
+          type: number
+        instrument:
+          description: Ticker Symbol of Instrument (English)
+          type: string
+        clrSubAcctId:
+          description: Clearing sub-account in which the order will be registered
+            e.g. NB27
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Investor DSS Account Number
+          type: string
+        dssInvestorShare:
+          description: Investor DSS Share Number
+          type: string
+        lastTrnId:
+          description: Latest Transaction ID of the order in NBG system
+          type: string
+        lastAction:
+          description: "I -&gt; Insert\r\n            T -&gt; Trade\r\n          \
+            \  C -&gt; Cancel"
+          type: string
+        totalQty:
+          format: double
+          description: Total Quantity of the Order
+          type: number
+        lastQty:
+          format: double
+          description: Active Quantity of the Order in the market place
+          type: number
+        execQty:
+          format: double
+          description: 'Executed Quantity of the Order '
+          type: number
+        cancelQty:
+          format: double
+          description: Canceled Quantity of the Order
+          type: number
+        meanPx:
+          format: double
+          description: Average Execution Price of the Order
+          type: number
+    TradeRequest:
+      description: DTO of Trade request
+      required:
+      - reqId
+      - trdClientId
+      - dssAccountId
+      - dssInvestorShare
+      - orderId
+      - tradeId
+      - tradeTime
+      - side
+      - price
+      - quantity
+      - instrument
+      - clrAcctId
+      type: object
+      properties:
+        reqId:
+          description: Unique request ID
+          type: string
+        brokerId:
+          description: Broker's Id
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Dematerialised Securities System (DSS) Account Number
+          type: string
+        dssInvestorShare:
+          description: Dematerialised Securities System (DSS) Investor Share Number
+          type: string
+        orderId:
+          description: Unique Order ID created by Customer's System
+          type: string
+        tradeId:
+          description: Unique Trade ID created by Customer's System
+          type: string
+        tradeTime:
+          description: Timestamp of the trade in the customer's system / OASIS
+          type: string
+        side:
+          description: B/S  for Buy/Sell
+          type: string
+        price:
+          format: double
+          description: Transaction's price
+          type: number
+        quantity:
+          format: double
+          description: Quantity executed in the transaction
+          type: number
+        instrument:
+          description: Ticker Symbol of Instrument (English)
+          type: string
+        clrAcctId:
+          description: Clearing account in which the order has been registered e.g.
+            NB27
+          type: string
+    TradeResponse:
+      description: DTO of Trade response
+      required:
+      - reqId
+      - trnId
+      - timestamp
+      - orderId
+      - result
+      type: object
+      properties:
+        reqId:
+          description: "Unique Request ID, corresponding το Request ID of the request"
+          type: string
+        trnId:
+          description: Unique Transaction ID created by NBG system
+          type: string
+        timestamp:
+          description: Timestamp of the transaction's acceptance
+          type: string
+        orderId:
+          description: "Unique Order ID, corresponding to the Order ID of the request"
+          type: string
+        result:
+          format: int32
+          description: "0 -&gt; Order found\r\n-1 -&gt; Order not found (NOT_EXISTS)\r\
+            \n...<0 -&gt; Other Error (i.e. order already executed)"
+          type: integer
+        message:
+          description: Error Message
+          type: string
+        lastTrnId:
+          description: Latest Transaction ID of the order in NBG system
+          type: string
+        lastAction:
+          description: "I -&gt; Insert\r\n            T -&gt; Trade\r\n          \
+            \  C -&gt; Cancel"
+          type: string
+        side:
+          description: B/S  for Buy/Sell
+          type: string
+        price:
+          format: double
+          description: Order's price
+          type: number
+        instrument:
+          description: Ticker Symbol of Instrument (English)
+          type: string
+        clrSubAcctId:
+          description: Clearing sub-account in which the order will be registered
+            e.g. NB27
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Investor DSS Account Number
+          type: string
+        dssInvestorShare:
+          description: Investor DSS Share Code
+          type: string
+        totalQty:
+          format: double
+          description: Total Quantity of the Order
+          type: number
+        lastQty:
+          format: double
+          description: Active Quantity of the Order in the market place
+          type: number
+        execQty:
+          format: double
+          description: 'Executed Quantity of the Order '
+          type: number
+        cancelQty:
+          format: double
+          description: Canceled Quantity of the Order
+          type: number
+        meanPx:
+          format: double
+          description: Average Execution Price of the Order
+          type: number
+    GetPortfolioRequest:
+      description: DTO of Portfolio request
+      required:
+      - reqId
+      - trdClientId
+      - dssAccountId
+      - dssInvestorShare
+      type: object
+      properties:
+        reqId:
+          description: Unique Request ID
+          type: string
+        brokerId:
+          description: Unique Broker ID created by NBG system
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Investor DSS Account Number
+          type: string
+        dssInvestorShare:
+          description: Investor DSS Share Code
+          type: string
+    GetPortfolioResponse:
+      description: DTO of Portfolio response
+      required:
+      - reqId
+      - timestamp
+      - result
+      type: object
+      properties:
+        reqId:
+          description: "Unique Request ID, corresponding to the Request ID of the\
+            \ request"
+          type: string
+        timestamp:
+          description: Timestamp of margin calculation
+          type: string
+        result:
+          format: int32
+          description: '0 -&gt; OK  ...<0 -&gt; Error   '
+          type: integer
+        message:
+          description: Error Message
+          type: string
+        portfolio:
+          description: Investor's portfolio
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioItem'
+    PortfolioItem:
+      description: Customer's portfolio
+      type: object
+      properties:
+        brokerId:
+          description: Unique Broker's ID
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Investor DSS Account Number
+          type: string
+        dssInvestorShare:
+          description: Investor DSS Account Number
+          type: string
+        instrument:
+          description: Ticker Symbol of Instrument (English)
+          type: string
+        sod:
+          format: double
+          description: Initial Quantity (start-of-day)
+          type: number
+        rcpt:
+          format: double
+          description: Quantity to be received
+          type: number
+        meanPx:
+          format: double
+          description: Average acquisition price
+          type: number
+        buys:
+          format: double
+          description: Total Quantity from Buy Orders for the day
+          type: number
+        sells:
+          format: double
+          description: Total Quantity from Sell Orders for the day
+          type: number
+        buyOrd:
+          format: double
+          description: Buy orders active in the market place.
+          type: number
+        sellOrd:
+          format: double
+          description: Sell orders active in the market place.
+          type: number
+        available:
+          format: double
+          description: Available Quantity for sale
+          type: number
+        wtValue:
+          format: double
+          description: Weighted average valuation (start-of-day)
+          type: number
+    GetBalanceRequest:
+      description: DTO of Margin request
+      required:
+      - reqId
+      - trdClientId
+      - dssAccountId
+      - dssInvestorShare
+      type: object
+      properties:
+        reqId:
+          description: Request id
+          type: string
+        brokerId:
+          description: Unique Broker ID created by NBG system
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Investor DSS Account Number
+          type: string
+        dssInvestorShare:
+          description: Investor DSS Share Code
+          type: string
+    GetBalanceResponse:
+      description: DTO of Margin response
+      required:
+      - reqId
+      - timestamp
+      - result
+      type: object
+      properties:
+        reqId:
+          description: "Unique Request ID, corresponding to the Request ID of the\
+            \ request"
+          type: string
+        timestamp:
+          description: Timestamp of margin calculation
+          type: string
+        result:
+          format: int32
+          description: "0 -&gt; OK\r\n            ...<0 -&gt; error"
+          type: integer
+        message:
+          description: Error Message
+          type: string
+        creditPolicy:
+          description: Description of the credit policy for the specific customer
+          type: string
+        portfolioAmt:
+          format: double
+          description: 'Weighted average portfolio value '
+          type: number
+        cashAmt:
+          format: double
+          description: Total Cash Available
+          type: number
+        unweightedAmt:
+          format: double
+          description: Unweighted portfolio value
+          type: number
+        creditLine:
+          format: double
+          description: Additional Credit Line given to the Customer in excess of Margin.
+          type: number
+        orderAmt:
+          format: double
+          description: Total Blocked Amount from orders
+          type: number
+        buyAmt:
+          format: double
+          description: 'Total Blocked Amount from Buy Orders '
+          type: number
+        sellAmt:
+          format: double
+          description: 'Amount to be credited by Sell Orders '
+          type: number
+        available:
+          format: double
+          description: Total available amount for orders
+          type: number
+        marginSurplus:
+          format: double
+          description: Surplus / Deficit of Margin
+          type: number
+        marginSell:
+          format: double
+          description: "Available amount for sales, which does not affect the portfolio's\
+            \ quality"
+          type: number
+        marginBuy:
+          format: double
+          description: "Available amount for purchases, Credit Line calculation excluded."
+          type: number
+        initialPct:
+          format: double
+          description: Initial margin (%)
+          type: number
+        preservePct:
+          format: double
+          description: 'Preserved margin (%) '
+          type: number
+        marginPct:
+          format: double
+          description: 'Current margin rate (%) '
+          type: number
+    bUtility.ResponseMessage:
+      type: object
+      properties:
+        id:
+          description: Meassage object unique ID
+          type: string
+        code:
+          description: Message code
+          type: string
+        desc:
+          description: Message description
+          type: string
+        sev:
+          enum:
+          - Warning
+          - Error
+          - Info
+          type: string
+        cat:
+          enum:
+          - Business
+          - Communication
+          - Technical
+          - Security
+          type: string
+    SandboxResponse:
+      type: object
+      properties:
+        SandboxID:
+          description: ""
+          type: string
+        Orders:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        SandboxMargins:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/SandboxMargin'
+        Portfolios:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Portfolio'
+    SandboxResponseBoolean:
+      type: object
+      properties:
+          payload:
+              type: boolean
+      example:
+          payload: true
+    SandboxImportRequest:
+      required:
+        - SandboxID
+        - SandboxMargins
+        - Portfolios
+      type: object
+      properties:
+        SandboxID:
+          description: ""
+          type: string
+        Orders:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        SandboxMargins:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/SandboxMargin'
+        Portfolios:
+          description: ""
+          type: array
+          items:
+            $ref: '#/components/schemas/Portfolio'
+    SandboxRequest:
+      required:
+        - sandboxId
+      type: object
+      properties:
+        SandboxId:
+            description: Sandbox Id
+            type: string
+      example:
+        sandboxId: string
+    ErrorResponse:
+      type: object
+      properties:
+        payload:
+          type: object
+        exception:
+          $ref: '#/components/schemas/bUtility.ResponseMessage'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/bUtility.ResponseMessage'
+        executionTime:
+          format: double
+          type: number
+      example:
+        executionTime: 0
+        exception:
+          id: 02A7470B-0FDE-4EB4-A1E1-662BEDE4434B
+          sev: Error
+          desc: Incorrect Json Format
+          cat: Business
+          code: 20
+    Order:
+      required:
+      - brokerId
+      - trdClientId
+      - dssAccountId
+      - dssInvestorShare
+      - orderId
+      - tradeId
+      - tradeTime
+      - side
+      - price
+      - quantity
+      - instrument
+      - clrAcctId
+      type: object
+      properties:
+        brokerId:
+          description: Broker's Id
+          type: string
+        trnId:
+          description: TRN's Id
+          type: string
+        orderId:
+          description: Unique Order ID created by Customer's System
+          type: string
+        lastTrnId:
+          description: Last TRN's Id
+          type: string
+        lastActionId:
+          description: last action's Id
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Dematerialised Securities System (DSS) Account Number
+          type: string
+        dssInvestorShare:
+          description: Dematerialised Securities System (DSS) Investor Share Number
+          type: string
+        side:
+          description: B/S  for Buy/Sell
+          type: string
+        price:
+          format: double
+          description: Transaction's price
+          type: number
+        quantity:
+          format: double
+          description: Quantity executed in the transaction
+          type: number
+        instrument:
+          description: Ticker Symbol of Instrument (English)
+          type: string
+        clrSubAcctId:
+          description: Clearing account in which the order has been registered e.g.
+            NB27
+          type: string
+        totalQty:
+          description: Total Quantity
+          type: number
+        lastQty:
+          format: double
+          description: Last Quantity
+          type: number
+        execQty:
+          format: double
+          description: Quantity executed in the transaction
+          type: number
+        cancelQty:
+          format: double
+          description: Quantity canceled in the transaction
+          type: number
+        meanPx:
+          format: double
+          description: mean price
+          type: number
+    SandboxMargin:
+      required:
+      - brokerId
+      - trdClientId
+      - dssAccountId
+      - dssInvestorShare
+      type: object
+      properties:
+        brokerId:
+          description: Broker ID
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Dematerialised Securities System (DSS) Account Number
+          type: string
+        dssInvestorShare:
+          description: Dematerialised Securities System (DSS) Investor Share Number
+          type: string
+        creditPolicy:
+          description: Description of the credit policy for the specific customer
+          type: string
+        portfolioAmt:
+          format: double
+          description: 'Weighted average portfolio value '
+          type: number
+        cashAmt:
+          format: double
+          description: Total Cash Available
+          type: number
+        unweightedAmt:
+          format: double
+          description: Unweighted portfolio value
+          type: number
+        creditLine:
+          format: double
+          description: Additional Credit Line given to the Customer in excess of Margin.
+          type: number
+        orderAmt:
+          format: double
+          description: Total Blocked Amount from orders
+          type: number
+        buyAmt:
+          format: double
+          description: 'Total Blocked Amount from Buy Orders '
+          type: number
+        sellAmt:
+          format: double
+          description: 'Amount to be credited by Sell Orders '
+          type: number
+        available:
+          format: double
+          description: Total available amount for orders
+          type: number
+        marginSurplus:
+          format: double
+          description: Surplus / Deficit of Margin
+          type: number
+        marginSell:
+          format: double
+          description: "Available amount for sales, which does not affect the portfolio's\
+            \ quality"
+          type: number
+        marginBuy:
+          format: double
+          description: "Available amount for purchases, Credit Line calculation excluded."
+          type: number
+        initialPct:
+          format: double
+          description: Initial margin (%)
+          type: number
+        preservePct:
+          format: double
+          description: 'Preserved margin (%) '
+          type: number
+        marginPct:
+          format: double
+          description: 'Current margin rate (%) '
+          type: number
+    Portfolio:
+      description: Customer's portfolio
+      required:
+      - brokerId
+      - trdClientId
+      - dssAccountId
+      - dssInvestorShare
+      type: object
+      properties:
+        brokerId:
+          description: Broker ID
+          type: string
+        trdClientId:
+          description: Investor's Brokerage Account for the specific Trading Member
+            in OASIS system
+          type: string
+        dssAccountId:
+          description: Dematerialised Securities System (DSS) Account Number
+          type: string
+        dssInvestorShare:
+          description: Dematerialised Securities System (DSS) Investor Share Number
+          type: string
+        instrument:
+          description: Ticker Symbol of Instrument (English)
+          type: string
+        sod:
+          format: double
+          description: Initial Quantity (start-of-day)
+          type: number
+        rcpt:
+          format: double
+          description: Quantity to be received
+          type: number
+        meanPx:
+          format: double
+          description: Average acquisition price
+          type: number
+        buys:
+          format: double
+          description: Total Quantity from Buy Orders for the day
+          type: number
+        sells:
+          format: double
+          description: Total Quantity from Sell Orders for the day
+          type: number
+        buyOrd:
+          format: double
+          description: Buy orders active in the market place.
+          type: number
+        sellOrd:
+          format: double
+          description: Sell orders active in the market place.
+          type: number
+        available:
+          format: double
+          description: Available Quantity for sale
+          type: number
+        wtValue:
+          format: double
+          description: Weighted average valuation (start-of-day)
+          type: number
+  requestBodies:
+    InsertOrderRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InsertOrderRequest'
+        text/json:
+          schema:
+            $ref: '#/components/schemas/InsertOrderRequest'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/InsertOrderRequest'
+        text/xml:
+          schema:
+            $ref: '#/components/schemas/InsertOrderRequest'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/InsertOrderRequest'
+      required: true
+    CancelOrderRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CancelOrderRequest'
+        text/json:
+          schema:
+            $ref: '#/components/schemas/CancelOrderRequest'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CancelOrderRequest'
+        text/xml:
+          schema:
+            $ref: '#/components/schemas/CancelOrderRequest'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/CancelOrderRequest'
+      required: true
+  securitySchemes:
+    Client-Id:
+      type: apiKey
+      description: Application's Id
+      name: Client-Id
+      in: header
+    Client-Credentials-Token:
+      flows:
+        clientCredentials:
+          tokenUrl: https://my.nbg.gr/identity/connect/token
+          scopes:
+            sandbox-broker-margin-portfolio-api: Sandbox Scope
+            broker-margin-portfolio-api: Production Scope
+      type: oauth2
+      description: OAuth2 Client Credentials Flow
+security:
+- Client-Id: []
+  Client-Credentials-Token:
+  - sandbox-broker-margin-portfolio-api
+  - broker-margin-portfolio-api
