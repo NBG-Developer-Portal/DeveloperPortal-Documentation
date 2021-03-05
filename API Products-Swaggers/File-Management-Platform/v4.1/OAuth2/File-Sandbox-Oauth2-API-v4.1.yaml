@@ -22,10 +22,9 @@ info:
     \ 2 and lastly 3). The total chunks of a file can be retrieved from GET /files/{fileId}\
     \ action.\n\n## Ethnofiles Service\n\nEthnofiles Service provides\
     \ the ability to send any uploaded file to the NBG ethnofiles system.\n\n## How\
-    \ to send a file to enthofiles\nThere are only 2 steps in order to send the file.\n\
-    1. Get all the allowed file types for your user using the endpoint **POST /ethnofiles/populatefileTypes**\n\
-    2. Push the file to Ethnofiles using **POST /ethnofiles/sendfiletoethnofiles**\
-    \  \n\n## Validation Endpoints \n1. You can validate the filename of a file **POST\
+    \ to send a file to enthofiles\nThere is only 1 step in order to send the file.\n\
+    1. Push the file to Ethnofiles using the endpoint **POST /ethnofiles/sendFile**\n\
+    \n\n## Validation Endpoints \n1. You can validate the filename of a file **POST\
     \ /validation/filename**\n2. And you can do some basic validations to the content\
     \ through **POST  /validation/file**   \n\n## Third Party Payments Service\n\nThird Party Payments Service provides the\
     \ ability to send massive payments to 3rd party organizations like electric companies.\n\
@@ -65,17 +64,20 @@ info:
     \ providing the client_id and client_secret of the APP that you created and subscribed\
     \ to the FILE MANAGEMENT PLATFORM, and your own credentials (username, password)\
     \ that you use to sign in the NBG Technology HUB, the CLI will authorize you and\
-    \ perform the required operation.\n     \n     \"client_id\": \"client_id_guid\"\
+    \ perform the required operation.\n     \n     \"AuthorizationServer\": \"https://my.nbg.gr/identity/\"\
+    \ \n\n     \"client_id\": \"client_id_guid\"\
     \ \n\n     \"client_secret\": \"client_secret_guid\" \n\n     \"appusername\": \"your_portal_username\"\
     \ \n\n     \ \\* \"password\": \"your_portal_password\"\n     \n     For users using Developer\
     \ Portal credentials:\n     arc_provider=1\n     \n     For users using iBank\
     \ credentials:\n     arc_provider=5\n     \n     It is suggested to use arc_provider=1\
-    \ for sandbox calls and arc_provider=5 for production calls.\n     \n     For\
+    \ for sandbox calls and arc_provider=5 for production calls.\n\n     For ethnofiles calls the ethnofiles scope should also be added to the \"scope\".\n\n\t For\
     \ sandbox calls your sandbox_id also needs to be provided here.\"sandbox_id\"\
-    : \"MyUniqueSandbox\".\n\n\n2.  \\* **Password Encryption** You can encrypt your password in the **appsettings.json** by running the **setpassword** command and providing it. The system will re-write your appsettings.json and replace the password value with the encrypted one. _In addition, the safe\\_password flag **must** be set to true in the appsettings.json in order to use the encrypted password._ \n \n\n\n3. **appsetting.json** Additionally within different\
-    \ sections, the default parameter values used in each command and the logging\
-    \ levels, are configured. \n \n\nFor a **quick start** on FileAPI_CLI please visit:\
-    \ [https://github.com/myNBGcode/FileAPI_Cli_V4/blob/master/QuickGuide.txt](https://github.com/myNBGcode/FileAPI_Cli_V4/blob/master/QuickGuide.txt)\n### Commands\n\nThe FileAPI_CLI offers a set of\
+    : \"MyUniqueSandbox\".\n\n    Set the EnableEthnofilesNew flag to:\n\t
+     - false if you want to use the old Ethnofiles flow (will be deprecated in the next version)\n\t
+        - true  if you want to use the new Ethnofiles flow (recommended)\n\n\n2.  \\* **Password Encryption** You can encrypt your password in the **appsettings.json** by running the **setpassword** command and providing it. The system will re-write your appsettings.json and replace the password value with the encrypted one. _In addition, the safe\\_password flag **must** be set to true in the appsettings.json in order to use the encrypted password._ \n \n\n\n3. **appsetting.json** Additionally within different\
+    \ sections, the default parameter values used in each command, the logging\
+    \ levels and the email notifications are configured. \n \n\nFor a **quick start** on FileAPI_CLI please visit:\
+    \ [https://github.com/myNBGcode/FileAPI_Cli_V4_1/blob/main/QuickGuide.txt](https://github.com/myNBGcode/FileAPI_Cli_V4_1/blob/main/QuickGuide.txt)\n### Commands\n\nThe FileAPI_CLI offers a set of\
     \ different commands that you can utilize:\n\nFiles:\n1. upload: Upload a file from a\
     \ specified path\n\n2. download: Download a file by its GUID, in a specified directory\n\
     \n3. addusertags: Add user tags to a file \n\n4. removeusertags: Remove user\
@@ -115,7 +117,7 @@ info:
     MassiveTransfersETE.csv\" --d \"Test mass credit transfers file from cli\" --debitAccount \"04054685740\" --isPayroll false \n\n\t**Mass Transfers Outcome Example:** \n\n\t*> .\\FileapiCli.exe\
     \ masstransferscreditoutcome --fileid \"57ae2483-1588-4f94-a6f5-913ffe7dba66\" --downloadfolder\
     \ C:\\tmp\\\n\nFor **more information** on how to use FileAPI_CLI please visit:\
-    \ [https://github.com/myNBGcode/FileAPI_Cli_V4/blob/master/BasicInstructions.txt](https://github.com/myNBGcode/FileAPI_Cli_V4/blob/master/BasicInstructions.txt) \n\
+    \ [https://github.com/myNBGcode/FileAPI_Cli_V4_1/blob/main/BasicInstructions.txt](https://github.com/myNBGcode/FileAPI_Cli_V4_1/blob/main/BasicInstructions.txt) \n\
     ## Authentication and Authorization (OAuth2) \nThis API version uses the OAuth2\
     \ protocol for authentication and authorization, which means that a Bearer (access\
     \ token) should be acquired. An access token can be retrieved using the client_id\
@@ -160,6 +162,12 @@ servers:
     description: Production Ethnofiles File Api Server
 security:
   - Client-Id: []
+    Authorization-Code-Token:
+      - openid profile ibank_profile sandbox-file-api-v4
+      - openid profile ibank_profile file-api-v4
+    Client-Credentials-Token:
+      - sandbox-file-api-v4
+      - file-api-v4
 paths:
   /files/upload-initiation:
     post:
@@ -177,14 +185,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -235,14 +243,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -315,14 +323,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -377,14 +385,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -425,14 +433,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -493,14 +501,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -541,14 +549,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -622,14 +630,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -684,14 +692,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -763,14 +771,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -816,14 +824,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -859,14 +867,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -916,14 +924,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -983,14 +991,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1043,14 +1051,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1123,14 +1131,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1164,14 +1172,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1214,14 +1222,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1263,14 +1271,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1312,14 +1320,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1361,14 +1369,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1409,14 +1417,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1457,14 +1465,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1505,14 +1513,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1553,14 +1561,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1601,14 +1609,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1652,14 +1660,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1701,14 +1709,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1750,14 +1758,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1799,14 +1807,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1848,14 +1856,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1897,14 +1905,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1948,14 +1956,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: Access token issued with the Authorization Code flow
-          required: true
-          schema:
-            type: string
-            default: 'Bearer ' 
-          example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                             
+                    
+                                                                           
+                        
+                 
+                        
+                               
+                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -1997,14 +2005,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: Access token issued with the Authorization Code flow
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
-          example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                             
+                    
+                                                                           
+                        
+                 
+                        
+                              
+                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -2045,14 +2053,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: Access token issued with the Authorization Code flow
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
-          example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                             
+                    
+                                                                           
+                        
+                 
+                        
+                              
+                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -2093,14 +2101,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: Access token issued with the Authorization Code flow
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
-          example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                             
+                    
+                                                                           
+                        
+                 
+                        
+                              
+                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -2142,14 +2150,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: Access token issued with the Authorization Code flow
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
-          example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                             
+                    
+                                                                           
+                        
+                 
+                        
+                              
+                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -2191,14 +2199,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: Access token issued with the Authorization Code flow
-          required: true
-          schema:
-            type: string
-            default: 'Bearer '
-          example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                             
+                    
+                                                                           
+                        
+                 
+                        
+                              
+                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -2245,14 +2253,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       requestBody:
         description: Create Sandbox Request
         content:
@@ -2288,14 +2296,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: path
         description: The unique name of your Sandbox
@@ -2328,14 +2336,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: path
         description: The unique name of your Sandbox
@@ -2376,14 +2384,14 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Access token issued with the Authorization Code flow
-        required: true
-        schema:
-          type: string
-          default: 'Bearer ' 
-        example: Bearer 31d0b3f96d863e831568f44267fcade569ea5403a825375259a1d6131de1294b
+                           
+                  
+                                                                         
+                      
+               
+                      
+                             
+                                                                                        
       - name: sandbox_id
         in: path
         description: The unique name of your Sandbox
@@ -4920,3 +4928,22 @@ components:
       description: Application's Id
       name: Client-Id
       in: header
+    Authorization-Code-Token:
+      type: oauth2
+      description: OAuth2 Authorization Code Flow
+      flows:
+        authorizationCode:
+          authorizationUrl: https://my.nbg.gr/identity/connect/authorize
+          tokenUrl: https://my.nbg.gr/identity/connect/token
+          scopes:
+            openid profile ibank_profile sandbox-file-api-v4: Sandbox Scope
+            openid profile ibank_profile file-api-v4: Production Scope
+    Client-Credentials-Token:
+      type: oauth2
+      description: OAuth2 Client Credentials Flow
+      flows:
+        clientCredentials:
+          tokenUrl: https://my.nbg.gr/identity/connect/token
+          scopes:
+            sandbox-file-api-v4: Sandbox Scope
+            file-api-v4: Production Scope
