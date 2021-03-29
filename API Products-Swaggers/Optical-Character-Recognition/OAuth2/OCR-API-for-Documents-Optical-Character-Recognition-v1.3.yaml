@@ -17,13 +17,27 @@ info:
 
         3. Greek ID 
 
-        4. Greek tax form  
+        4. Greek tax form
+        
+        5. Greek VAT certificate
+        
+        6. Greek reprint of VAT certificate
 
-        5. Greek energy bill (issued by DEH)  
+        7. Greek energy bill (issued by DEH, Nova Energy, Petrogaz, Protergia, Volterra, WattVolt, Ζενιθ)
+        
+        8. Greek water bill (issued by EYDAP)
+        
+        9. Greek telephone landline bill (Cosmote, Nova, Vodafone, Wind)
+        
+        10. Greek telephone mobile bill (Cosmote, Vodafone, Wind)
+        
+        11. Tax Income Corporate
+        
+        12. Tax Form E3
 
-        6. Greek water bill (issued by EYDAP)  
-
-    2. Upload a document and get the document's recognized data. 
+    2. Upload a document and get the document's recognized data.
+    
+        The user can upload a document for OCR by declaring its document type or pictures. The uploaded document format can be "tif" or "pdf" depending on the document type and the picture format jpg,jpeg,png. Please check the /OcrDocument/getInfo endpoint for more information.
 
 
 
