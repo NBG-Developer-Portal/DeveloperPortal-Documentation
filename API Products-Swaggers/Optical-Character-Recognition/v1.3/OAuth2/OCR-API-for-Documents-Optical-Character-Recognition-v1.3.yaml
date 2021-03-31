@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: v1.3
-  title: OCR API for Documents (Optical Character Recognition)_
+  title: OCR API for Documents (Optical Character Recognition)
   description: >
     ## Functionality at a glance  
 
