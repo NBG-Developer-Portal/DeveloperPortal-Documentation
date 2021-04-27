@@ -2386,7 +2386,7 @@ components:
           type: string
           description: Mobile phone number
           nullable: true
-          example: +49 170 1234567
+          example: '+306912345678'
         currency:
           pattern: '[A-Z]{3}'
           type: string
