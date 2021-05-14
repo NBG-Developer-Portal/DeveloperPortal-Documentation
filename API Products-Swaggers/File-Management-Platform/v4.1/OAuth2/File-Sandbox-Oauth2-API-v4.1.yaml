@@ -68,9 +68,9 @@ info:
     \ \n\n     \"client_id\": \"client_id_guid\"\
     \ \n\n     \"client_secret\": \"client_secret_guid\" \n\n     \"appusername\": \"your_portal_username\"\
     \ \n\n     \ \\* \"password\": \"your_portal_password\"\n     \n     For users using Developer\
-    \ Portal credentials:\n     arc_provider=1\n     \n     For users using iBank\
-    \ credentials:\n     arc_provider=5\n     \n     It is suggested to use arc_provider=1\
-    \ for sandbox calls and arc_provider=5 for production calls.\n\n     For ethnofiles calls the ethnofiles scope should also be added to the \"scope\".\n\n\t For\
+    \ Portal credentials:\n     \"acr_values\": \ \"provider:1\"\n     \n     For users using iBank\
+    \ credentials:\n     \"acr_values\": \ \"provider:5\"\n     \n     It is suggested to use \"acr_values\": \ \"provider:1\"\
+    \ for sandbox calls and \"acr_values\": \ \"provider:5\"\ for production calls.\n\n     For ethnofiles calls the ethnofiles scope should also be added to the \"scope\".\n\n\t For\
     \ sandbox calls your sandbox_id also needs to be provided here.\"sandbox_id\"\
     : \"MyUniqueSandbox\".\n\n    Set the EnableEthnofilesNew flag to:\n\t
      - false if you want to use the old Ethnofiles flow (will be deprecated in the next version)\n\t
