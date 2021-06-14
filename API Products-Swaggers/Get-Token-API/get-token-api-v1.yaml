@@ -99,10 +99,44 @@ info:
     | grant_type| Type of grant| string|
 
     | refresh_token| Refresh Token| string|
+    
+     <a name=custom_credentials></a> 
+    ## custom_credentials 
 
-     <a name=Token></a> 
-    ## Token 
+    Custom Credentials schema 
 
+
+    ### Attributes 
+
+
+    | Name| Description| Values|
+
+    | -----| -----| -----|
+
+    | client_id| App client ID - can be provided in formData or using HTTP Basic
+    Authentication| string|
+
+    | client_secret| App client secret - must be provided in formData or using
+    HTTP Basic Authentication| string|
+
+    | grant_type| Type of grant| string|
+
+    | scope| Scope of the APIs| string|
+    
+    | user_registry_id| ID of user registry| string|
+    
+    | custom_credential_MachineId| Machine ID| string|
+    
+    | custom_credential_Password| Machine password| string|
+    
+    | custom_credential_OriginatorIp| Originator's IP address| string|
+    
+    | custom_credential_NetworkName| Network name| string|
+
+     <a name=Token></a>
+    ## Token
+    
+    Token schema
 
 
     ### Attributes 
@@ -309,7 +343,7 @@ paths:
       description: "This endpoint allows requesting an access token following one
         of the flows below: \n - Authorization Code (exchange the Authorization code
         for an Access token) \n - Client Credentials (2-legged, without resource owner
-        information) \n - Refresh Token (exchange the refresh token of your previous authorization code call for a new access token) \n\nDepending on the **access token** type, copy the **request body** from the payload in the **request samples** section. Then, by filling the requested values, you will be eligible to get a token for your flow of preference. \n\n Hit the ‘Try out’ button and fill the required fields. In the response window you will see the Access token."
+        information) \n - Refresh Token (exchange the refresh token of your previous authorization code call for a new access token) \n - Custom Credentials (request an access token using the custom_credentials flow)\n\nDepending on the **access token** type, copy the **request body** from the payload in the **request samples** section. Then, by filling the requested values, you will be eligible to get a token for your flow of preference. \n\n Hit the ‘Try out’ button and fill the required fields. In the response window you will see the Access token."
       responses:
         200:
           description: 200 OK
@@ -349,7 +383,21 @@ paths:
               "client_secret": "00000000-0000-0000-0000-000000000000",
               "grant_type": "refresh_token",
               "refresh_token": "refresh_token_from_previous_refresh_token_request"
-            }           
+            }
+            
+            //For the custom_credentials flow use this Body Request:
+            
+            {
+             "client_id": "00000000-0000-0000-0000-000000000000",
+             "client_secret": "00000000-0000-0000-0000-000000000000",
+             "grant_type": "custom_credentials",
+             "scope": "scope-1 scope-2",
+             "user_registry_id": "00000000-0000-0000-0000-000000000000",
+             "custom_credential_MachineId": "machine_id",
+             "custom_credential_Password": "password",
+             "custom_credential_OriginatorIp": "0.0.0.0",
+             "custom_credential_NetworkName": "network_name"
+            }
             
         - lang: C
           source: >-
@@ -377,7 +425,7 @@ paths:
             CURLcode ret = curl_easy_perform(hnd);
             
             
-            //For the client_credentials flow use this Body Request:
+            //For the client_credentials flow use this piece of Code:
             
             
             CURL *hnd = curl_easy_init();
@@ -401,7 +449,7 @@ paths:
             CURLcode ret = curl_easy_perform(hnd);
             
             
-            //For the refresh_token flow use this Body Request:
+            //For the refresh_token flow use this piece of Code:
             
             
             CURL *hnd = curl_easy_init();
@@ -422,7 +470,31 @@ paths:
             
             curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request");
             
-            CURLcode ret = curl_easy_perform(hnd);            
+            CURLcode ret = curl_easy_perform(hnd);     
+            
+            
+            //For the custom_credentials flow use this piece of Code:
+            
+            
+            CURL *hnd = curl_easy_init();
+            
+            curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+            
+            curl_easy_setopt(hnd, CURLOPT_URL, "https://my.nbg.gr/identity/connect/token");
+            
+            struct curl_slist *headers = NULL;            
+            
+            headers = curl_slist_append(headers, "cache-control: no-cache");
+            
+            headers = curl_slist_append(headers, "content-type: application/x-www-form-urlencoded");
+            
+            headers = curl_slist_append(headers, "accept: application/json");
+            
+            curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+            
+            curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=custom_credentials&scope=scope-1%20scope-2&user_registry_id=00000000-0000-0000-0000-000000000000&custom_credential_MachineId=machine_id&custom_credential_Password=password&custom_credential_OriginatorIp=0.0.0.0&custom_credential_NetworkName=network_name");
+            
+            CURLcode ret = curl_easy_perform(hnd);  
         - lang: 'C#'
           source: >-
             //For the authorization_code flow use this piece of Code:
@@ -443,7 +515,7 @@ paths:
             IRestResponse response = client.Execute(request);            
             
             
-            //For the client_credentials flow use this Body Request:
+            //For the client_credentials flow use this piece of Code:
             
             
             var client = new RestClient("https://my.nbg.gr/identity/connect/token");
@@ -461,7 +533,7 @@ paths:
             IRestResponse response = client.Execute(request);
             
             
-            //For the refresh_token flow use this Body Request:
+            //For the refresh_token flow use this piece of Code:
             
             
             var client = new RestClient("https://my.nbg.gr/identity/connect/token");
@@ -476,7 +548,25 @@ paths:
             
             request.AddParameter("application/x-www-form-urlencoded", "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request", ParameterType.RequestBody);
             
-            IRestResponse response = client.Execute(request);                        
+            IRestResponse response = client.Execute(request);   
+            
+            
+            //For the custom_credentials flow use this piece of Code:
+            
+            
+            var client = new RestClient("https://my.nbg.gr/identity/connect/token");
+            
+            var request = new RestRequest(Method.POST);
+            
+            request.AddHeader("cache-control", "no-cache");
+            
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            
+            request.AddHeader("accept", "application/json");
+            
+            request.AddParameter("application/x-www-form-urlencoded", "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=custom_credentials&scope=scope-1%20scope-2&user_registry_id=00000000-0000-0000-0000-000000000000&custom_credential_MachineId=machine_id&custom_credential_Password=password&custom_credential_OriginatorIp=0.0.0.0&custom_credential_NetworkName=network_name", ParameterType.RequestBody);
+            
+            IRestResponse response = client.Execute(request);
         - lang: Go
           source: >-
             //For the authorization_code flow use this piece of Code:
@@ -506,7 +596,7 @@ paths:
             }
             
             
-            //For the client_credentials flow use this Body Request:    
+            //For the client_credentials flow use this piece of Code:    
             
             
             package main
@@ -533,7 +623,7 @@ paths:
             }         
             
             
-            //For the refresh_token flow use this Body Request:
+            //For the refresh_token flow use this piece of Code:
             
             
             package main
@@ -557,27 +647,54 @@ paths:
               body, _ := ioutil.ReadAll(res.Body) 
               fmt.Println(res)
               fmt.Println(string(body))
-            }                           
+            }
+            
+            
+            //For the custom_credentials flow use this piece of Code:    
+            
+            
+            package main
+            
+            import (
+              "fmt"
+              "strings"
+              "net/http"
+              "io/ioutil"
+            )
+            
+            func main() {
+              url := "https://my.nbg.gr/identity/connect/token"
+              payload := strings.NewReader("client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=custom_credentials&scope=scope-1%20scope-2&user_registry_id=00000000-0000-0000-0000-000000000000&custom_credential_MachineId=machine_id&custom_credential_Password=password&custom_credential_OriginatorIp=0.0.0.0&custom_credential_NetworkName=network_name")
+              req, _ := http.NewRequest("POST", url, payload) 
+              req.Header.Add("accept", "application/json")
+              req.Header.Add("content-type", "application/x-www-form-urlencoded")
+              req.Header.Add("cache-control", "no-cache")
+              res, _ := http.DefaultClient.Do(req)
+              defer res.Body.Close()
+              body, _ := ioutil.ReadAll(res.Body)
+              fmt.Println(res)
+              fmt.Println(string(body))
+            }
         - lang: Java
           source: >-
             //For the authorization_code flow use this piece of Code:
             
             
-            kHttpClient client = new OkHttpClient();
+            OkHttpClient client = new OkHttpClient();
             
-            ediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
-            equestBody body = RequestBody.create(mediaType, "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F");
-            equest request = new Request.Builder()
+            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+            RequestBody body = RequestBody.create(mediaType, "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F");
+            Request request = new Request.Builder()
              .url("https://my.nbg.gr/identity/connect/token")
              .post(body)
              .addHeader("accept", "application/json")
              .addHeader("content-type", "application/x-www-form-urlencoded")
              .addHeader("cache-control", "no-cache")
              .build();
-            esponse response = client.newCall(request).execute();
+            Response response = client.newCall(request).execute();
                         
             
-            //For the client_credentials flow use this Body Request:    
+            //For the client_credentials flow use this piece of Code:    
             
             
             OkHttpClient client = new OkHttpClient();
@@ -594,7 +711,7 @@ paths:
             Response response = client.newCall(request).execute();    
             
             
-            //For the refresh_token flow use this Body Request:
+            //For the refresh_token flow use this piece of Code:
             
             
             OkHttpClient client = new OkHttpClient();
@@ -608,7 +725,24 @@ paths:
               .addHeader("content-type", "application/x-www-form-urlencoded")
               .addHeader("cache-control", "no-cache")
               .build();
-            Response response = client.newCall(request).execute();                      
+            Response response = client.newCall(request).execute();
+            
+            
+            //For the custom_credentials flow use this piece of Code:
+            
+            
+            OkHttpClient client = new OkHttpClient();
+            
+            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+            RequestBody body = RequestBody.create(mediaType, "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=custom_credentials&scope=scope-1%20scope-2&user_registry_id=00000000-0000-0000-0000-000000000000&custom_credential_MachineId=machine_id&custom_credential_Password=password&custom_credential_OriginatorIp=0.0.0.0&custom_credential_NetworkName=network_name");
+            Request request = new Request.Builder()
+              .url("https://my.nbg.gr/identity/connect/token")
+              .post(body)
+              .addHeader("accept", "application/json")
+              .addHeader("content-type", "application/x-www-form-urlencoded")
+              .addHeader("cache-control", "no-cache")
+              .build();
+            Response response = client.newCall(request).execute();
         - lang: Node
           source: >-
             //For the authorization_code flow use this piece of Code: 
@@ -634,7 +768,7 @@ paths:
             });       
                         
             
-            //For the client_credentials flow use this Body Request:    
+            //For the client_credentials flow use this piece of Code:    
             
             
             var request = require("request");
@@ -657,7 +791,7 @@ paths:
             });
                                   
             
-            //For the refresh_token flow use this Body Request:
+            //For the refresh_token flow use this piece of Code:
             
                         
             var request = require("request");
@@ -677,7 +811,35 @@ paths:
             request(options, function (error, response, body) {
               if (error) throw new Error(error);
               console.log(body);
-            });                           
+            });
+            
+            
+            //For the custom_credentials flow use this piece of Code:    
+            
+            
+            var request = require("request");
+            
+            var options = { method: 'POST',
+              url: 'https://my.nbg.gr/identity/connect/token',
+              headers: 
+               { 'cache-control': 'no-cache',
+                 'content-type': 'application/x-www-form-urlencoded',
+                 'accept': 'application/json' },
+              form: 
+               { client_id: '00000000-0000-0000-0000-000000000000',
+                 client_secret: '00000000-0000-0000-0000-000000000000',
+                 grant_type: 'custom_credentials',
+                 scope: 'scope-1 scope-2',
+                 user_registry_id: '00000000-0000-0000-0000-000000000000',
+                 custom_credential_MachineId: 'machine_id',
+                 custom_credential_Password: 'password',
+                 custom_credential_OriginatorIp: '0.0.0.0',
+                 custom_credential_NetworkName: 'network_name'} };
+            
+            request(options, function (error, response, body) {
+              if (error) throw new Error(error);
+              console.log(body);
+            });
         - lang: PHP
           source: >-
             //For the authorization_code flow use this piece of Code:
@@ -711,7 +873,7 @@ paths:
             }
                         
             
-            //For the client_credentials flow use this Body Request:    
+            //For the client_credentials flow use this piece of Code:    
             
             
             <?php
@@ -742,7 +904,7 @@ paths:
             }              
             
             
-            //For the refresh_token flow use this Body Request:
+            //For the refresh_token flow use this piece of Code:
             
                         
             <?php
@@ -770,7 +932,43 @@ paths:
               echo $response->getBody();
             } catch (HttpException $ex) {
               echo $ex;
-            }            
+            }
+            
+            
+            //For the custom_credentials flow use this piece of Code:    
+            
+            
+            <?php
+            
+            $request = new HttpRequest();
+            $request->setUrl('https://my.nbg.gr/identity/connect/token');
+            $request->setMethod(HTTP_METH_POST);
+            
+            $request->setHeaders(array(
+              'cache-control' => 'no-cache',
+              'content-type' => 'application/x-www-form-urlencoded',
+              'accept' => 'application/json'
+            ));
+            
+            $request->setContentType('application/x-www-form-urlencoded');
+            $request->setPostFields(array(
+              'client_id' => '00000000-0000-0000-0000-000000000000',
+              'client_secret' => '00000000-0000-0000-0000-000000000000',
+              'grant_type' => 'custom_credentials',
+              'scope' => 'scope-1 scope-2',
+              'user_registry_id' => '00000000-0000-0000-0000-000000000000',
+              'custom_credential_MachineId' => 'machine_id',
+              'custom_credential_Password' => 'password',
+              'custom_credential_OriginatorIp' => '0.0.0.0',
+              'custom_credential_NetworkName' => 'network_name'
+            ));
+            
+            try {
+              $response = $request->send();
+              echo $response->getBody();
+            } catch (HttpException $ex) {
+              echo $ex;
+            }
         - lang: Python
           source: >-
             #For the authorization_code flow use this piece of Code:
@@ -796,7 +994,7 @@ paths:
             print(data.decode("utf-8"))
                         
             
-            #For the client_credentials flow use this Body Request:    
+            #For the client_credentials flow use this piece of Code:    
             
                         
             import http.client
@@ -820,7 +1018,7 @@ paths:
             
             
             
-            #For the refresh_token flow use this Body Request:
+            #For the refresh_token flow use this piece of Code:
             
                         
             import http.client
@@ -840,7 +1038,30 @@ paths:
             res = conn.getresponse()
             data = res.read()
             
-            print(data.decode("utf-8"))                      
+            print(data.decode("utf-8"))
+            
+            
+            #For the custom_credentials flow use this piece of Code:    
+            
+                        
+            import http.client
+            
+            conn = http.client.HTTPSConnection("my.nbg.gr")
+            
+            payload = "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=custom_credentials&scope=scope-1%20scope-2&user_registry_id=00000000-0000-0000-0000-000000000000&custom_credential_MachineId=machine_id&custom_credential_Password=password&custom_credential_OriginatorIp=0.0.0.0&custom_credential_NetworkName=network_name"
+            
+            headers = {
+                'accept': "application/json",
+                'content-type': "application/x-www-form-urlencoded",
+                'cache-control': "no-cache",
+                }
+            
+            conn.request("POST", "/identity/connect/token", payload, headers)
+            
+            res = conn.getresponse()
+            data = res.read()
+            
+            print(data.decode("utf-8"))
         - lang: Ruby
           source: >-
             #For the authorization_code flow use this piece of Code:
@@ -873,7 +1094,7 @@ paths:
             puts response.read_body
                         
             
-            #For the client_credentials flow use this Body Request:    
+            #For the client_credentials flow use this piece of Code:    
             
                         
             require 'uri'
@@ -904,7 +1125,7 @@ paths:
             
             
             
-            #For the refresh_token flow use this Body Request:
+            #For the refresh_token flow use this piece of Code:
             
             
             
@@ -933,7 +1154,38 @@ paths:
             
             response = http.request(request)
             
-            puts response.read_body                      
+            puts response.read_body
+            
+            
+            
+            #For the custom_credentials flow use this piece of Code:    
+            
+                        
+            require 'uri'
+            
+            require 'net/http'
+            
+            url = URI("https://my.nbg.gr/identity/connect/token")
+            
+            http = Net::HTTP.new(url.host, url.port)
+            
+            http.use_ssl = true
+            
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            
+            request = Net::HTTP::Post.new(url)
+            
+            request["accept"] = 'application/json'
+            
+            request["content-type"] = 'application/x-www-form-urlencoded'
+            
+            request["cache-control"] = 'no-cache'
+            
+            request.body = "client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=custom_credentials&scope=scope-1%20scope-2&user_registry_id=00000000-0000-0000-0000-000000000000&custom_credential_MachineId=machine_id&custom_credential_Password=password&custom_credential_OriginatorIp=0.0.0.0&custom_credential_NetworkName=network_name"
+            
+            response = http.request(request)
+            
+            puts response.read_body
         - lang: cUrl
           source: |-
             //For the authorization_code flow use this piece of Code:
@@ -947,7 +1199,7 @@ paths:
               -d 'client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fmy_applications_redirect_uri%2F'  
             
             
-            //For the client_credentials flow use this Body Request:    
+            //For the client_credentials flow use this piece of Code:    
             
                         
             curl -X POST \
@@ -958,7 +1210,7 @@ paths:
               -d 'client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=client_credentials&scope=scope-1%20scope-2'   
             
             
-            //For the refresh_token flow use this Body Request:
+            //For the refresh_token flow use this piece of Code:
             
             
             curl -X POST \
@@ -966,7 +1218,18 @@ paths:
               -H 'accept: application/json' \
               -H 'cache-control: no-cache' \
               -H 'content-type: application/x-www-form-urlencoded' \
-              -d 'client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request'                                     
+              -d 'client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=refresh_token&refresh_token=refresh_token_from_previous_refresh_token_request'
+            
+            
+            //For the custom_credentials flow use this piece of Code:    
+            
+                        
+            curl -X POST \
+              https://my.nbg.gr/identity/connect/token \
+              -H 'accept: application/json' \
+              -H 'cache-control: no-cache' \
+              -H 'content-type: application/x-www-form-urlencoded' \
+              -d 'client_id=00000000-0000-0000-0000-000000000000&client_secret=00000000-0000-0000-0000-000000000000&grant_type=custom_credentials&scope=scope-1%20scope-2&user_registry_id=00000000-0000-0000-0000-000000000000&custom_credential_MachineId=machine_id&custom_credential_Password=password&custom_credential_OriginatorIp=0.0.0.0&custom_credential_NetworkName=network_name'
 components:
   schemas:
     authorization_code:
@@ -1003,7 +1266,7 @@ components:
             grant_type:
               type: string
               description: grant type
-              example: authorization_code
+              example: client_credentials
             scope:
               type: string
               description: Scope of the APIs 
@@ -1019,13 +1282,54 @@ components:
             grant_type:
               type: string
               description: grant type
-              example: authorization_code
+              example: refresh_token
             refresh_token:
               type: string
               description: Refresh Token   
               example: refresh_token_from_previous_refresh_token_request
           required:
-            - refresh_token      
+            - refresh_token
+    custom_credentials:
+      description: Custom Credentials schema
+      allOf:
+        - $ref: '#/components/schemas/Token'
+        - type: object
+          properties:
+            grant_type:
+              type: string
+              description: grant type
+              example: custom_credentials
+            scope:
+                type: string
+                description: Scope of the APIs 
+                example: scope-1 scope-2
+            user_registry_id:
+              type: string
+              description: ID of user registry
+              example: 00000000-0000-0000-0000-000000000000
+            custom_credential_MachineId:
+              type: string
+              description: Machine ID
+              example: machine_id
+            custom_credential_Password:
+              type: string
+              description: Machine password
+              example: password
+            custom_credential_OriginatorIp:
+              type: string
+              description: Originator's IP address
+              example: 0.0.0.0
+            custom_credential_NetworkName:
+              type: string
+              description: Network name
+              example: network_name
+          required:
+            - scope
+            - user_registry_id
+            - custom_credential_MachineId
+            - custom_credential_Password
+            - custom_credential_OriginatorIp
+            - custom_credential_NetworkName
     Token:
       type: object
       required:
@@ -1048,6 +1352,7 @@ components:
             - client_credentials
             - authorization_code 
             - refresh_token
+            - custom_credentials
   requestBodies:
     Token:
       content:
@@ -1057,12 +1362,14 @@ components:
               - $ref: '#/components/schemas/authorization_code'
               - $ref: '#/components/schemas/client_credentials'
               - $ref: '#/components/schemas/refresh_token'
+              - $ref: '#/components/schemas/custom_credentials'
             discriminator:
               propertyName: grant_type
               mapping:
                 authorization_code: '#/components/schemas/authorization_code'
                 client_credentials: '#/components/schemas/client_credentials'  
                 refresh_token: '#/components/schemas/refresh_token'
+                custom_credentials: '#/components/schemas/custom_credentials'
       description: Token object depending on grant_type              
 servers:
   - url: 'https://my.nbg.gr/identity/connect'
