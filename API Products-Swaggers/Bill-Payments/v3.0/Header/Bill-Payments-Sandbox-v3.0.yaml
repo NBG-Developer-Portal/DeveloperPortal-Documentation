@@ -1721,7 +1721,7 @@ paths:
       tags:
         - Payments
       summary: Execute Payment
-      description: "Executes a Payment. Required objects, fields and preprocess steps of the payment are provided by the /Payments/paymentsList endpoint response. Only the instrId request property is mandatory. Requests in the sandbox endpoint always result in transactions with status COMPLETED. If you want to simulate payment failure scenarios, you can alter the status of the transaction using the PUT /sandbox/{sandbox_id}/transactions endpoint.\r\n\r\n\r\nSample request:\r\n\r\n    POST /pay\r\n    {\r\n        \"userId\": \"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"paymentIdentification\": {\r\n            \"instrId\": \"138ef93b-36f6-4843-aecf-48e166d2eddb\"\r\n        },\r\n        \"paymentOrgIdentification\": {\r\n            \"id\": \"69d6ffc8-cc65-4130-a172-d2fa16b6cbe8\",\r\n            \"barcode\": null,\r\n            \"fields\": {\r\n                \"PAYMENT_CODE\" : \"1234567890\"\r\n            },\r\n            \"extraData\": {}\r\n        },\r\n        \"chargesInfo\": null,\r\n        \"settlementInfo\": {\r\n            \"ccy\": \"EUR\",\r\n            \"amount\": 21.21,\r\n            \"method\": \"ACCT\"\r\n        },\r\n        \"debtor\": {\r\n            \"name\": \"ΠΑΠΑΔΟΠΟΥΛΟΣ ΓΙΩΡΓΟΣ\",\r\n            \"debtorAccount\": {\r\n                \"iban\": \"GR7816570557954408\",\r\n                \"pan\": null\r\n            },\r\n            \"telephone\": \"2101234567\"\r\n        },\r\n        \"ultimateDebtor\":  null,\r\n        \"remittanceInfo\": null,\r\n        \"requestMachineId\": null,\r\n        \"acceptDuplicate\": true,\r\n        \"machineId\": null,\r\n        \"isSmsOtp\": true,\r\n        \"tanNumber\": \"111111\"       \r\n    }"
+      description: "Executes a Payment. Required objects, fields and preprocess steps of the payment are provided by the /Payments/paymentsList endpoint response. Only the instrId request property is mandatory. Requests in the sandbox endpoint always result in transactions with status COMPLETED. If you want to simulate payment failure scenarios, you can alter the status of the transaction using the PUT /sandbox/{sandbox_id}/transactions endpoint. Furthermore, the deferredName field of the deferred object must be filled with the name of the organization that the current transaction belongs. Those values can be retrieved by the payments/paymentsList or payments/paymentsListLight endpoints. \r\n\r\n\r\nSample request:\r\n\r\n    POST /pay\r\n    {\r\n        \"userId\": \"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"paymentIdentification\": {\r\n            \"instrId\": \"138ef93b-36f6-4843-aecf-48e166d2eddb\"\r\n        },\r\n        \"paymentOrgIdentification\": {\r\n            \"id\": \"69d6ffc8-cc65-4130-a172-d2fa16b6cbe8\",\r\n            \"barcode\": null,\r\n            \"fields\": {\r\n                \"PAYMENT_CODE\" : \"1234567890\"\r\n            },\r\n            \"extraData\": {}\r\n        },\r\n        \"chargesInfo\": null,\r\n        \"settlementInfo\": {\r\n            \"ccy\": \"EUR\",\r\n            \"amount\": 21.21,\r\n            \"method\": \"ACCT\"\r\n        },\r\n        \"debtor\": {\r\n            \"name\": \"ΠΑΠΑΔΟΠΟΥΛΟΣ ΓΙΩΡΓΟΣ\",\r\n            \"debtorAccount\": {\r\n                \"iban\": \"GR7816570557954408\",\r\n                \"pan\": null\r\n            },\r\n            \"telephone\": \"2101234567\"\r\n        },\r\n        \"ultimateDebtor\":  null,\r\n        \"remittanceInfo\": null,\r\n        \"requestMachineId\": null,\r\n        \"acceptDuplicate\": true,\r\n        \"machineId\": null,\r\n        \"isSmsOtp\": true,\r\n        \"tanNumber\": \"111111\",\r\n        \"comments\": \"comments\",\r\n        \"deferred\": {\r\n            \"isDeferred\": false,\r\n            \"deferredDate\": null,\r\n            \"deferredName\": \"ΔΕΗ\",\r\n            \"deferredFrequency\": null,\r\n            \"deferredTotalPayments\": null\r\n          }\r\n     }"
       operationId: Payments_pay
       parameters:
         - name: sandbox_id
@@ -3152,7 +3152,7 @@ security:
 servers:
   - url: 'https://apis.nbg.gr/sandbox/billpayments/headers/v3.0'
     description: Sandbox Server
-  - url: 'https://ibankpay.nbg.gr/apis.proxy/billpaymentsapi/v1'
+  - url: 'https://services.nbg.gr/apis/billpayments/v1'
     description: Production Server
 components:
   requestBodies:
@@ -5111,6 +5111,12 @@ components:
         acceptDuplicateSpecification:
           $ref: >-
             #/components/schemas/ibank.ThirdPartyPayment.Types.AcceptDuplicateSpecification
+        comments:
+          description: >-
+            User comments
+          type: string
+        deferred:
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.DeferredRequest'
     ibank.ThirdPartyPayment.Types.ChargesInfo:
       description: Charges Extra Information
       type: object
@@ -5240,6 +5246,28 @@ components:
     ibank.ThirdPartyPayment.Types.PaymentOtpResponse:
       type: object
       properties:
+        requestId:
+          format: uuid
+          description: Request Id
+          type: string
+        collectedPoints:
+          description: Collected Points
+          type: integer
+        comments:
+          description: Comments that user has given in the request body
+          type: string
+        requiresApproval:
+          description: Flag indicating if the current transaction requires approval to be executed successfully
+          type: boolean
+        isDeferred:
+          description: Flag indicating if the trasnaction is deferred
+          type: boolean
+        isDuplicate:
+          description: Flag indicating if the trasnaction is duplicate
+          type: boolean
+        deferredId:
+          description: Deferred Id
+          type: string
         tanCheck:
           description: OTP Verification Number
           type: string
