@@ -5241,16 +5241,6 @@ components:
     ibank.ThirdPartyPayment.Types.PaymentOtpResponse:
       type: object
       properties:
-        requestId:
-          format: uuid
-          description: Request Id
-          type: string
-        collectedPoints:
-          description: Collected Points
-          type: integer
-        comments:
-          description: Comments that user has given in the request body. Comments will appear in approvals flow. Only for production environment
-          type: string
         requiresApproval:
           description: Flag indicating if the current transaction requires approval from another corporate user in order to be executed
           type: boolean
@@ -5260,9 +5250,6 @@ components:
         isDuplicate:
           description: Flag indicating whether the transaction is identical to a previous one. Only for production environment
           type: boolean
-        deferredId:
-          description: Deferred Id
-          type: string
         tanCheck:
           description: OTP Verification Number
           type: string
