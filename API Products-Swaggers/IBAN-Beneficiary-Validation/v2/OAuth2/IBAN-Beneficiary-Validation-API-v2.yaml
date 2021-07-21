@@ -11,49 +11,7 @@ info:
 
         The API enables the consumer to:
 
-        1. retrieve the beneficiaries of NBG accounts, and 
-
-        2. calculate the most likely beneficiary of a third bank's IBAN along with a confidence score.
-
-
-        # Confidence Scoring
-
-        The /otherBanksIban endpoint returns a confidence score, which
-        indicate our confidence on the response data we return. This section discusses the method that this score is calculated and provides some
-        examples so as to facilate the scoring interpretation by the API consumers. Detailed Request/Response
-        examples are provided in the corresponding endpoints in the paths section below.
-
-
-        ## Confidence score on the likely beneficiary of /otherBanksIban
-
-
-        The IBAN included in the request data of the /otherBanksIban endpoint corresponds to a bank account
-        held in other banks (non-NBG account). Our data source to extract the likely beneficiary in this case
-        is from our incoming and outgoing remittance records, meaning that the data is not verified by NBG and our response is based either on the verifications of the debtor Bank in the case of incoming remittances, or
-        on a statistical analysis on the beneficiaries observed in our outgoing remittance records. This difference is also reflected on the confidence score, as the data from incoming remittances are more trustworthy (account owner name verified by the debtor Bank) than the data  from outgoing remittances (account owner name entered manually by our users).
-
-        ### Confidence score in case of incoming remittances
-
-        In the case we find the IBAN in our incoming remittance records then the corresponding account owner data we find are deemed trustworthy, and the confidence score is always equal to 100.
-        
-        Also in this case, all account owner names found are returned.
-
-        ### Confidence score in case of outgoing remittances
-
-        Many times the outgoing remittance records of the same IBAN include beneficiary names that differ among each other.
-        This is why in this case the /otherBanksIban endpoint will return only the masked name of the most frequent
-        beneficiary observed, and the confidence score will indicate the variance of
-        this name among the observed outgoing remittance records.
-
-
-        The confidence score in this case is based on the *weighted* average Levenshtein Distance (aLD) of the
-        likelyBeneficiary name (most frequent name) as measured against the rest of the beneficiary name's observed. More
-        specifically, the confidence score is bounded from above by 1 (meaning that the score is always <=1),
-        based on the likelyBeneficiary character length (L) as follows:
-
-
-        - confidence = 1 - (aLD/L)
-
+          - retrieve the beneficiaries of NBG accounts
 
         # Quick Getting Started
 
@@ -169,26 +127,17 @@ servers:
     -
         url: 'https://services.nbg.gr/apis/iban.beneficiary.validation/v2'
         description: Production Server        
+security:
+  - Client_Id: []
+    Client-Credentials-Token:
+      - sandbox-iban-beneficiary-validation-api
+      - iban-beneficiary-validation-api
 paths:
     '/sandbox/{sandboxid}':
         get:
             tags:
                 - Sandbox
             parameters:
-                -
-                    name: Authorization
-                    description: Authorization
-                    schema:
-                        type: string
-                    in: header
-                    required: true
-                -
-                    name: Client-Id
-                    description: Client Id
-                    schema:
-                        type: string
-                    in: header
-                    required: true
                 -
                     examples:
                         MyIbanValidatorSandbox:
@@ -230,20 +179,6 @@ paths:
             tags:
                 - Sandbox
             parameters:
-                -
-                    name: Authorization
-                    description: Authorization
-                    schema:
-                        type: string
-                    in: header
-                    required: true
-                -
-                    name: Client-Id
-                    description: Client Id
-                    schema:
-                        type: string
-                    in: header
-                    required: true
                 -
                     examples:
                         MyIbanValidatorSandbox:
@@ -304,21 +239,6 @@ paths:
                 required: true
             tags:
                 - Sandbox
-            parameters:
-                -
-                    name: Authorization
-                    description: Authorization
-                    schema:
-                        type: string
-                    in: header
-                    required: true
-                -
-                    name: Client-Id
-                    description: Client Id
-                    schema:
-                        type: string
-                    in: header
-                    required: true
             responses:
                 '204':
                     description: No Content
@@ -348,21 +268,6 @@ paths:
                             $ref: '#/components/schemas/SandboxRequest'
             tags:
                 - Sandbox
-            parameters:
-                -
-                    name: Authorization
-                    description: Authorization
-                    schema:
-                        type: string
-                    in: header
-                    required: true
-                -
-                    name: Client-Id
-                    description: Client Id
-                    schema:
-                        type: string
-                    in: header
-                    required: true
             responses:
                 '201':
                     content:
@@ -400,22 +305,8 @@ paths:
                 - beneficiaryValidation
             parameters:
                 -
-                    name: Authorization
-                    description: Authorization
-                    schema:
-                        type: string
-                    in: header
-                    required: true
-                -
                     name: Sandbox-Id
                     description: The required "Sandbox ID"
-                    schema:
-                        type: string
-                    in: header
-                    required: true
-                -
-                    name: Client-Id
-                    description: Client Id
                     schema:
                         type: string
                     in: header
@@ -451,86 +342,23 @@ paths:
                     description: Internal Server Error
             summary: Get the beneficiaries of an NBG IBAN
             description: Get a list of the masked full names of the beneficiaries of an NBG IBAN.
-    /beneficiaryValidation/otherBanksIban:
-        post:
-            requestBody:
-                description: ''
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ValidateNonNbgIbanRequest'
-                        examples:
-                            NonNbgIbanValidationRequest:
-                                value:
-                                    iban: GR9101097155386567765933961
-                                    dateFrom: '2019-09-01'
-                                    dateTo: '2019-09-30'
-                required: true
-            tags:
-                - beneficiaryValidation
-            parameters:
-                -
-                    name: Authorization
-                    description: Authorization
-                    schema:
-                        type: string
-                    in: header
-                    required: true
-                -
-                    name: Sandbox-Id
-                    description: The required "Sandbox ID"
-                    schema:
-                        type: string
-                    in: header
-                    required: true
-                -
-                    name: Client-Id
-                    description: Client Id
-                    schema:
-                        type: string
-                    in: header
-                    required: true
-            responses:
-                '200':
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ConfidenceResponse'
-                            examples:
-                                ValidateNonNbgIbanResponse:
-                                    value:
-                                        -
-                                            confidence: 100
-                                            likelyBeneficiary: Ε**n* I**n**u
-                    description: OK
-                '400':
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ErrorResponse'
-                    description: Bad Request
-                '401':
-                    description: Unauthorized
-                '403':
-                    description: Forbidden
-                '404':
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ErrorResponse'
-                    description: Not Found
-                '500':
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ErrorResponse'
-                    description: Internal Server Error
-            summary: Get the most likely full name of the beneficiaries of a non-NBG IBAN
-            description: >-
-                Get the most likely full name of the beneficiaries of an IBAN held in other banks. A high confidence score indicates trustworthiness of the returned beneficiary names. Please refer to the "Confidence score on the likely beneficiary of /otherBanksIban" section above to learn more on how we calculate the confidence scores.
+
 components:
+    securitySchemes:
+      Client_Id:
+        type: apiKey
+        description: Application's Id
+        in: header
+        name: Client-Id
+      Client-Credentials-Token:
+        type: oauth2
+        description: OAuth2 Client Credentials Flow
+        flows:
+          clientCredentials:
+            tokenUrl: https://my.nbg.gr/identity/connect/token
+            scopes:
+              sandbox-iban-beneficiary-validation-api: Sandbox Scope
+              iban-beneficiary-validation-api: Production Scope
     schemas:
         AccountsBeneficiaries:
             title: Root Type for IBANBeneficiary
