@@ -185,14 +185,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -213,12 +205,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UploadedFile'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /files/{fileId}/upload:
     put:
@@ -243,14 +243,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -274,12 +266,20 @@ paths:
         308:
           description: Range
           content: {}
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /files/{fileId}/{chunkPart}:
     get:
@@ -323,14 +323,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -344,12 +336,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FileContent'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
   /files/{fileId}:
     get:
       tags:
@@ -385,14 +379,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -406,12 +392,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FileDetails'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
     put:
       tags:
       - Files
@@ -433,14 +421,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -461,12 +441,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
     delete:
       tags:
@@ -501,14 +489,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -516,18 +496,20 @@ paths:
         schema:
           type: string
       responses:
-        204:
-          description: No Content
+        200:
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
   /files/status/{fileId}:
     put:
       tags:
@@ -549,14 +531,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -577,12 +551,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /files:
     get:
@@ -630,14 +612,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -653,12 +627,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/FileDetails'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
   /files/{fileId}/share/{sharedUserRegistry}/{sharedUserId}:
     put:
       tags:
@@ -692,14 +668,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -719,12 +687,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+                      
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
     delete:
       tags:
@@ -771,14 +748,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -792,12 +761,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
   /Folders:
     get:
       tags:
@@ -824,14 +795,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -847,12 +810,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/FolderInner'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
     post:
       tags:
       - Folders
@@ -867,14 +832,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -895,12 +852,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateFolderResponse'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /Folders/{folderId}:
     put:
@@ -924,14 +889,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -951,12 +908,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
     delete:
       tags:
@@ -991,14 +956,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1012,12 +969,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
   /Folders/{folderId}/share/{sharedUserRegistry}/{sharedUserId}:
     put:
       tags:
@@ -1051,14 +1010,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1079,12 +1030,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
     delete:
       tags:
@@ -1131,14 +1090,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1152,12 +1103,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
   /ethnofiles/populatefileTypes:
     post:
       tags:
@@ -1172,14 +1125,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1200,12 +1145,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_PopulateFiletypesResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /ethnofiles/sendfiletoethnofiles:
     post:
@@ -1222,14 +1175,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1250,12 +1195,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_UpdateXactionIdResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /validation/filename:
     post:
@@ -1271,14 +1224,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1299,12 +1244,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /validation/file:
     post:
@@ -1320,14 +1273,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1348,12 +1293,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /ethnofiles/retrieveCustomerApplications:
     post:
@@ -1369,14 +1322,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1396,12 +1341,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_RetrieveCustomerApplicationsResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /ethnofiles/retrieveFileList:
     post:
@@ -1417,14 +1370,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1444,12 +1389,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_RetrieveFileListResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /ethnofiles/retrieveFile:
     post:
@@ -1465,14 +1418,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1492,12 +1437,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_RetrieveFileResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /ethnofiles/sendFile:
     post:
@@ -1513,14 +1466,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1540,12 +1485,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_SendFileResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /ethnofiles/sepaconvert:
     post:
@@ -1561,14 +1514,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1588,12 +1533,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SepaConvertResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /ethnofiles/sepaSetFileStatusAsSent:
     post:
@@ -1609,14 +1562,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1636,12 +1581,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SepaSetFileStatusAsSentResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /tpp/generatemasspaymentssample:
     post:
@@ -1660,14 +1613,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1688,12 +1633,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_GenerateMassPaymentsSampleFileResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /tpp/masspayments:
     post:
@@ -1709,14 +1662,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1724,7 +1669,7 @@ paths:
         schema:
           type: string
       requestBody:
-        description: Execuτe Mass Payment Request
+        description: Execute Mass Payment Request
         content:
           application/json:
             schema:
@@ -1737,12 +1682,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_MassPaymentsWithFileResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /tpp/retrievemasspaymentsoutcome:
     post:
@@ -1758,14 +1711,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1786,12 +1731,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_RetrieveMassPaymentsWithFileOutcomeResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /tpp/requestindividualpaymentsstatus:
     post:
@@ -1807,14 +1760,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1835,12 +1780,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_RequestIndividualPaymentsStatusWithFileResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /tpp/retrieveindividualpaymentsstatus:
     post:
@@ -1856,14 +1809,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1884,12 +1829,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_RetrieveIndividualPaymentsStatusWithFileResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /tpp/validatemasspaymentsfile:
     post:
@@ -1905,14 +1858,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: header
         description: The unique name of your Sandbox
@@ -1933,12 +1878,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response_1_ValidateMassPaymentsFileResponse_'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /massiveTransfers/generateMassTransfersSample:
     post:
@@ -1956,14 +1909,6 @@ paths:
           required: true
           schema:
             type: string
-                             
-                    
-                                                                           
-                        
-                 
-                        
-                               
-                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -1979,19 +1924,27 @@ paths:
                 #/components/schemas/MassTransfersSampleRequest_
         required: true
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
               schema:
                 $ref: >-
                   #/components/schemas/MassTransfersSampleResponse_
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
   /massiveTransfers/verifyFile:
     post:
       tags:
@@ -2005,14 +1958,6 @@ paths:
           required: true
           schema:
             type: string
-                             
-                    
-                                                                           
-                        
-                 
-                        
-                              
-                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -2027,19 +1972,27 @@ paths:
               $ref: >-
                 #/components/schemas/VerifyFileCreditRequest_
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
               schema:
                 $ref: >-
                   #/components/schemas/FileCreditVerifyResponse_
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
   /massiveTransfers/payFile:
     post:
       tags:
@@ -2053,14 +2006,6 @@ paths:
           required: true
           schema:
             type: string
-                             
-                    
-                                                                           
-                        
-                 
-                        
-                              
-                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -2075,25 +2020,33 @@ paths:
               $ref: >-
                 #/components/schemas/PayFileCreditRequest_
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
               schema:
                 $ref: >-
                   #/components/schemas/PayFileResponse_
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
   /massiveTransfers/retrieveMassTransfersOutcomeCredit:
     post:
       tags:
         - MassiveTransfers
       summary: Retrieve Mass Transfers Outcome
-      description: Retrieves the outcome of a list of transfers that were submitted as a file.
+      description: Retrieves the outcome of a list of transfers that were submitted as a file. User can retrieve the outcome file as a **CSV**, **JSON** or **XML** file format.
       parameters:
         - name: Request-Id
           in: header
@@ -2101,14 +2054,6 @@ paths:
           required: true
           schema:
             type: string
-                             
-                    
-                                                                           
-                        
-                 
-                        
-                              
-                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -2124,19 +2069,27 @@ paths:
                 #/components/schemas/ResultPayCreditWithFileRequest_
         required: true
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
               schema:
                 $ref: >-
                   #/components/schemas/ResultPayCreditWithFileResponse_
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
   /massiveTransfers/getMassFiles:
     post:
       tags:
@@ -2150,14 +2103,6 @@ paths:
           required: true
           schema:
             type: string
-                             
-                    
-                                                                           
-                        
-                 
-                        
-                              
-                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -2173,19 +2118,27 @@ paths:
                 #/components/schemas/GetMassiveTransfersRequest_
         required: true
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
               schema:
                 $ref: >-
                   #/components/schemas/DeferredActiveAllResponse_
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
   /massiveTransfers/getMassFileDetails:
     post:
       tags:
@@ -2199,14 +2152,6 @@ paths:
           required: true
           schema:
             type: string
-                             
-                    
-                                                                           
-                        
-                 
-                        
-                              
-                                                                                          
         - name: sandbox_id
           in: header
           description: The unique name of your Sandbox
@@ -2222,19 +2167,27 @@ paths:
                 #/components/schemas/GetMassTransfersFileDetailsRequest_
         required: true
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
               schema:
                 $ref: >-
                   #/components/schemas/DeferredActiveAllResponse_
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestResponse'
+        401:
+          description: Unauthorized
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
   /Sandbox:
     post:
       tags:
@@ -2253,14 +2206,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       requestBody:
         description: Create Sandbox Request
         content:
@@ -2275,12 +2220,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SandboxDataModel'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestSandboxResponse'
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/ForbiddenSandboxResponse'
+        404:
+          description: Not Found
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/NotFoundResponse'
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
   /Sandbox/{sandbox_id}:
     get:
@@ -2296,14 +2261,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: path
         description: The unique name of your Sandbox
@@ -2317,12 +2274,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SandboxDataModel'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestSandboxResponse'
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/NotFoundResponse'
     put:
       tags:
       - Sandbox
@@ -2336,14 +2301,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: path
         description: The unique name of your Sandbox
@@ -2364,12 +2321,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SandboxDataModel'
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestSandboxResponse'
+        401:
+          description: Unauthorized
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/ForbiddenSandboxResponse'
+        404:
+          description: Not Found
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/NotFoundResponse'
+        415:
+          description: Unsupported Media Type
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/UnsupportedMediaTypeResponse'
       x-codegen-request-body-name: request
     delete:
       tags:
@@ -2384,14 +2359,6 @@ paths:
         required: true
         schema:
           type: string
-                           
-                  
-                                                                         
-                      
-               
-                      
-                             
-                                                                                        
       - name: sandbox_id
         in: path
         description: The unique name of your Sandbox
@@ -2402,12 +2369,20 @@ paths:
         204:
           description: No Content
           content: {}
-        default:
-          description: Error Response
+        400:
+          description: Bad Request
           content:
               application/json:
                   schema:
-                      $ref: '#/components/schemas/ErrorResponse'
+                      $ref: '#/components/schemas/BadRequestSandboxResponse'
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/NotFoundResponse'
 components:
   schemas:
     UploadInitiationRequest:
@@ -2421,29 +2396,37 @@ components:
         folderId:
           type: string
           format: uuid
+          description: Folder ID
         fileName:
           type: string
+          description: File name
         fileDescription:
           type: string
+          description: File description
         userTags:
           type: array
+          description: User Tags
           items:
             type: string
         fileSize:
           type: integer
           format: int64
+          description: File size
         metadata:
           type: string
+          description: Metadata
         fileIcon:
           pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
           type: string
           format: byte
+          description: File icon in base64 format
         requester:
           $ref: '#/components/schemas/RequestEntity'
         subject:
           $ref: '#/components/schemas/RequestEntity'
         claims:
           type: object
+          description: Claims
           additionalProperties:
             type: object
             properties: {}
@@ -2455,20 +2438,25 @@ components:
       properties:
         id:
           type: string
+          description: Requester Id
         registry:
           type: string
+          description: The user registry. Local for sandbox, IBank for production.
     UploadedFile:
       type: object
       properties:
         fileId:
           type: string
           format: uuid
+          description: File Id
         fileChunks:
           type: integer
           format: int32
+          description: File chunks
         fileChunkSize:
           type: integer
           format: int32
+          description: File chunks size
     UploadRequest:
       required:
       - chunkPart
@@ -2481,15 +2469,18 @@ components:
           pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
           type: string
           format: byte
+          description: File Content in base64 format
         chunkPart:
           type: integer
           format: int32
+          description: File chunk part
         requester:
           $ref: '#/components/schemas/RequestEntity'
         subject:
           $ref: '#/components/schemas/RequestEntity'
         claims:
           type: object
+          description: Claims
           additionalProperties:
             type: object
             properties: {}
@@ -2497,7 +2488,8 @@ components:
       type: object
       properties:
         success:
-          type: string
+          type: boolean
+          description: Flag indicating if the action has been executed or not
     FileContent:
       type: object
       properties:
@@ -2505,35 +2497,45 @@ components:
           pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
           type: string
           format: byte
+          description: File content in base64 format
     FileDetails:
       type: object
       properties:
         fileId:
           type: string
           format: uuid
+          description: File ID
         fileName:
           type: string
+          description: File name
         fileDescription:
           type: string
+          description: File description
         fileSize:
           type: integer
           format: int64
+          description: File size
         chunksUploaded:
           type: integer
           format: int32
+          description: Number of uploaded file chunks
         totalChunks:
           type: integer
           format: int32
+          description: Total file chunks
         userTags:
           type: array
+          description: User tags
           items:
             type: string
         systemTags:
           type: array
+          description: System tags
           items:
             type: string
         status:
           type: string
+          description: File status
           enum:
           - WaitingForUpload
           - WaitingForMerge
@@ -2543,26 +2545,35 @@ components:
           - Immutable
         statusReason:
           type: string
+          description: Status reason
         metadata:
           type: string
+          description: Metadata
         fileIcon:
           pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
           type: string
           format: byte
+          description: File icon in base64 format
         createdByUserId:
           type: string
+          description: User ID
         createdByUserRegistry:
           type: string
+          description: User registry
         updatedByUserId:
           type: string
+          description: User ID
         updatedByUserRegistry:
           type: string
+          description: User registry
         createdOn:
           type: string
           format: date-time
+          description: File creation date
         updatedOn:
           type: string
           format: date-time
+          description: File update date
     UpdateFileRequest:
       required:
       - requester
@@ -2571,27 +2582,34 @@ components:
       properties:
         fileName:
           type: string
+          description: File name
         userTags:
           type: array
+          description: User tags
           items:
             type: string
         fileDescription:
           type: string
+          description: File description
         fileIcon:
           pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
           type: string
           format: byte
+          description: File icon in base64 format
         folderId:
           type: string
           format: uuid
+          description: Folder Id
         useFolderId:
           type: boolean
+          description: User Folder Id
         requester:
           $ref: '#/components/schemas/RequestEntity'
         subject:
           $ref: '#/components/schemas/RequestEntity'
         claims:
           type: object
+          description: Claims
           additionalProperties:
             type: object
             properties: {}
@@ -2603,6 +2621,7 @@ components:
       properties:
         fileStatus:
           type: string
+          description: File status
           enum:
           - WaitingForUpload
           - WaitingForMerge
@@ -2616,6 +2635,7 @@ components:
           $ref: '#/components/schemas/RequestEntity'
         claims:
           type: object
+          description: Claims
           additionalProperties:
             type: object
             properties: {}
@@ -2634,6 +2654,7 @@ components:
           $ref: '#/components/schemas/RequestEntity'
         claims:
           type: object
+          description: Claims
           additionalProperties:
             type: object
             properties: {}
@@ -2646,21 +2667,26 @@ components:
       properties:
         folderName:
           type: string
+          description: Folder name
         folderDescription:
           type: string
+          description: Folder description
         folderIcon:
           pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
           type: string
           format: byte
+          description: Folder icon in base64 format
         parentFolderId:
           type: string
           format: uuid
+          description: Parent folder id
         requester:
           $ref: '#/components/schemas/RequestEntity'
         subject:
           $ref: '#/components/schemas/RequestEntity'
         claims:
           type: object
+          description: Claims
           additionalProperties:
             type: object
             properties: {}
@@ -2672,38 +2698,49 @@ components:
         folderId:
           type: string
           format: uuid
+          description: Folder Id
     FolderInner:
       type: object
       properties:
         folderId:
           type: string
           format: uuid
+          description: Folder Id
         folderName:
           type: string
+          description: Folder name
         folderDescription:
           type: string
+          description: Folder description
         folderIcon:
           pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
           type: string
           format: byte
+          description: Folder icon in base64 format
         subFolders:
           type: array
           items:
             $ref: '#/components/schemas/FolderInner'
         createdByUserId:
           type: string
+          description: User ID
         createdByUserRegistry:
           type: string
+          description: User registry
         updatedByUserId:
           type: string
+          description: User ID
         updatedByUserRegistry:
           type: string
+          description: User registry
         createdOn:
           type: string
           format: date-time
+          description: File creation date
         updatedOn:
           type: string
           format: date-time
+          description: File update date
     UpdateFolderRequest:
       required:
       - requester
@@ -2712,21 +2749,26 @@ components:
       properties:
         folderName:
           type: string
+          description: Folder name
         folderDescription:
           type: string
+          description: Folder description
         folderIcon:
           pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
           type: string
           format: byte
+          description: Folder icon in base64 format
         parentFolderId:
           type: string
           format: uuid
+          description: Parent folder Id
         requester:
           $ref: '#/components/schemas/RequestEntity'
         subject:
           $ref: '#/components/schemas/RequestEntity'
         claims:
           type: object
+          description: Claims
           additionalProperties:
             type: object
             properties: {}
@@ -2745,6 +2787,7 @@ components:
           $ref: '#/components/schemas/RequestEntity'
         claims:
           type: object
+          description: Claims
           additionalProperties:
             type: object
             properties: {}
@@ -2754,32 +2797,42 @@ components:
         FolderId:
           type: string
           format: uuid
+          description: Folder id
         FolderName:
           type: string
+          description: Folder name
         FolderDescription:
           type: string
+          description: Folder description
         FolderIcon:
           pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
           type: string
           format: byte
+          description: Folder icon in base64 format
         SubFolders:
           type: array
           items:
             $ref: '#/components/schemas/SandboxFolder'
         createdByUserId:
           type: string
+          description: User ID
         createdByUserRegistry:
           type: string
+          description: User registry
         updatedByUserId:
           type: string
+          description: User ID
         updatedByUserRegistry:
           type: string
+          description: User registry
         createdOn:
           type: string
           format: date-time
+          description: Folder creation date
         updatedOn:
           type: string
           format: date-time
+          description: Folder creation date
     Request_1_PopulateFiletypesRequest_:
       type: object
       properties:
@@ -2919,11 +2972,14 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         fileTypeId:
           type: integer
           format: int32
+          description: File Type Id
         fileName:
           type: string
+          description: File Name
     GenericResponse_:
       type: object
       properties:
@@ -2953,22 +3009,30 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         fileTypeId:
           type: integer
           format: int32
+          description: File Type Id
         fileApiFileId:
           type: string
           format: uuid
+          description: File Id
         sepaFileId:
           type: string
+          description: Sepa File Id
         convId:
           type: string
+          description: Conversion Id
+          example: Ethnocredits
         totalRecords:
           type: integer
           format: int32
+          description: Total records of the file
         totalAmount:
           type: number
           format: double
+          description: Total sum of the records of the file
     Request_1_RetrieveCustomerApplicationsRequest_:
       type: object
       properties:
@@ -2981,9 +3045,11 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         fileDirection:
           type: integer
           format: int32
+          description: Value 0 indicates incoming customer applications while value 1 indicates outgoing ones
     Response_1_RetrieveCustomerApplicationsResponse_:
       type: object
       properties:
@@ -3010,16 +3076,24 @@ components:
       properties:
         id:
           type: string
+          description: Customer Application Id
         description:
           type: string
+          description: Customer Application Description
         filenamePattern:
           type: string
+          description: Filename Pattern
         validationType:
           type: string
+          description: Validation Type
+          example: countAndSum
         conversionId:
           type: string
+          description: Conversion Id
+          example: Ethnocredits
         isXml:
           type: boolean
+          description: Flag indicating if the customer application is in XML format
         isRecallXml:
           type: boolean
     Request_1_RetrieveFileListRequest_:
@@ -3034,17 +3108,22 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         fileDirection:
           type: integer
           format: int32
+          description: Value 0 indicates incoming customer applications while value 1 indicates outgoing ones
         dateFrom:
           type: string
           format: date-time
+          description: Starting date of search
         dateTo:
           type: string
           format: date-time
+          description: Ending date of search
         isHistorical:
           type: boolean
+          description: Is historical file flag. If not defined returns both historical and non histrorical files
     Response_1_RetrieveFileListResponse_:
       type: object
       properties:
@@ -3072,26 +3151,34 @@ components:
         id:
           type: integer
           format: int32
+          description: File Id
         customerApplicationId:
           type: integer
           format: int32
+          description: Customer Application Id
         filename:
           type: string
+          description: File Name
         description:
           type: string
+          description: Customer Application Description
         fileDirection:
           type: integer
           format: int32
+          description: Value 0 indicates incoming customer applications while value 1 indicates outgoing ones
         xActionInfo:
           type: string
         createdAt:
           type: string
           format: date-time
+          description: File date creation
         isHistorical:
           type: boolean
+          description: Is historical file flag. If not defined returns both historical and non histrorical files
         appVersion:
           type: integer
           format: int32
+          description: Indicates if the file comes from migration (= 0) or is send from the new ethnofiles system (= 1)
     Request_1_RetrieveFileRequest_:
       type: object
       properties:
@@ -3104,17 +3191,22 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         customerApplicationFileId:
           type: integer
           format: int32
+          description: Customer Application Id
         fileDirection:
           type: integer
           format: int32
+          description: Value 0 indicates incoming customer applications while value 1 indicates outgoing ones
         isHistorical:
           type: boolean
+          description: Is historical file flag. If not defined returns both historical and non histrorical files
         appVersion:
           type: integer
           format: int32
+          description: Indicates if the file comes from migration (= 0) or is send from the new ethnofiles system (= 1)
     Response_1_RetrieveFileResponse_:
       type: object
       properties:
@@ -3135,6 +3227,7 @@ components:
           fileId:
             type: string
             format: uuid
+            description: File Id
     Request_1_SendFileRequest_:
       type: object
       properties:
@@ -3147,35 +3240,48 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         customerApplicationId:
           type: integer
           format: int32
+          description: Customer Application Id
         fileId:
           type: string
           format: uuid
+          description: File Id
         filename:
           type: string
+          description: File Name
         totalrecords:
           type: integer
           format: int32
+          description: Total records of the file
         totalamount:
           type: number
           format: double
+          description: Total sum of the records of the file
         executionDate:
           type: string
           format: date-time
+          description: Execution date of the file's transactions
         debtorName:
           type: string
+          description: Debtor name
         debtorIBAN:
           type: string
+          description: Debtor IBAN
         tanNumber:
           type: string
+          description: OTP for the transaction
         isSmsOtp:
           type: boolean
+          description: True when OTP is required
         acceptTerms:
           type: boolean
+          description: Flag indicating if a user has accepted the terms or not
         acceptTrnTerms:
           type: boolean
+          description: Flag indicating if a user has accepted the trn terms or not
     Response_1_SendFileResponse_:
       type: object
       properties:
@@ -3193,6 +3299,7 @@ components:
         customerApplicationFileId:
           type: integer
           format: int32
+          description: Customer Application File Id
     SepaConvertRequest_:
       type: object
       properties:
@@ -3205,20 +3312,28 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         unconvertedFileId:
           type: string
           format: uuid
+          description: Unconverted File Id
         customerApplicationId:
           type: integer
           format: int32
+          description: Customer Application Id
         conversionId:
           type: string
+          description: Conversion Id
+          example: Ethnocredits
         isXml:
           type: boolean
+          description: Flag indicating if the file is in XML format
         debtorName:
           type: string
+          description: Debtor name
         debtorIBAN:
           type: string
+          description: Debtor IBAN
     SepaConvertResponse_:
       type: object
       properties:
@@ -3239,18 +3354,24 @@ components:
         fileId:
           type: string
           format: uuid
+          description: File Id
         sepaFileId:
           type: string
+          description: Sepa File Id
         sepaFileStatus:
           type: string
+          description: Sepa File Status
         xmlTransactions:
           type: integer
           format: int32
+          description: Number of the transactions of the XML file
         xmlTotalAmount:
           type: number
           format: double
+          description: Total amount of the records of the file
         sepaFilename:
           type: string
+          description: Sepa File Name
     SepaSetFileStatusAsSentRequest_:
       type: object
       properties:
@@ -3263,10 +3384,14 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         fileId:
           type: string
+          description: File Id
         convId:
           type: string
+          description: Conversion Id
+          example: Ethnocredits
     SepaSetFileStatusAsSentResponse_:
       type: object
       properties:
@@ -3286,6 +3411,7 @@ components:
       properties:
         success:
           type: boolean
+          description: Flag indicating if the file status has been changed to sent
     Request_1_GenerateMassPaymentsSampleFileBpRequest_:
       type: object
       properties:
@@ -3298,8 +3424,10 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         fileFormat:
           type: string
+          description: File type of the generated sample
           enum:
           - JSON
           - XML
@@ -3325,6 +3453,7 @@ components:
           pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
           type: string
           format: byte
+          description: File content in base64 format
     Request_1_MassPaymentsWithFileBpRequest_:
       type: object
       properties:
@@ -3337,18 +3466,27 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         fileId:
           type: string
+          description: File Id acquired from /files/upload-initiation endpoint response
         debtorName:
           type: string
+          description: Debtor Name
         debtorTelephone:
           type: string
+          description: Debtor Telephone
         debtorIBAN:
           type: string
+          description: Debtor IBAN
         ccy:
           type: string
+          description: Currency
+          example: EUR
         acceptDuplicate:
           type: boolean
+          description: Indication whether to accept a transaction which is identical to a
+            previous one or not
     Response_1_MassPaymentsWithFileResponse_:
       type: object
       properties:
@@ -3368,8 +3506,10 @@ components:
       properties:
         receivedSuccessfully:
           type: boolean
+          description: Flag indicating if the mass payments file received successfully or not
         errorMessages:
           type: array
+          description: If any errors occur will be displayed in this array
           items:
             type: string
     Request_1_RetrieveMassPaymentsOutcomeWithFileBpRequest_:
@@ -3384,8 +3524,10 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         fileId:
           type: string
+          description: File Id acquired from /files/upload-initiation endpoint response
     Response_1_RetrieveMassPaymentsWithFileOutcomeResponse_:
       type: object
       properties:
@@ -3405,6 +3547,7 @@ components:
       properties:
         fileId:
           type: string
+          description: Outcome File Id
     Request_1_RequestIndividualPaymentsStatusWithFileBpRequest_:
       type: object
       properties:
@@ -3417,8 +3560,10 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         fileId:
           type: string
+          description: File Id acquired from /files/upload-initiation endpoint response
     Response_1_RequestIndividualPaymentsStatusWithFileResponse_:
       type: object
       properties:
@@ -3438,6 +3583,7 @@ components:
       properties:
         receivedSuccessfully:
           type: boolean
+          description: Flag indicating if the request received successfully or not
     Request_1_RetrieveIndividualPaymentsStatusWithFileBpRequest_:
       type: object
       properties:
@@ -3450,8 +3596,10 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         fileId:
           type: string
+          description: File Id acquired from /files/upload-initiation endpoint response
     Response_1_RetrieveIndividualPaymentsStatusWithFileResponse_:
       type: object
       properties:
@@ -3471,6 +3619,7 @@ components:
       properties:
         fileId:
           type: string
+          description: Status File Id
     Request_1_ValidateMassPaymentsFileBpRequest_:
       type: object
       properties:
@@ -3483,8 +3632,10 @@ components:
       properties:
         userId:
           type: string
+          description: Username of the logged in user
         fileId:
           type: string
+          description: File Id acquired from /files/upload-initiation endpoint response
     Response_1_ValidateMassPaymentsFileResponse_:
       type: object
       properties:
@@ -3504,8 +3655,10 @@ components:
       properties:
         areAllValid:
           type: boolean
+          description: Flag indicating if all file entries are valid
         validationErrors:
           type: array
+          description: If any validation errors occur will be displayed in this array
           items:
             type: string
     MassTransfersSampleRequest:
@@ -3516,9 +3669,11 @@ components:
       properties:
         userID:
           type: string
+          description: Username of the logged in user
           example: User1
         fileFormat:
           type: string
+          description: File type of the generated sample. Available formats are XML and CSV
           example: CSV
       additionalProperties: false
     RequestHeader:
@@ -3550,7 +3705,7 @@ components:
         content:
           type: string
           format: byte
-          example: ewqe
+          description: File content in base64 format
       additionalProperties: false
     ErrorSeverity:
       enum:
@@ -3615,19 +3770,24 @@ components:
       properties:
         account:
           type: string
+          description: Debor account number
           example: 04054685740
         fileId:
           type: string
-          example: aff060be-0c53-48e9-9962-519812ee0865
+          format: uuid
+          description: File Id acquired from /files/upload-initiation endpoint response
         fileType:
           type: string
+          description: File format. Available file formats are XML, CSV
           example: CSV
         isPayroll:
           type: boolean
+          description: Flag indicating if the file is related to payroll
           example: false
         userID:
           type: string
           example: User1
+          description: Username of the logged in user
       additionalProperties: false
     VerifyFileCreditRequest_:
       type: object
@@ -3639,44 +3799,55 @@ components:
       additionalProperties: false
     CommissionInfo:
       type: object
+      description: Commission information
       properties:
         otherBankCommission:
           type: number
+          description: Other bank commission
           format: double
           example: 0
         agentCommission:
           type: number
+          description: Agent commission
           format: double
           example: 0
         nbgCommission:
           type: number
+          description: NBG commission
           format: double
           example: 0.2
         deptExpences:
           type: number
+          description: Dept expences
           format: double
           example: 0
         nonStpExpences:
           type: number
+          description: Non stp expences
           format: double
           example: 0
         urgentExpences:
           type: number
+          description: Urgent expences
           format: double
           example: 0
         exchangeProfit:
           type: number
+          description: Exchange profit
           format: double
           example: 0
         sumCommission:
           type: number
+          description: Sum commission
           format: double
           example: 0
         bankTitle:
           type: string
+          description: Bank's title
           example: null
         depositor:
           type: string
+          description: Depositor
           example: null
       additionalProperties: false
     PayFileRecordRequest:
@@ -3684,136 +3855,179 @@ components:
       properties:
         serialNum:
           type: string
+          description: Serial number
           example: null
         debitAccount:
           type: string
+          description: Debit account
           example: GR4701100120000001200119673
         debitAccountValid:
           type: boolean
+          description: Flag indicating the validation of debit account
           example: true
         debitAccountCharges:
           type: string
+          description: Debit account charges
           example: GR4701100120000001200119673
         debitAccountChargesValid:
           type: boolean
+          description: Flag indicating the validation of debit account charges
           example: true
         sysType:
           type: string
+          description: Sys type
           example: null
         sysTypeValid:
           type: boolean
+          description: Flag indicating the validation of sys type
           example: false
         sysCode:
           type: string
+          description: Sys code
           example: null
         sysCodeValid:
           type: boolean
+          description: Flag indicating the validation of sys code
           example: false
         sysBic:
           type: string
+          description: Sys BIC
           example: null
         sysBicValid:
           type: boolean
+          description: Flag indicating the validation of sys BIC
           example: false
         sysCountry:
           type: string
+          description: Sys country
           example: null
         sysCountryValid:
           type: boolean
+          description: Flag indicating the validation of sys country
           example: false
         bicCode:
           type: string
+          description: Bank's BIC code
           example: ETHNGRAA
         bicCodeValid:
           type: boolean
+          description: Flag indicating the validation of bank's BIC code
           example: true
         bankTitle:
           type: string
+          description: Bank's title
           example: null
         accountType:
           type: string
+          description: Account type
           example: IBAN
         accountTypeValid:
           type: boolean
+          description: Flag indicating the validation of account type
           example: true
         differentAccountValid:
           type: boolean
+          description: Flag indicating the validation of different account
           example: true
         iban:
           type: string
+          description: IBAN
           example: GR9601106780000067890123458
         ibanValid:
           type: boolean
+          description: Flag indicating the validation of IBAN
           example: true
         beneficiary:
           type: string
+          description: Beneficiary name
           example: null
         beneficiaryValid:
           type: boolean
+          description: Flag indicating the validation of beneficiary
           example: true
         beneficiaryAddress:
           type: string
+          description: Beneficiary address
           example: null
         beneficiaryAddressValid:
           type: boolean
+          description: Flag indicating the validation of beneficiary address
           example: false
         amount:
           type: number
           format: double
+          description: Amount
           example: 60.6
         amountValid:
           type: boolean
+          description: Flag indicating the validation of amount
           example: true
         currency:
           type: string
+          description: Currency
           example: EUR
         currencyValid:
           type: boolean
+          description: Flag indicating the validation of currency
           example: true
         charges:
           type: string
+          description: Charges. Possible returned values are SHA (Shared expenses), BEN (Beneficiary expenses) or OUR (Debtor expenses)
           example: OUR
         chargesValid:
           type: boolean
+          description: Flag indicating the validation of charges amount
           example: true
         emergency:
           type: boolean
+          description: Emergency flag
           example: null
         reason:
           type: string
+          description: Transfer's reason
           example: TEST REASON
         reasonValid:
           type: boolean
+          description: Flag indicating the validation of reason
           example: true
         remCategory:
           type: string
+          description: Remittance category
           example: null
         remCategoryValid:
           type: boolean
+          description: Flag indicating the validation of remittance category
           example: true
         remType:
           type: string
+          description: Remittance Type
           example: null
         remTypeValid:
           type: boolean
+          description: Flag indicating the validation of remittance type
           example: true
         importedGood:
           type: string
+          description: Imported good
           example: null
         importedGoodValid:
           type: boolean
+          description: Flag indicating the validation of imported good
           example: true
         commisionData:
           $ref: '#/components/schemas/CommissionInfo'
         totalCommission:
           type: number
+          description: Total commission amount
           format: double
           example: 0.2
         error:
           type: string
+          description: Error message
           example: null
         creditorBeneficiaries:
           type: array
+          description: Array of creditor beneficiaries name
           items:
             type: string
           example: null
@@ -3824,44 +4038,56 @@ components:
         sumAmClear:
           type: number
           format: double
+          description: Clear sum amount of file's records
           example: 60
         commission:
           type: number
           format: double
+          description: Commission amount
           example: 0.6
         sumAmTotal:
           type: number
           format: double
+          description: Total sum amount of file's records
           example: 60.6
         totalRecords:
           type: integer
           format: int32
+          description: Number of total records
           example: 3
         totalSuccRecords:
           type: integer
           format: int32
+          description: Total successful records
           example: 3
         error:
           type: string
+          description: Error message
           example: null
         hasErrors:
           type: boolean
+          description: Error flag
           example: false
         account:
           type: string
+          description: Account number
           example: 04054685740
         chargesAccount:
           type: string
+          description: Charges account
           example: null
         debitAccount:
           type: string
+          description: Debit account
           example: null
         fileName:
           type: string
+          description: File name
           example: MassiveTransfersETE.csv
         fileType:
           type: string
-          example: csv
+          description: File type
+          example: CSV
         records:
           type: array
           items:
@@ -3897,29 +4123,37 @@ components:
       properties:
         userID:
           type: string
+          description: Username of the logged in user
           example: User1
         fileId:
           type: string
-          example: aff060be-0c53-48e9-9962-519812ee0865
+          format: uuid
+          description: File Id acquired from /files/upload-initiation endpoint response
         debitAccount:
           type: string
+          description: Debit account
           example: 04054685740
         fileName:
           type: string
+          description: File name
           example: MassiveTransfersETE.csv
         fileType:
           type: string
+          description: File format. Available file formats are XML, CSV
           example: CSV
         totalAmount:
           type: number
+          description: Total net amount of file's records
           format: double
           example: 60
         totalRecords:
           type: integer
+          description: Total number of file's records
           format: int32
           example: 3
         isPayroll:
           type: boolean
+          description: Flag indicating if the file is related to payroll
           example: false
       additionalProperties: false
     PayFileCreditRequest_:
@@ -3935,99 +4169,129 @@ components:
       properties:
         serialNum:
           type: string
+          description: Serial number
           example: null
         debitAccount:
           type: string
+          description: Debit account
           example: GR4701100120000001200119673
         debitAccountCharges:
           type: string
+          description: Debit account charges
           example: OUR
         sysType:
           type: string
+          description: Sys type
           example: null
         sysCode:
           type: string
+          description: Sys code
           example: null
         sysBic:
           type: string
+          description: Sys BIC
           example: null
         sysCountry:
           type: string
+          description: Sys country
           example: null
         bicCode:
           type: string
+          description: Bank's BIC code
           example: ETHNGRAA
         bankTitle:
           type: string
+          description: Bank's title
           example: null
         accountType:
           type: string
+          description: Account type
           example: null
         iban:
           type: string
+          description: IBAN
           example: GR9601106780000067890123458
         beneficiary:
           type: string
+          description: Beneficiary name
           example: null
         beneficiary2:
           type: string
+          description: Second beneficiary name
           example: null
         beneficiary3:
           type: string
+          description: Third beneficiary name
           example: null
         beneficiaryAddress:
           type: string
+          description: Beneficiary address
           example: null
         amount:
           type: number
           format: double
+          description: Amount
           example: 0.01
         currency:
           type: string
+          description: Currency
           example: EUR
         charges:
           type: string
+          description: Charges. Possible returned values are SHA (Shared expenses), BEN (Beneficiary expenses) or OUR (Debtor expenses)
           example: OUR
         emergency:
           type: boolean
+          description: Emergency flag
           example: false
         reason:
           type: string
+          description: Transfer's reason
           example: TEST1
         remCategory:
           type: string
+          description: Remittance category
           example: null
         remType:
           type: string
+          description: Remittance Type
           example: null
         importedGood:
           type: string
+          description: Imported good
           example: null
         commisionData:
           $ref: '#/components/schemas/CommissionInfo'
         sumCommission:
           type: number
           format: double
+          description: Sum commission
           example: 0.2
         debitAmount:
           type: number
           format: double
+          description: Debit amount
           example: 0.21
         netAmount:
           type: number
           format: double
+          description: Net amount
           example: 0.01
         orderNo:
           type: string
+          description: Order number
           example: null
         msgCode:
           type: string
+          description: Message code
           example: '000'
         error:
           type: string
+          description: Error
           example: null
         creditorBeneficiaries:
           type: array
+          description: Array of creditor beneficiaries name
           items:
             type: string
           example: null
@@ -4037,58 +4301,74 @@ components:
       properties:
         id:
           type: string
+          format: uuid
+          description: Transaction ID
           example: 516515e3-820b-4bf7-b7fe-7d524f64ca19
         debitAccount:
           type: string
+          description: Debit account
           example: GR4701100120000001200119673
         chargesAccount:
           type: string
+          description: Charges account
           example: null
         totalFileAmount:
           type: number
           format: double
+          description: Total net amount of file's records
           example: 0.06
         totalAmount:
           type: number
           format: double
+          description: Total amount of file's records with commissions
           example: 0.6
         totalCommission:
           type: number
           format: double
+          description: Total commission amount
           example: 0.6
         totalRecords:
           type: integer
           format: int32
+          description: Total number of file's records
           example: 3
         totalSuccRecords:
           type: integer
           format: int32
+          description: Total successful records
           example: 3
         tanCheck:
           type: string
+          description: Tan check received along with the OTP via SMS/Viber
           example: '433'
         transactionDate:
           type: string
+          description: Transaction date
           format: date-time
           example: '2020-10-06T16:44:33.9450956+03:00'
         fileName:
           type: string
+          description: File name
           example: MassCredits_1019614.xml
         fileType:
           type: string
-          example: null
+          description: File type
+          example: text/csv
         records:
           type: array
           items:
             $ref: '#/components/schemas/PayFileRecordResponse'
         deferredFileId:
           type: string
+          description: Deferred File Id
           example: '4435540988'
         isDuplicate:
           type: boolean
+          description: Flag indicating if the file is a duplicate
           example: null
         requiresApproval:
           type: boolean
+          description: Flag indicating if the file requires approval
           example: false
       additionalProperties: false
     PayFileResponse_:
@@ -4114,10 +4394,17 @@ components:
       properties:
         userID:
           type: string
+          description: Username of the logged in user
           example: User1
         fileId:
           type: string
+          format: uuid
+          description: File Id acquired from /files/upload-initiation endpoint response
           example: aff060be-0c53-48e9-9962-519812ee0865
+        fileFormat:
+          type: string
+          description: File format of the outcome file. Available file formats are CSV, JSON or XML. If field is omitted then the outcome file will be generated in JSON format
+          example: JSON
       additionalProperties: false
     ResultPayCreditWithFileRequest_:
       type: object
@@ -4132,9 +4419,11 @@ components:
       properties:
         fileName:
           type: string
+          description: Name of the outcome file
           example: MassiveTransfers_6948064912.json
         fileId:
           type: string
+          description: File ID of the outcome file
           example: c7a24448-256b-46b0-b8c3-a418dff446ea
       additionalProperties: false
     ResultPayCreditWithFileResponse_:
@@ -4159,14 +4448,17 @@ components:
       properties:
         userID:
           type: string
+          description: Username of the logged in user
           example: User1
         fromDate:
           type: string
           format: date-time
+          description: A Starting point in time to fetch information. This field is required in order to get results.
           example: '2020-01-01T12:25:46.559Z'
         toDate:
           type: string
           format: date-time
+          description: An Ending point in time to fetch information.\n You can also set null to this field if you do not wish an ending point in time.
           example: '2020-12-24T12:25:46.559Z'
       additionalProperties: false
     GetMassiveTransfersRequest_:
@@ -4182,91 +4474,109 @@ components:
       properties:
         id:
           type: string
-
+          description: Id
         field:
           type: string
-
+          description: Field
         value:
           type: string
-
+          description: Value
       additionalProperties: false
     DeferredHistoryExecution:
       type: object
       properties:
         errorMessage:
           type: string
+          description: Error message
         executionTime:
           type: string
           format: date-time
-
+          description: Execution Time
         executionStatus:
           type: string
-
+          description: Execution status
         externalId:
           type: string
-
+          description: External Id
       additionalProperties: false
     DeferredTransactionInfo:
       type: object
       properties:
         trnNo:
           type: string
+          description: Transaction Number
           example: null
         trnId:
           type: string
+          description: Transaction Id
           example: '20201006164435663633'
         name:
           type: string
-          example: TEST3
+          description: Name of file
+          example: ΑΡΧΕΙΟ MassCredits_1019614.xml
         description:
           type: string
-          example: ΑΡΧΕΙΟ MassCredits_1019614.xml
+          description: Description of file
+          example: null
         createdDate:
           type: string
           format: date-time
+          description: Created Date
           example: '2020-10-06T16:44:33.66363+03:00'
         executionDate:
           type: string
           format: date-time
+          description: Execution Date
           example: '2020-10-06T00:00:00+03:00'
         cancelationDate:
           type: string
           format: date-time
+          description: Cancellation Date
           example: null
         frequency:
           type: integer
+          description: Payment frequency
           format: int32
           example: 99
         totalPayments:
           type: integer
           format: int32
+          description: Total payments
           example: 1
         amount:
           type: number
           format: double
+          description: Amount
           example: 0.06
         status:
           type: string
+          description: Status (0:Pending, 1:Completed, 2:Failed, 3:Cancelled by user, 4:Partially executed)
           example: 0
         transId:
           type: string
+          description: Registered Id upon completion
           example: '4435540988'
         channel:
           type: string
+          description: Channel
           example: REM_MASS_H
         rowsNum:
           type: integer
           format: int32
+          description: Rows Number
           example: 3
         debitAccount:
           type: string
+          description: Debit Account
           example: GR4701100120000001200119673
         totalAmount:
           type: number
           format: double
+          description: Total Amount
           example: 0.06
         creditAccount:
           type: string
+          description: Credit Account
           example: null
         details:
           type: array
@@ -4312,9 +4622,11 @@ components:
       properties:
         userID:
           type: string
+          description: Username of the logged in user
           example: User1
         transId:
           type: string
+          description: Transaction id of the file
           example: '2078183642'
       additionalProperties: false
     GetMassTransfersFileDetailsRequest_:
@@ -4330,70 +4642,87 @@ components:
       properties:
         userId:
           type: string
-
+          description: User Id
         id:
           type: string
-
+          description: Deferred Transaction Id
         fileId:
           type: string
-
+          description: File Id
         trnNo:
           type: string
-
+          description: Transaction Number
+          example: null
         trnId:
           type: string
-
+          description: Transaction Id
+          example: '20201006164435663633'
         name:
           type: string
-
+          description: Name of file
+          example: ΑΡΧΕΙΟ MassCredits_1019614.xml
         description:
           type: string
-
+          description: Description of file
+          example: null
         createdDate:
           type: string
           format: date-time
-
+          description: Created Date
+          example: '2020-10-06T16:44:33.66363+03:00'
         executionDate:
           type: string
           format: date-time
-
+          description: Execution Date
+          example: '2020-10-06T00:00:00+03:00'
         cancellationDate:
           type: string
           format: date-time
-
+          description: Cancellation Date
+          example: null
         frequency:
           type: integer
           format: int32
-
+          example: 99
+          description: Payment frequency
         totalPayments:
           type: integer
           format: int32
-
+          description: Total payments
+          example: 1
         amount:
           type: number
           format: double
-
+          description: Amount
+          example: 0.06
         status:
           type: string
-
+          description: Status (0:Pending, 1:Completed, 2:Failed, 3:Cancelled by user, 4:Partially executed)
+          example: 0
         transId:
           type: string
-
+          description: Registered Id upon completion
+          example: '4435540988'
         channel:
           type: string
-
+          description: Channel
+          example: REM_MASS_H
         rowsNum:
           type: integer
           format: int32
+          description: Rows Number
+          example: 3
         debitAccount:
           type: string
-
+          description: Debit Account
+          example: GR4701100120000001200119673
         totalAmount:
           type: number
           format: double
+          description: Total Amount
         creditAccount:
           type: string
-
+          description: Credit Account
         details:
           type: array
           items:
@@ -4417,45 +4746,22 @@ components:
           pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
           type: string
           format: byte
-
+          description: File content in base64 format
         fileFormat:
           type: string
+          description: File type of the generated sample
 
       additionalProperties: false
-    ErrorResponse:
-        type: object
-        properties:
-            payload:
-                type: object
-            exception:
-                $ref: '#/components/schemas/ResponseMessage'
-            messages:
-                type: array
-                items:
-                    $ref: '#/components/schemas/ResponseMessage'
-            executionTime:
-                format: double
-                type: number
-        example:
-            payload: null
-            executionTime: 0
-            exception:
-                id: 02A7470B-0FDE-4EB4-A1E1-662BEDE4434B
-                sev: Error
-                desc: Incorrect Json Format
-                cat: Business
-                code: 20
-                
-                
     SandboxDataModel:
       type: object
       properties:
         sandboxId:
           type: string
-
+          description: The id of the sandbox
         version:
           type: integer
           format: int32
+          description: The version of the sandbox
         users:
           type: array
           items:
@@ -4495,6 +4801,7 @@ components:
       properties:
         username:
           type: string
+          description: Username
 
         folders:
           type: array
@@ -4513,6 +4820,7 @@ components:
         fileId:
           type: string
           format: uuid
+          description: File Id
 
         permissions:
           $ref: '#/components/schemas/UserPermissions'
@@ -4523,6 +4831,7 @@ components:
         folderId:
           type: string
           format: uuid
+          description: Folder Id
 
         permissions:
           $ref: '#/components/schemas/UserPermissions'
@@ -4534,9 +4843,11 @@ components:
       properties:
         sandboxId:
           type: string
+          description: The id of the sandbox
           example: MySandbox
         userId:
           type: string
+          description: Username of the logged in user
           example: User1
       additionalProperties: false
     UserPermissions:
@@ -4544,16 +4855,22 @@ components:
       properties:
         canAdd:
           type: boolean
+          description: Add permission
         canView:
           type: boolean
+          description: View permission
         canEditMetadata:
           type: boolean
+          description: Edit permission
         canMove:
           type: boolean
+          description: Move permission
         canDelete:
           type: boolean
+          description: Delete permission
         canShare:
           type: boolean
+          description: Share permission
       additionalProperties: false
     FileStatusEnum:
       enum:
@@ -4565,72 +4882,75 @@ components:
         - 5
       type: integer
       format: int32
+      description: "0: WaitingForUpload, 1:WaitingForMerge, 2: MergingChunks, 3: Completed, 4: Deleted, 5: Immutable"
     SandboxFile:
       type: object
       properties:
         folderId:
           type: string
           format: uuid
-
+          description: Folder Id
         fileId:
           type: string
           format: uuid
-
+          description: File Id
         fileContent:
           type: string
           format: byte
-
+          description: File content in base64 format
         fileName:
           type: string
-
+          description: File name
         fileDescription:
           type: string
-
+          description: File description
         fileIcon:
           type: string
           format: byte
-
+          description: File icon in base64 format
         fileSize:
           type: integer
           format: int64
+          description: File size
         totalChunks:
           type: integer
           format: int32
+          description: Total file chunks
         fileStatus:
           $ref: '#/components/schemas/FileStatusEnum'
         metadata:
           type: string
-
+          description: Metadata
         userTags:
           type: array
+          description: User tags
           items:
             type: string
-
         systemTags:
           type: array
+          description: System tags
           items:
             type: string
-
         createdByUserId:
           type: string
-
+          description: User ID
         createdByUserRegistry:
           type: string
-
+          description: User registry
         updatedByUserId:
           type: string
-
+          description: User ID
         updatedByUserRegistry:
           type: string
-
+          description: User registry
         createdOn:
           type: string
           format: date-time
-
+          description: File creation date
         updatedOn:
           type: string
           format: date-time
-
+          description: File update date
       additionalProperties: false
     SandboxTppSampleFile:
       type: object
@@ -4638,7 +4958,7 @@ components:
         content:
           type: string
           format: byte
-
+          description: Sample file content in base64 format
         fileFormat:
           $ref: '#/components/schemas/MassPaymentsFileFormat'
       additionalProperties: false
@@ -4649,6 +4969,7 @@ components:
         - 2
       type: integer
       format: int32
+      description: 0:JSON 1:XML 2:CSV
     SandboxEthnofiles:
       type: object
       properties:
@@ -4693,64 +5014,67 @@ components:
         id:
           type: integer
           format: int32
+          description: Customer Id
         parentId:
           type: integer
           format: int32
+          description: Parent Id
         code:
           type: string
-
+          description: Customer Code
         username:
           type: string
-
+          description: Customer Username
         name:
           type: string
-
+          description: Customer Name
         surname:
           type: string
-
+          description: Customer Surname
         fname:
           type: string
-
+          description: Customer Father's Name
         fileCode:
           type: string
-
+          description: File Code
         address:
           type: string
-
+          description: Customer Address
         addressNumber:
           type: string
-
+          description: Address Number
         city:
           type: string
-
+          description: City
         contact:
           type: string
-
+          description: Contact
         phone:
           type: string
-
+          description: Customer Phone
         fax:
           type: string
-
+          description: Customer Fax
         email:
           type: string
-
+          description: Customer Email
         description:
           type: string
-
+          description: Description
         createdOn:
           type: string
           format: date-time
+          description: Customer Creation Date
         updatedOn:
           type: string
           format: date-time
-
+          description: Customer Update Date
         createUser:
           type: string
-
+          example: null
         updateUser:
           type: string
-
+          example: null
       additionalProperties: false
     SandboxEthnofilesApplication:
       type: object
@@ -4758,34 +5082,38 @@ components:
         id:
           type: integer
           format: int32
+          description: Application Id
         description:
           type: string
-
+          description: Application Description
         validatorId:
           type: integer
           format: int32
-
+          description: Application Description
         notes:
           type: string
-
+          description: Application Notes
         conversionId:
           type: string
-
+          description: Conversion Id
+          example: Ethnocredits
         isXml:
           type: boolean
+          description: Flag indicating if the customer application is in XML format
         createUser:
           type: string
-
+          example: null
         updateUser:
           type: string
-
+          example: null
         createdOn:
           type: string
           format: date-time
+          description: Application Creation Date
         updatedOn:
           type: string
           format: date-time
-
+          description: Application Update Date
       additionalProperties: false
     SandboxEthnofilesCustomerApplication:
       type: object
@@ -4793,48 +5121,57 @@ components:
         id:
           type: integer
           format: int32
+          description: Customer Application Id
         customerId:
           type: integer
           format: int32
+          description: Customer Id
         applicationId:
           type: integer
           format: int32
+          description: Application Id
         filename:
           type: string
-
+          description: File Name
         fileDescription:
           type: string
-
+          description: File Description
+          example: 1234 ETHNOCREDITS PLUS PAIN.001
         ascendingFilename:
           type: boolean
+          description: Ascending Filename Flag
         fileDirection:
           type: integer
           format: int32
+          description: Value 0 indicates incoming customer applications while value 1 indicates outgoing ones
         overwriteAllowed:
           type: boolean
+          description: Flag indicating if overwrite is allowed
         exportToSystem:
           type: string
-
+          description: Export to system
+          example: General
         cutOff:
           type: string
-
+          example: null
         retentionPeriodInDays:
           type: integer
           format: int32
-
+          description: Retention period in days
         createUser:
           type: string
-
+          example: null
         updateUser:
           type: string
-
+          example: null
         createdOn:
           type: string
           format: date-time
+          description: Customer Application Creation Date
         updatedOn:
           type: string
           format: date-time
-
+          description: Customer Application Update Date
       additionalProperties: false
     SandboxEthnofilesCustomerApplicationFiles:
       type: object
@@ -4842,37 +5179,44 @@ components:
         id:
           type: integer
           format: int32
+          description: Customer Application File Id
         customerApplicationId:
           type: integer
           format: int32
+          description: Customer Application Id
         filename:
           type: string
-
+          description: File Name
         status:
           type: string
-
+          description: Customer Application File Status
+          example: Processed
         createdOn:
           type: string
+          description: Customer Application File Creation Date
           format: date-time
         fileId:
           type: string
           format: uuid
+          description: File Name
         xActionInfo:
           type: string
-
+          example: null
         amount:
           type: number
           format: double
-
+          description: Amount
         executionDate:
           type: string
           format: date-time
-
+          description: Execution Date
         fileDirection:
           type: integer
           format: int32
+          description: Value 0 indicates incoming customer applications while value 1 indicates outgoing ones
         isHistorical:
           type: boolean
+          description: Is historical file flag.
       additionalProperties: false
     SandboxEthnofilesValidator:
       type: object
@@ -4880,31 +5224,36 @@ components:
         id:
           type: integer
           format: int32
+          description: Validator Id
         description:
           type: string
-
+          description: Validator Description
+          example: PAIN 001 XML Validator
         assemblyFullName:
           type: string
-
+          description: Assembly Full Name
+          example: ethnofiles.validations.validators.XmlValidator
         jsonData:
           type: string
-
+          description: JSON Data
         validationType:
           type: string
-
+          description: Validation Type
+          example: countAndSum
         createUser:
           type: string
-
+          example: EthnofilesSandboxAdmin
         updateUser:
           type: string
-
+          example: null
         createdOn:
           type: string
           format: date-time
+          description: Validator Creation Date
         updatedOn:
           type: string
           format: date-time
-
+          description: Validator Update Date
       additionalProperties: false
     SandboxEthnofilesValidationsInbox:
       type: object
@@ -4912,16 +5261,115 @@ components:
         id:
           type: integer
           format: int32
+          description: Validation Inbox Id
         customerApplicationId:
           type: integer
           format: int32
+          description: Customer Application Id
         filename:
           type: string
-
+          description: File Name
         timestamp:
           type: string
           format: date-time
+          description: Validation Inbox Timestamp
       additionalProperties: false
+    BadRequestResponse:
+      type: object
+      properties:
+        errors:
+          $ref: '#/components/schemas/Errors'
+        type:
+          type: string
+          description: URL redirecting to the description of the error by the RFC standard
+          example: https://tools.ietf.org/html/rfc7231#section-6.5.1
+        title:
+          type: string
+          description: Title containing generic information about the error(s)
+          example: One or more validation errors occurred.
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 400
+        traceId:
+          type: string
+          description: Trace Id
+          example: "|56aff26f-8a31-4372-ba8e-0921c075eb71.593b788a_"
+    Errors:
+      type: object
+      properties:
+        property1:
+          type: array
+          items:
+            type: string
+        property2:
+          type: array
+          items:
+            type: string
+        property3:
+          type: array
+          items:
+            type: string
+    BadRequestSandboxResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error description
+          example: Header Client-Id is missing
+    ForbiddenSandboxResponse:
+      type: object
+      properties:
+        StatusCode:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 403
+        Code:
+          type: string
+          description: Sandbox Code
+          example: SBX-40000
+        Message:
+          type: string
+          description: Error description
+          example: Sandbox with the same sandboxId already exists!
+    UnsupportedMediaTypeResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          description: URL redirecting to the description of the error by the RFC standard
+          example: https://tools.ietf.org/html/rfc7231#section-6.5.13
+        title:
+          type: string
+          description: Title containing generic information about the error
+          example: Unsupported Media Type
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 415
+        traceId:
+          type: string
+          description: Trace Id
+          example: "|e862d23f-1863-4e8e-943b-39a3f16898d0.593b787d_"
+    NotFoundResponse:
+      type: object
+      properties:
+        StatusCode:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 404
+        Code:
+          type: string
+          description: Sandbox Code
+          example: SBX-30000
+        Message:
+          type: string
+          description: Error description
+          example: Sandbox Not Found
   securitySchemes:
     Client-Id:
       type: apiKey
