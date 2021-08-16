@@ -208,12 +208,6 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/SandboxRequest'
-        - name: Authorization
-          in: header
-          description: Authorization Bearer
-          required: true
-          type: string
-          default: 'Bearer '
       responses:
         '200':
           description: OK
@@ -496,12 +490,6 @@ func main() {
           in: path
           required: true
           type: string
-        - name: Authorization
-          in: header
-          description: Authorization Bearer
-          required: true
-          type: string
-          default: 'Bearer '
       responses:
         '200':
           description: OK
@@ -752,12 +740,6 @@ func main() {
           required: true
           schema:
             $ref: '#/definitions/SandboxDataModel'
-        - name: Authorization
-          in: header
-          description: Authorization Bearer
-          required: true
-          type: string
-          default: 'Bearer '
       responses:
         '200':
           description: OK
@@ -1073,12 +1055,6 @@ func main() {
           in: path
           required: true
           type: string
-        - name: Authorization
-          in: header
-          description: Authorization Bearer
-          required: true
-          type: string
-          default: 'Bearer '
       responses:
         '204':
           description: No Content
@@ -1295,43 +1271,7 @@ func main() {
 
 
 
-TaxIDs starting with 2 results to a valid combination.  
-
-            
-
-            
-
-Sample request:
-
-            
-
-    POST /match
-
-     {
-
-       header: { 
-
-       \"ID\": \"2090341a-fa27-4235-b8c1-6e54cffaf0bd\",
-
-       \"application\": \"e63ed473-3c8e-4129-8f2d-d76aa6d1a1bb\",
-
-       \"channel\": \"organization\"
-
-       },
-
-       payload: {
-
-        \"userId\": \"d1ca4e9b-8f28-42ff-9a8b-a42aaa51fd0d\",
-
-        \"call_seq_id\": \"6546146418\",
-
-        \"iban\": \"GR2657484821695748236574891\",
-
-        \"taxId\": \"259844158\"
-
-       }
-
-    }"
+TaxIDs starting with 2 results to a valid combination."
       operationId: Validation_match
       consumes:
         - application/json
@@ -1356,12 +1296,6 @@ Sample request:
           description: Sandbox ID
           required: true
           type: string
-        - name: Authorization
-          in: header
-          description: Authorization Bearer
-          required: true
-          type: string
-          default: 'Bearer '
       responses:
         '200':
           description: OK
@@ -1719,18 +1653,43 @@ definitions:
   MatchRequest:
     type: object
     properties:
-      userid:
-        type: string
-        description: The sandbox user/The OAuth2 clientId in production
-      call_seq_id:
-        type: string
-        description: The unique reference number for the call
-      iban:
-        type: string
-        description: The account in IBAN format
-      taxId:
-        type: string
-        description: The tax identification number
+      header:
+        type: object
+        properties:
+          ID:
+            type: string
+            format: uuid
+            description: Id of the request
+            example: 2090341a-fa27-4235-b8c1-6e54cffaf0bd
+          application:
+            type: string
+            format: uuid
+            description: Application Id
+            example: e63ed473-3c8e-4129-8f2d-d76aa6d1a1bb
+          channel:
+            type: string
+            description: Channel
+            example: organization
+      payload:
+        type: object
+        properties:
+          userid:
+            type: string
+            format: uuid
+            description: The sandbox user/The OAuth2 clientId in production
+            example: d1ca4e9b-8f28-42ff-9a8b-a42aaa51fd0d
+          call_seq_id:
+            type: string
+            description: The unique reference number for the call
+            example: 6546146418
+          iban:
+            type: string
+            description: The account in IBAN format
+            example: GR2657484821695748236574891
+          taxId:
+            type: string
+            description: The tax identification number
+            example: 259844158
   Response:
     type: object
     properties:
@@ -1789,5 +1748,16 @@ securityDefinitions:
     description: Applications's Id
     in: header
     name: Client-Id
+  Client-Credentials-Token:
+    type: oauth2
+    description: OAuth2 Client Credentials Flow
+    flow: application
+    tokenUrl: 'https://my.nbg.gr/identity/connect/token'
+    scopes:
+      sandbox-ibantaxidvalidation-api-v1: Sandbox Scope
+      ibantaxidvalidation-api-v1: Production Scope
 security:
   - Client-Id: []
+    Client-Credentials-Token:
+      - sandbox-ibantaxidvalidation-api-v1
+      - ibantaxidvalidation-api-v1
