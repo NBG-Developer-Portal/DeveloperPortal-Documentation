@@ -1,0 +1,356 @@
+openapi: 3.0.1
+info:
+  title: Word Embedding API
+  
+  # to be published when the endpoints of the nlp controller work.
+#   3. calculate similarity between two words based on LCS (Longest Common Subsequence)
+    
+#    4. calculate stemmed word
+    
+#    5. remove greek stopwords from a given text
+  
+#    6. identify POS from a given text
+  description: >
+    Welcome to the Word Embedding API.
+    
+    
+    Start integrating your application with our Word Embedding API and give your client the options to:
+    
+    1.  calculate the closest word of a word
+    
+    2.  calculate the distance between two words based on the trained word embedding model (cosine similarity)
+    
+    ---
+
+    ## Quick Getting Started
+
+    1. **Login/Register** to the NBG Technology HUB
+    
+    2. Go to **"APPS"**
+    
+    3. Select your Organization and go to step 4. If you want to create a new Organization click **"CREATE AN ORGANIZATION"** and follow the steps below:
+        
+        1. Enter the title of your Organization
+        2. Enter a short description of your Organization (optional)
+        3. Click **\"SUBMIT\"**
+    
+    4. Select the Organization of choice and click **\"ADD AN APPLICATION\"** 
+    
+        1. Fill in the forms (title and short description)
+        2. Check **"Client Credentials"**
+        4. Click **\"SUBMIT\"**
+        5. Store the APPs **\"Client ID\"** and **\"Client Secret\"**
+    
+    5. Go to **\"API PRODUCTS\"** and select the **Word Embedding API**
+    
+    6. Click **"START USING THIS API"**, choose your app and click **\"SUBSCRIBE\"**
+    
+    7. Play with the API
+    
+    ---
+  
+    ## Important notes
+    
+    ### Request headers
+    
+      1. Pass your **client_id** as a header parameter on every call
+
+    ---
+
+    ## Error Codes:
+    
+    1. **Header 'Client-Id' is missing** - Header parameter Client-Id is missing
+    
+    2. **Client is not authorized** - Wrong Client-Id value or Client-Id is not subscribed to the API
+
+    3. **Word not found** - Query parameters are missing or non-existent
+
+    4. **Num provided out of range** - Num query parameter missing or out of range (eg. 0 or 10000)
+    
+    5. **Sequence contains no matching element** - Word1 and word2 query parameters have the same value or word2 is wrong or missing
+    
+    ---
+
+    ## Feedback and Questions
+
+    We would love to hear your feedback and answer your questions. Send us at developer@nbg.gr.
+    
+    
+    Check out our [Sandbox Postman Collection](https://developer.nbg.gr/blog/Access-to-Github-repositories-for-Partners)!
+  contact:
+    name: NBG
+    url: 'https://developer.nbg.gr/'
+    email: developer@nbg.gr
+  version: v1
+security:
+  - Client_Id: []
+servers:
+  - url: 'https://apis.nbg.gr/sandbox/word.embedding/headers/v1'
+    description: Sandbox Server
+paths:
+#  /similarity:
+#    get:
+#      tags:
+#        - Nlp
+#      summary: >-
+#        Calculates similarity between two words based on LCS (Longest Common
+#        Subsequence)
+#      parameters:
+#        - name: word1
+#          in: query
+#          schema:
+#            type: string
+#        - name: word2
+#          in: query
+#          schema:
+#            type: string
+#      responses:
+#        '200':
+#          description: Success
+#          content:
+#            text/plain:
+#              schema:
+#                $ref: '#/components/schemas/WordSimilarity'
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/WordSimilarity'
+#            text/json:
+#              schema:
+#                $ref: '#/components/schemas/WordSimilarity'
+#        '404':
+#          description: Word(s) given not found
+#  /stem:
+#    get:
+#      tags:
+#        - Nlp
+  #      summary: Calculates stemmed word
+#      parameters:
+#        - name: word
+#          in: query
+#          schema:
+#            type: string
+#      responses:
+#        '200':
+#          description: Success
+#          content:
+#            text/plain:
+#              schema:
+#                $ref: '#/components/schemas/StemmedWord'
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/StemmedWord'
+#            text/json:
+#              schema:
+#                $ref: '#/components/schemas/StemmedWord'
+#  /stopwords:
+#    post:
+#      tags:
+#        - Nlp
+  #      summary: Removes greek stopwords from text
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/Text'
+#          text/json:
+#            schema:
+#              $ref: '#/components/schemas/Text'
+#          application/*+json:
+#            schema:
+#              $ref: '#/components/schemas/Text'
+#      responses:
+#        '200':
+#          description: Success
+#          content:
+#            text/plain:
+#              schema:
+#                $ref: '#/components/schemas/ProcessedText'
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/ProcessedText'
+#            text/json:
+#              schema:
+#                $ref: '#/components/schemas/ProcessedText'
+#  /tag:
+#    post:
+#      tags:
+#        - Nlp
+#      summary: Identifies POS from text
+#      parameters:
+#        - name: tag
+#          in: query
+#          schema:
+#            type: string
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/Text'
+#          text/json:
+#            schema:
+#              $ref: '#/components/schemas/Text'
+#          application/*+json:
+#            schema:
+#              $ref: '#/components/schemas/Text'
+#      responses:
+#        '200':
+#          description: Success
+#          content:
+#            text/plain:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: '#/components/schemas/TaggedText'
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: '#/components/schemas/TaggedText'
+#            text/json:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: '#/components/schemas/TaggedText'
+  /words/closest:
+    get:
+      tags:
+        - Word
+      summary: Calculate the closest word of a word (cosine similarity)
+      description: Calculate the closest word of a word (cosine similarity)
+      parameters:
+        - name: word
+          in: query
+          schema:
+            type: string
+          description: The word over which to calculate closest of the given word
+        - name: num
+          in: query
+          schema:
+            type: integer
+            format: int32
+          description: Number of most similar words
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClosestWord'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClosestWord'
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClosestWord'
+        '404':
+          description: Word not found
+        '400':
+          description: Num provided out of range
+  /words/distance:
+    get:
+      tags:
+        - Word
+      summary: >-
+        Calculate the distance between two words based on the trained word embedding model (cosine similarity)
+      description: Calculate the distance between two words based on the trained word embedding
+        model (cosine similarity)
+      parameters:
+        - name: word1
+          in: query
+          schema:
+            type: string
+          description: First word of the comparison
+        - name: word2
+          in: query
+          schema:
+            type: string
+          description: Second word of the comparison
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WordDistance'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/WordDistance'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/WordDistance'
+        '404':
+          description: Word not found
+        '400':
+          description: Sequence contains no matching element
+components:
+  schemas:
+    ClosestWord:
+      type: object
+      properties:
+        word:
+          type: string
+          nullable: true
+          description: Word with which the comparison is made
+        distance:
+          type: number
+          format: double
+          description: The distance
+      additionalProperties: false
+#    ProcessedText:
+#      type: object
+#      properties:
+#        processedText:
+#          type: string
+#          nullable: true
+#      additionalProperties: false
+#    StemmedWord:
+#      type: object
+#      properties:
+#        stemmedWord:
+#          type: string
+#          nullable: true
+#      additionalProperties: false
+#    TaggedText:
+#      type: object
+#      properties:
+#        text:
+#          type: string
+#          nullable: true
+#        tag:
+#          type: string
+#          nullable: true
+#      additionalProperties: false
+#    Text:
+#      type: object
+#      properties:
+#        text:
+#          type: string
+#          nullable: true
+#      additionalProperties: false
+    WordDistance:
+      type: object
+      properties:
+        distance:
+          type: number
+          format: double
+          description: The distance between the two words
+      additionalProperties: false
+#    WordSimilarity:
+#      type: object
+#      properties:
+#        similarity:
+#          type: number
+#          format: double
+#      additionalProperties: false
+  securitySchemes:
+    Client_Id:
+      type: apiKey
+      description: Application's Id
+      in: header
+      name: Client-Id
