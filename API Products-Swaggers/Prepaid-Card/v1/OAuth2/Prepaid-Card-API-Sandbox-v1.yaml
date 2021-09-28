@@ -1,0 +1,1352 @@
+openapi: 3.0.1
+info:
+  title: Prepaid Card API Specification
+  description: "## Functionality at a glance\r\n\r\nWelcome to the Prepaid Card API. In this text, you will find guidelines for the interaction with the API. \r\nThe API supports new prepaid card issuances, activations and cancellations as well as smart pin actions. There are API endpoints to:\r\n1. Issue a new prepaid card\r\n2. Cancel a prepaid card\r\n3. Activate a new prepaid card\r\n4. Reissue a prepaid card\r\n5. Generate smart pin for a prepaid card\r\n6. Unlock smart pin for a prepaid card\r\n7. Prepaid Card Top Up\r\n\r\n## Quick Getting Started\r\n\r\n\r\n1. **Login/Register** to the NBG Technology HUB\r\n\r\n2. Go to **\"APPS\"**\r\n\r\n3. Select your Organization and go to step 4. If you want to create a new Organization click **\\\"CREATE AN ORGANIZATION\\\"** and follow the steps below:\r\n\t1. Enter the title of your Organization\r\n\t2. Enter a short description of your Organization (optional)\r\n\t3. Click **\"SUBMIT\"**\r\n\r\n4. Select the Organization of choice and click **\"ADD AN APPLICATION\"** \r\n\t  1. Fill in the forms (title and short description)\r\n\t  2. Check ** \\\"Client Credentials\\\"** \r\n\t  3. Enter the **OAuth Redirect and Post Logout URIs** (these are the URIs that we will redirect the user upon logging in and logging out respectively)\r\n\t\t  \r\n\t\t  You can use the following redirect URL to easily test the API through the portal: *https://developer.nbg.gr/oauth2/redoc-callback*\r\n\t  4. Click **\"SUBMIT\"**\r\n\t  5. Store the APPs **\"Client ID\"** and **\"Client Secret\"**\r\n5. Go to **\"API PRODUCTS\"** and select the **PREPAID CARDS API**\r\n\r\n6. Click **\\\"START USING THIS API\\\"**, choose your app and click\r\n**\"SUBSCRIBE\"**\r\n\r\n7. Get an Access Token using the Access Token Flow and the API scopes provided in the Authentication and Authorization (OAuth2) section below\r\n\r\n8. Create a Sandbox\r\n\r\n9. Play with the API \r\n\r\n### Sandbox Flow\r\n\r\nThe Sandbox Flow matches the Production Flow. The difference lies into the Data used. Instead of live\r\ndata, the Sandbox flow uses mocked data. \r\n\r\n### General Flow\r\n\r\n...\r\n\r\n## Authentication and Authorization (OAuth2)\r\n\r\nThis API version uses the OAuth2 protocol for authentication and authorization, which means that a\r\nBearer (access token) should be acquired. An access token can be retrieved using the client_id and\r\nclient_secret of the APP that you created and subscribed in this API, and your own credentials\r\n(username, password) that you use to sign in the NBG Technology HUB. The scopes are defined below:\r\n\r\n**Authorization Endpoint:** \r\n\r\n\t  https://my.nbg.gr/identity/connect/authorize\r\n\r\n\r\n**Token Endpoint:** \r\n\r\n\t  https://my.nbg.gr/identity/connect/token\r\n\r\n### Authorization Code ###\r\n\r\n**Sandbox Scopes:** \r\n\r\n\t  sandbox-prepaidcard-api-v1 offline_access\r\n\r\n\r\n**Production Scopes:** \r\n\r\n\t  prepaidcard-api-v1 offline_access\r\n\r\n### Client Credentials ###\r\n\r\n**Sandbox Scopes:** \r\n\r\n\t  sandbox-prepaidcard-v1\r\n\r\n\r\n**Production Scopes:** \r\n\r\n\t  prepaidcard-api-v1\r\n\r\n\r\nSee more [here](https://developer.nbg.gr/oauth-document)\r\n\r\n## SMS Challenge (One Time Password)\r\n\r\nIn order to successfully proceed with some actions, you will need to provide the SMS OTP (One Time Password).\r\n\r\nBy default the SMS OTP will be sent to the mobile number declared upon singing up in the NBG Technology HUB. \r\n\r\nTo successfully complete the transaction using the SMS OTP flow, pass the key-value pair \"tanNumber\":\"smsotp\" to the request. If the request is valid, the response will be SMSOTP.500 and an SMS with the OTP will be sent to the provided phone number.\r\n\r\nTo complete the transaction, repeat the request by replacing the value of \"tanNumber\" with the OTP you received. You have 3 attempts to complete the transaction by using a wrong OTP and each time you will receive the SMSOTP.800 error code.\r\n\r\nIn addition there are the following error codes:\r\n\r\nSMSOTP.202 when the smsotp code isn't correctly matched or if the smsotp has been consumed before the request.\r\n\r\nSMSOTP.402 when something is changed in the request between the time of the request and the time of the consumption of the smsotp or when the smsotp hasn't been sent to the user.\r\n\r\nIf you surpass this threshold you will receive the SMSOTP.400 error code, which means that your user is locked out and is not able to request OTPs until we unlock the account.\r\n\r\n\r\n## Create your Sandbox\r\n\r\nCreate a new Sandbox application by invoking the POST /sandbox. This call will generate a new Sandbox\r\nwith a unique sandbox-id.\r\n\r\n\r\n__Important!__ Before proceeding save the sandbox id you just created.\r\n\r\n\r\nWhen you create a sandbox, sandbox specific data are generated as sample data.\r\n\r\n\r\n## Start Testing\r\n\r\nOnce you have your sandbox-id, you can start invoking the rest of the operations by providing the\r\nmandatory http header **sandbox-id**  and the http headers described below.\r\n\r\n## Important notes\r\n\r\n\r\n**Request headers**\r\n\r\n\r\nThe following HTTP header parameters are required for every call:\r\n\r\n\r\n1. Authorization. The Auth2 Token\r\n\r\n2. sandbox-id. Your Sandbox ID\r\n\r\n\r\n# Feedback and Questions\r\n\r\nWe would love to hear your feedback and answer your questions. Send us at\r\n[developer@nbg.gr](developer@nbg.gr)\r\n\r\n\r\nCheck out our [Sandbox Postman\r\nCollection](https://developer.nbg.gr/partner/news/Access-to-Github-repositories-for-Partners)!\r\n\r\n\r\n________________________________________\r\n\r\nCreated by [**NBG**](https://www.nbg.gr/)."
+  contact:
+    name: NBG
+    url: https://developer.nbg.gr/
+    email: developer@nbg.gr
+  version: v1
+servers:
+  - url: https://apis.nbg.gr/sandbox/prepaidcard/oauth2/v1
+    description: Sandbox Server
+  - url: https://services.nbg.gr/apis/prepaidcard/v1
+    description: Production Server
+paths:
+  /prepaidcard/cardIssuance:
+    post:
+      tags:
+        - PrepaidCard
+      summary: Issue a new card
+      description: "Create a new card issuance\r\n            \r\n            \r\n            Sample request:\r\n            {\r\n                \"header\": {\r\n                    \"ID\": \"(uuid)\",\r\n                    \"application\": \"56AD9497-F150-4DA9-A960-FAE3B1F7DE6B\"\r\n                },\r\n                \"payload\": {\r\n                    \"lastname\": \"Doe\",\r\n                    \"firstname\": \"John\",\r\n                    \"fathername\": \"Richard\",\r\n                    \"mothername\": \"Janie\",\r\n                    \"gender\": \"male\",\r\n                    \"birthdate\": \"1990/06/23\",\r\n                    \"city\": \"Athens\",\r\n                    \"country\": \"GR\",\r\n                    \"vatNumber\": \"000000000\",\r\n                    \"occupation\": \"notInEmployment\",\r\n                    \"mobileNumber\": \"+306971234567\",\r\n                    \"email\": \"test@example.com\",\r\n                    \"identityDocumentType\": \"residencePermit\",\r\n                    \"identityDocumentNumber\": \"A0000000\",\r\n                    \"residencePostalCode\": \"10431\",\r\n                    \"residenceAddress\": \"Septemvriou\",\r\n                    \"residenceNumber\": \"9\",\r\n                    \"residenceMunicipality\": \"Athens\",\r\n                    \"contactPostalCode\": \"10431\",\r\n                    \"contactAddress\": \"Septemvriou\",\r\n                    \"contactAddressNumber\": \"9\",\r\n                    \"contactAddressMunicipality\": \"Athens\",\r\n                    \"contactLanguange\": \"el\",\r\n                    \"scannedIdDocument\": \"\"\r\n                }\r\n            }"
+      requestBody:
+        description: Card Issuance request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardIssuanceRequestRequest'
+      responses:
+        '200':
+          description: Card Issuance Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardIssuanceResponseResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+    put:
+      tags:
+        - PrepaidCard
+      summary: Update new card's info
+      description: "Update the info of the new card  \r\n            \r\n            \r\n            Sample request:\r\n            {\r\n                \"header\": {\r\n                    \"ID\": \"(uuid)\",\r\n                    \"application\": \"56AD9497-F150-4DA9-A960-FAE3B1F7DE6B\"\r\n                },\r\n                \"payload\": {\r\n                    \"lastname\": \"Doe\",\r\n                    \"firstname\": \"John\",\r\n                    \"fathername\": \"Richard\",\r\n                    \"mothername\": \"Janie\",\r\n                    \"gender\": \"male\",\r\n                    \"birthdate\": \"1990/06/23\",\r\n                    \"city\": \"Athens\",\r\n                    \"country\": \"GR\",\r\n                    \"vatNumber\": \"000000000\",\r\n                    \"occupation\": \"notInEmployment\",\r\n                    \"mobileNumber\": \"+306971234567\",\r\n                    \"email\": \"test@example.com\",\r\n                    \"identityDocumentType\": \"residencePermit\",\r\n                    \"identityDocumentNumber\": \"A0000000\",\r\n                    \"residencePostalCode\": \"10431\",\r\n                    \"residenceAddress\": \"Septemvriou\",\r\n                    \"residenceNumber\": \"9\",\r\n                    \"residenceMunicipality\": \"Athens\",\r\n                    \"contactPostalCode\": \"10431\",\r\n                    \"contactAddress\": \"Septemvriou\",\r\n                    \"contactAddressNumber\": \"9\",\r\n                    \"contactAddressMunicipality\": \"Athens\",\r\n                    \"contactLanguange\": \"el\",\r\n                    \"scannedIdDocument\": \"\"\r\n                }\r\n            }"
+      requestBody:
+        description: Card Issuance request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardReissuanceRequestRequest'
+      responses:
+        '200':
+          description: Card Issuance Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardReissuanceResponseResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+  /prepaidcard/cardTopUp:
+    post:
+      tags:
+        - PrepaidCard
+      summary: Top Up a card
+      description: "Card Top Up\r\n            \r\n             \r\n             Sample request:\r\n             {\r\n                 \"header\": {\r\n                     \"ID\": \"(uuid)\",\r\n                     \"application\": \"56AD9497-F150-4DA9-A960-FAE3B1F7DE6B\"\r\n                 },\r\n                 \"payload\": {\r\n                     \"barCode\": \"A00000000\",\r\n                     \"amount\": 10.5,\r\n                     \"identityDocumentType\": \"residencePermit\",\r\n                     \"identityDocumentNumber\": \"A00000000\"\r\n                 }\r\n             }"
+      requestBody:
+        description: Card Top Up request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardTopUpRequestRequest'
+      responses:
+        '200':
+          description: Card Top Up ended
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardTopUpResponseResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+  /prepaidcard/cardCancellation:
+    post:
+      tags:
+        - PrepaidCard
+      summary: Cancel a card
+      description: "Initiate a card cancellation\r\n            \r\n             \r\n             Sample request:\r\n             {\r\n                 \"header\": {\r\n                     \"ID\": \"(uuid)\",\r\n                     \"application\": \"56AD9497-F150-4DA9-A960-FAE3B1F7DE6B\"\r\n                 },\r\n                 \"payload\": {\r\n                     \"barCode\": \"A00000000\",\r\n                     \"firstName\": \"Jo\",\r\n                     \"lastName\": \"Do\",\r\n                     \"birthDate\": \"1990/06/23\",\r\n                     \"vatNumber\": \"000000000\",\r\n                     \"mobileNumber\": \"+306971234567\",\r\n                     \"tanNumber\": \"1234\"\r\n                 }\r\n             }"
+      requestBody:
+        description: Card Cancellation request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardCancellationRequestRequest'
+      responses:
+        '200':
+          description: Card Cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardCancellationResponseResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+  /prepaidcard/cardActivation:
+    post:
+      tags:
+        - PrepaidCard
+      summary: Activate Card
+      description: "Activate a new card\r\n            \r\n             \r\n             Sample request:\r\n             {\r\n                 \"header\": {\r\n                     \"ID\": \"(uuid)\",\r\n                     \"application\": \"56AD9497-F150-4DA9-A960-FAE3B1F7DE6B\"\r\n                 },\r\n                 \"payload\": {\r\n                     \"acceptTermsPSD\": true,\r\n                     \"acceptTermsCard\": true,\r\n                     \"cardCVV\": \"123\",\r\n                     \"cardNumber\": \"4423170123456789\",\r\n                     \"barCode\": \"A00000000\",\r\n                     \"firstName\": \"Jo\",\r\n                     \"lastName\": \"Do\",\r\n                     \"birthDate\": \"1990/06/23\",\r\n                     \"vatNumber\": \"000000000\",\r\n                     \"mobileNumber\": \"+306971234567\",\r\n                     \"tanNumber\": \"1234\"\r\n                 }\r\n             }"
+      requestBody:
+        description: Card Activation request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardActivationRequestRequest'
+      responses:
+        '200':
+          description: Card Activated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardActivationResponseResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+  /prepaidcard/cardReissuance:
+    post:
+      tags:
+        - PrepaidCard
+      summary: Reissue a Card
+      description: "Reissue a card\r\n            \r\n            \r\n            Sample request:\r\n            {\r\n                \"header\": {\r\n                    \"ID\": \"(uuid)\",\r\n                    \"application\": \"56AD9497-F150-4DA9-A960-FAE3B1F7DE6B\"\r\n                },\r\n                \"payload\": {\r\n                    \"lastname\": \"Doe\",\r\n                    \"firstname\": \"John\",\r\n                    \"fathername\": \"Richard\",\r\n                    \"mothername\": \"Janie\",\r\n                    \"gender\": \"male\",\r\n                    \"birthdate\": \"1990/06/23\",\r\n                    \"city\": \"Athens\",\r\n                    \"country\": \"GR\",\r\n                    \"vatNumber\": \"000000000\",\r\n                    \"occupation\": \"notInEmployment\",\r\n                    \"mobileNumber\": \"+306971234567\",\r\n                    \"email\": \"test@example.com\",\r\n                    \"identityDocumentType\": \"residencePermit\",\r\n                    \"identityDocumentNumber\": \"A0000000\",\r\n                    \"residencePostalCode\": \"10431\",\r\n                    \"residenceAddress\": \"Septemvriou\",\r\n                    \"residenceNumber\": \"9\",\r\n                    \"residenceMunicipality\": \"Athens\",\r\n                    \"contactPostalCode\": \"10431\",\r\n                    \"contactAddress\": \"Septemvriou\",\r\n                    \"contactAddressNumber\": \"9\",\r\n                    \"contactAddressMunicipality\": \"Athens\",\r\n                    \"contactLanguange\": \"el\",\r\n                    \"scannedIdDocument\": \"\",\r\n                    \"barCode\": \"A00000000\",\r\n                    \"tanNumber\": \"1234\"\r\n                }\r\n            }"
+      requestBody:
+        description: Card Reissuance request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardReissuanceRequestRequest'
+      responses:
+        '200':
+          description: Card Reissuance initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardReissuanceResponseResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+  /prepaidcard/pinUnlock:
+    post:
+      tags:
+        - PrepaidCard
+      summary: Unlock cards pin
+      description: "Unlock the cards pin\r\n            \r\n             \r\n             Sample request:\r\n             {\r\n                 \"header\": {\r\n                     \"ID\": \"(uuid)\",\r\n                     \"application\": \"56AD9497-F150-4DA9-A960-FAE3B1F7DE6B\"\r\n                 },\r\n                 \"payload\": {\r\n                     \"cardCVV\": \"123\",\r\n                     \"cardNumber\": \"4423170123456789\",\r\n                     \"barCode\": \"A00000000\",\r\n                     \"firstName\": \"Jo\",\r\n                     \"lastName\": \"Do\",\r\n                     \"birthDate\": \"1990/06/23\",\r\n                     \"vatNumber\": \"000000000\",\r\n                     \"mobileNumber\": \"+306971234567\",\r\n                     \"tanNumber\": \"1234\"\r\n                 }\r\n             }"
+      requestBody:
+        description: Pin Unlock request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PinUnlockRequestRequest'
+      responses:
+        '200':
+          description: Pin unlocked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PinUnlockResponseResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+  /prepaidcard/smartPinGeneration:
+    post:
+      tags:
+        - PrepaidCard
+      summary: Smart Pin Generation
+      description: "Generate a smart pin for a card\r\n            \r\n             \r\n             Sample request:\r\n             {\r\n                 \"header\": {\r\n                     \"ID\": \"(uuid)\",\r\n                     \"application\": \"56AD9497-F150-4DA9-A960-FAE3B1F7DE6B\"\r\n                 },\r\n                 \"payload\": {\r\n                     \"cardCVV\": \"123\",\r\n                     \"cardNumber\": \"4423170123456789\",\r\n                     \"barCode\": \"A00000000\",\r\n                     \"firstName\": \"Jo\",\r\n                     \"lastName\": \"Do\",\r\n                     \"birthDate\": \"1990/06/23\",\r\n                     \"vatNumber\": \"000000000\",\r\n                     \"mobileNumber\": \"+306971234567\",\r\n                     \"tanNumber\": \"1234\"\r\n                 }\r\n             }"
+      requestBody:
+        description: Smart Pin Generation Request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmartPinGenerationRequestRequest'
+      responses:
+        '200':
+          description: Smart Pin Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmartPinGenerationResponseResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+  /sandbox:
+    post:
+      tags:
+        - Sandbox
+      summary: Create Sandbox
+      description: "Creates a sandbox with unique sandbox id. This call can also be used to create Devices, accounts etc.\r\n            \r\n             \r\n            Sample request:\r\n            {  \r\n               \"header\":{  \r\n                  \"ID\":\"(uuid)\",\r\n                  \"application\":\"598A4414-395A-43D6-A9C3-D53A15E6E9F6\"\r\n               },\r\n               \"payload\":{  \r\n            \t\t \"sandboxId\":\"SanboxTest1\"\r\n               }\r\n            }"
+      requestBody:
+        description: Sandbox identifier
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/SandboxRequestRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SandboxRequestRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SandboxRequestRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/SandboxRequestRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModelResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModelResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModelResponse'
+  '/sandbox/{sandbox_id}':
+    get:
+      tags:
+        - Sandbox
+      summary: Export Sandbox
+      description: Export Sandbox data specified by sandbox id.
+      parameters:
+        - name: sandbox_id
+          in: path
+          description: Sandbox identifier
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModelResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModelResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModelResponse'
+    put:
+      tags:
+        - Sandbox
+      summary: Update Sandbox
+      description: "Updates the Sandbox specified by sandbox id.\r\n             \r\n             \r\n            Sample request:\r\n            {  \r\n               \"header\":{  \r\n                  \"ID\":\"(uuid)\",\r\n                  \"application\":\"598A4414-395A-43D6-A9C3-D53A15E6E9F6\"\r\n               },\r\n               \"payload\":{  \r\n               \"sandboxId\":\"SandboxTest1\",\r\n               \"apps\":[  \r\n                  {  \r\n                     \"appInfo\":{  \r\n                        \"appId\": \"886cd63a-7c7d-41e2-b3b4-3f81b75560c8\",\r\n                        \"statusName\": \"Pending\"\r\n                     },\r\n                     \"appData\":{...}\r\n            }"
+      parameters:
+        - name: sandbox_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/SandboxDataModel'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SandboxDataModel'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SandboxDataModel'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/SandboxDataModel'
+      responses:
+        '204':
+          description: Success
+        '415':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: Success
+    delete:
+      tags:
+        - Sandbox
+      summary: Delete Sandbox.
+      description: Delete Sandbox specified by sandbox id.
+      parameters:
+        - name: sandbox_id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+components:
+  schemas:
+    CardActivationRequest:
+      required:
+        - acceptTermsCard
+        - acceptTermsPSD
+        - barCode
+        - birthDate
+        - cardCVV
+        - cardNumber
+        - firstName
+        - lastName
+        - mobileNumber
+        - vatNumber
+      type: object
+      properties:
+        acceptTermsPSD:
+          type: boolean
+          description: PSD Accept Terms
+          example: true
+        acceptTermsCard:
+          type: boolean
+          description: Card Accept Terms
+          example: true
+        cardCVV:
+          type: string
+          description: Card CVV
+          example: '123'
+        cardNumber:
+          type: string
+          description: Card Number
+          example: '4423170123456789'
+        barCode:
+          type: string
+          description: Bar Code
+          example: A00000000
+        firstName:
+          type: string
+          description: First Name first 2 letters
+          example: Jo
+        lastName:
+          type: string
+          description: Last Name first 2 letters
+          example: Do
+        birthDate:
+          type: string
+          description: BirthDate
+          format: date-time
+          example: '1990/06/23'
+        vatNumber:
+          type: string
+          description: Vat Number
+          example: '000000000'
+        mobileNumber:
+          type: string
+          description: Mobile Number
+          example: '+306971234567'
+        tanNumber:
+          type: string
+          description: TAN number
+          nullable: true
+          example: '1234'
+      additionalProperties: false
+      description: Request to activate card
+    CardActivationRequestRequest:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/CardActivationRequest'
+        header:
+          $ref: '#/components/schemas/RequestHeader'
+      additionalProperties: false
+    CardActivationResponse:
+      required:
+        - smartPin
+      type: object
+      properties:
+        smartPin:
+          type: string
+          description: Smart Pin
+      additionalProperties: false
+      description: Card Activation Response
+    CardActivationResponseResponse:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/CardActivationResponse'
+        exception:
+          $ref: '#/components/schemas/ResponseMessage'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseMessage'
+          nullable: true
+        executionTime:
+          type: number
+          format: double
+      additionalProperties: false
+    CardCancellationRequest:
+      required:
+        - barCode
+        - birthDate
+        - firstName
+        - lastName
+        - mobileNumber
+        - vatNumber
+      type: object
+      properties:
+        barCode:
+          type: string
+          description: Bar Code
+          example: A00000000
+        firstName:
+          type: string
+          description: First Name first 2 letters
+          example: Jo
+        lastName:
+          type: string
+          description: Last Name first 2 letters
+          example: Do
+        birthDate:
+          type: string
+          description: BirthDate
+          format: date-time
+          example: '1990/06/23'
+        vatNumber:
+          type: string
+          description: Vat Number
+          example: '000000000'
+        mobileNumber:
+          type: string
+          description: Mobile Number
+          example: '+306971234567'
+        tanNumber:
+          type: string
+          description: TAN number
+          nullable: true
+          example: '1234'
+      additionalProperties: false
+      description: Card Cancellation Request
+    CardCancellationRequestRequest:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/CardCancellationRequest'
+        header:
+          $ref: '#/components/schemas/RequestHeader'
+      additionalProperties: false
+    CardCancellationResponse:
+      required:
+        - unallocatedAmount
+      type: object
+      properties:
+        unallocatedAmount:
+          type: number
+          description: Unallocated Amount
+          format: double
+      additionalProperties: false
+      description: Card Cancellation Response
+    CardCancellationResponseResponse:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/CardCancellationResponse'
+        exception:
+          $ref: '#/components/schemas/ResponseMessage'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseMessage'
+          nullable: true
+        executionTime:
+          type: number
+          format: double
+      additionalProperties: false
+    CardIssuanceRequest:
+      required:
+        - birthDate
+        - city
+        - contactAddress
+        - contactAddressMunicipality
+        - contactAddressNumber
+        - contactLanguange
+        - contactPostalCode
+        - country
+        - email
+        - fatherName
+        - firstName
+        - gender
+        - identityDocumentNumber
+        - identityDocumentType
+        - lastname
+        - mobileNumber
+        - motherName
+        - occupation
+        - residenceAddress
+        - residenceMunicipality
+        - residenceNumber
+        - residencePostalCode
+        - vatNumber
+      type: object
+      properties:
+        lastname:
+          type: string
+          description: Last Name
+          example: Doe
+        firstName:
+          type: string
+          description: First name
+          example: John
+        fatherName:
+          type: string
+          description: Father Name
+          example: Richard
+        motherName:
+          type: string
+          description: Mother Name
+          example: Janie
+        gender:
+          $ref: '#/components/schemas/Gender'
+        birthDate:
+          type: string
+          description: BirthDate
+          format: date-time
+          example: '1990/06/23'
+        city:
+          type: string
+          description: City
+          example: Athens
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 Country code
+          example: GR
+        vatNumber:
+          type: string
+          description: Vat Number
+          example: '000000000'
+        occupation:
+          $ref: '#/components/schemas/Occupation'
+        mobileNumber:
+          type: string
+          description: Mobile Number
+          example: '+306971234567'
+        email:
+          type: string
+          description: Email
+          example: test@example.com
+        identityDocumentType:
+          $ref: '#/components/schemas/IdDocType'
+        identityDocumentNumber:
+          type: string
+          description: Identity Document Number
+          example: A00000000
+        residencePostalCode:
+          type: string
+          description: Residence Postal Code
+          example: '10431'
+        residenceAddress:
+          type: string
+          description: Residence Address
+          example: Septemvriou
+        residenceNumber:
+          type: string
+          description: Residence Number
+          example: '9'
+        residenceMunicipality:
+          type: string
+          description: Residence Municipality
+          example: Athens
+        contactPostalCode:
+          type: string
+          description: Contact Postal Code
+          example: '10431'
+        contactAddress:
+          type: string
+          description: Contact Address
+          example: Septemvriou
+        contactAddressNumber:
+          type: string
+          description: Contact Address Number
+          example: '9'
+        contactAddressMunicipality:
+          type: string
+          description: Contact Address Municipality
+          example: Athens
+        contactLanguange:
+          $ref: '#/components/schemas/Lang'
+        scannedIdDocument:
+          type: string
+          description: Scanned Id Document
+          nullable: true
+          example: ''
+      additionalProperties: false
+      description: Request to issue a new card
+    CardIssuanceRequestRequest:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/CardIssuanceRequest'
+        header:
+          $ref: '#/components/schemas/RequestHeader'
+      additionalProperties: false
+    CardIssuanceResponse:
+      required:
+        - barCode
+      type: object
+      properties:
+        barCode:
+          type: string
+          description: Bar Code
+      additionalProperties: false
+      description: Response to issue a new card
+    CardIssuanceResponseResponse:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/CardIssuanceResponse'
+        exception:
+          $ref: '#/components/schemas/ResponseMessage'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseMessage'
+          nullable: true
+        executionTime:
+          type: number
+          format: double
+      additionalProperties: false
+    CardReissuanceRequest:
+      required:
+        - barCode
+        - birthDate
+        - city
+        - contactAddress
+        - contactAddressMunicipality
+        - contactAddressNumber
+        - contactLanguange
+        - contactPostalCode
+        - country
+        - email
+        - fatherName
+        - firstName
+        - gender
+        - identityDocumentNumber
+        - identityDocumentType
+        - lastname
+        - mobileNumber
+        - motherName
+        - occupation
+        - residenceAddress
+        - residenceMunicipality
+        - residenceNumber
+        - residencePostalCode
+        - vatNumber
+      type: object
+      properties:
+        barCode:
+          type: string
+          description: Bar Code
+          example: A00000000
+        tanNumber:
+          type: string
+          description: TAN number
+          nullable: true
+          example: '1234'
+        lastname:
+          type: string
+          description: Last Name
+          example: Doe
+        firstName:
+          type: string
+          description: First name
+          example: John
+        fatherName:
+          type: string
+          description: Father Name
+          example: Richard
+        motherName:
+          type: string
+          description: Mother Name
+          example: Janie
+        gender:
+          $ref: '#/components/schemas/Gender'
+        birthDate:
+          type: string
+          description: BirthDate
+          format: date-time
+          example: '1990/06/23'
+        city:
+          type: string
+          description: City
+          example: Athens
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 Country code
+          example: GR
+        vatNumber:
+          type: string
+          description: Vat Number
+          example: '000000000'
+        occupation:
+          $ref: '#/components/schemas/Occupation'
+        mobileNumber:
+          type: string
+          description: Mobile Number
+          example: '+306971234567'
+        email:
+          type: string
+          description: Email
+          example: test@example.com
+        identityDocumentType:
+          $ref: '#/components/schemas/IdDocType'
+        identityDocumentNumber:
+          type: string
+          description: Identity Document Number
+          example: A00000000
+        residencePostalCode:
+          type: string
+          description: Residence Postal Code
+          example: '10431'
+        residenceAddress:
+          type: string
+          description: Residence Address
+          example: Septemvriou
+        residenceNumber:
+          type: string
+          description: Residence Number
+          example: '9'
+        residenceMunicipality:
+          type: string
+          description: Residence Municipality
+          example: Athens
+        contactPostalCode:
+          type: string
+          description: Contact Postal Code
+          example: '10431'
+        contactAddress:
+          type: string
+          description: Contact Address
+          example: Septemvriou
+        contactAddressNumber:
+          type: string
+          description: Contact Address Number
+          example: '9'
+        contactAddressMunicipality:
+          type: string
+          description: Contact Address Municipality
+          example: Athens
+        contactLanguange:
+          $ref: '#/components/schemas/Lang'
+        scannedIdDocument:
+          type: string
+          description: Scanned Id Document
+          nullable: true
+          example: ''
+      additionalProperties: false
+      description: Request to re issue a card
+    CardReissuanceRequestRequest:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/CardReissuanceRequest'
+        header:
+          $ref: '#/components/schemas/RequestHeader'
+      additionalProperties: false
+    CardReissuanceResponse:
+      required:
+        - barCode
+      type: object
+      properties:
+        barCode:
+          type: string
+          description: Bar Code
+      additionalProperties: false
+      description: Card Reissuance response
+    CardReissuanceResponseResponse:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/CardReissuanceResponse'
+        exception:
+          $ref: '#/components/schemas/ResponseMessage'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseMessage'
+          nullable: true
+        executionTime:
+          type: number
+          format: double
+      additionalProperties: false
+    CardTopUpRequest:
+      required:
+        - amount
+        - barCode
+        - identityDocumentNumber
+        - identityDocumentType
+      type: object
+      properties:
+        barCode:
+          type: string
+          description: Bar Code
+          example: A00000000
+        amount:
+          type: number
+          description: Amount
+          format: double
+          example: 10.5
+        identityDocumentType:
+          $ref: '#/components/schemas/IdDocType'
+        identityDocumentNumber:
+          type: string
+          description: Identity Document Number
+          example: A00000000
+      additionalProperties: false
+      description: Request to top up a card
+    CardTopUpRequestRequest:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/CardTopUpRequest'
+        header:
+          $ref: '#/components/schemas/RequestHeader'
+      additionalProperties: false
+    CardTopUpResponse:
+      required:
+        - updatedAmount
+      type: object
+      properties:
+        updatedAmount:
+          type: number
+          description: Updated Amount
+          format: double
+      additionalProperties: false
+      description: Card Top Up Response
+    CardTopUpResponseResponse:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/CardTopUpResponse'
+        exception:
+          $ref: '#/components/schemas/ResponseMessage'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseMessage'
+          nullable: true
+        executionTime:
+          type: number
+          format: double
+      additionalProperties: false
+    ErrorCategory:
+      enum:
+        - Business
+        - Communication
+        - Technical
+        - Security
+      type: string
+    ErrorSeverity:
+      enum:
+        - Warning
+        - Error
+        - Info
+      type: string
+    Gender:
+      enum:
+        - female
+        - male
+        - none
+      type: string
+    IdDocType:
+      enum:
+        - none
+        - id
+        - passport
+        - militaryId
+        - foreignId
+        - residencePermit
+        - expatriateResidencePermit
+        - fugitiveResidencePermit
+        - specialResidencePermit
+      type: string
+    Lang:
+      enum:
+        - EL
+        - EN
+      type: string
+    Occupation:
+      enum:
+        - none
+        - highEducationStudent
+        - employee
+        - soleProprietorship
+        - notInEmployment
+        - pensioner
+        - rentier
+      type: string
+    PinUnlockRequest:
+      required:
+        - barCode
+        - birthDate
+        - cardCVV
+        - cardNumber
+        - firstName
+        - lastName
+        - mobileNumber
+        - vatNumber
+      type: object
+      properties:
+        cardCVV:
+          type: string
+          description: Card CVV
+          example: '123'
+        cardNumber:
+          type: string
+          description: Card Number
+          example: '4423170123456789'
+        barCode:
+          type: string
+          description: Bar Code
+          example: A00000000
+        firstName:
+          type: string
+          description: First Name first 2 letters
+          example: Jo
+        lastName:
+          type: string
+          description: Last Name first 2 letters
+          example: Do
+        birthDate:
+          type: string
+          description: BirthDate
+          format: date-time
+          example: '1990/06/23'
+        vatNumber:
+          type: string
+          description: Vat Number
+          example: '000000000'
+        mobileNumber:
+          type: string
+          description: Mobile Number
+          example: '+306971234567'
+        tanNumber:
+          type: string
+          description: TAN number
+          nullable: true
+          example: '1234'
+      additionalProperties: false
+      description: Pin Unlock Request
+    PinUnlockRequestRequest:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/PinUnlockRequest'
+        header:
+          $ref: '#/components/schemas/RequestHeader'
+      additionalProperties: false
+    PinUnlockResponse:
+      required:
+        - success
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Success
+      additionalProperties: false
+      description: Unlock Pin response
+    PinUnlockResponseResponse:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/PinUnlockResponse'
+        exception:
+          $ref: '#/components/schemas/ResponseMessage'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseMessage'
+          nullable: true
+        executionTime:
+          type: number
+          format: double
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        Type:
+          type: string
+          nullable: true
+        Title:
+          type: string
+          nullable: true
+        Status:
+          type: integer
+          format: int32
+          nullable: true
+        Detail:
+          type: string
+          nullable: true
+        Instance:
+          type: string
+          nullable: true
+        Extensions:
+          type: object
+          additionalProperties: { }
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+    RequestHeader:
+      type: object
+      properties:
+        ID:
+          type: string
+          nullable: true
+        application:
+          type: string
+          nullable: true
+        bank:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ResponseMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        code:
+          type: string
+          nullable: true
+        desc:
+          type: string
+          nullable: true
+        sev:
+          $ref: '#/components/schemas/ErrorSeverity'
+        cat:
+          $ref: '#/components/schemas/ErrorCategory'
+      additionalProperties: false
+    SandboxCard:
+      type: object
+      properties:
+        barCode:
+          type: string
+          description: Bar Code
+          nullable: true
+        amount:
+          type: number
+          description: Amount
+          format: double
+        cardStatus:
+          type: string
+          description: Card Status
+          nullable: true
+        cardIssuanceData:
+          $ref: '#/components/schemas/CardIssuanceRequest'
+      additionalProperties: false
+      description: Represents a sandbox prepaid card
+    SandboxCustomer:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: First Name
+          nullable: true
+        lastName:
+          type: string
+          description: Last Name
+          nullable: true
+        birthDate:
+          type: string
+          description: BirthDate
+          format: date-time
+          nullable: true
+        vatNumber:
+          type: string
+          description: Vat Number
+          nullable: true
+        mobileNumber:
+          type: string
+          description: Mobile Number
+          nullable: true
+      additionalProperties: false
+      description: Represents a sandbox customer
+    SandboxDataModel:
+      required:
+        - sandboxId
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          description: Gets or sets the Unique sandbox ID.
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/SandboxCard'
+          description: Gets or sets the List of sandbox cards.
+          nullable: true
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/SandboxCustomer'
+          description: Gets or sets the List of sandbox customers.
+          nullable: true
+      additionalProperties: false
+      description: Sandbox data model.
+    SandboxDataModelResponse:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/SandboxDataModel'
+        exception:
+          $ref: '#/components/schemas/ResponseMessage'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseMessage'
+          nullable: true
+        executionTime:
+          type: number
+          format: double
+      additionalProperties: false
+    SandboxRequest:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+          description: Gets or sets the Sandbox's unique identifier. E.g MySandbox
+          nullable: true
+      additionalProperties: false
+      description: Sandbox request.
+    SandboxRequestRequest:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/SandboxRequest'
+        header:
+          $ref: '#/components/schemas/RequestHeader'
+      additionalProperties: false
+    SmartPinGenerationRequest:
+      required:
+        - barCode
+        - birthDate
+        - cardCVV
+        - cardNumber
+        - firstName
+        - lastName
+        - mobileNumber
+        - vatNumber
+      type: object
+      properties:
+        cardCVV:
+          type: string
+          description: Card CVV
+          example: '123'
+        cardNumber:
+          type: string
+          description: Card Number
+          example: '4423170123456789'
+        barCode:
+          type: string
+          description: Bar Code
+          example: A00000000
+        firstName:
+          type: string
+          description: First Name first 2 letters
+          example: Jo
+        lastName:
+          type: string
+          description: Last Name first 2 letters
+          example: Do
+        birthDate:
+          type: string
+          description: BirthDate
+          format: date-time
+          example: '1990/06/23'
+        vatNumber:
+          type: string
+          description: Vat Number
+          example: '000000000'
+        mobileNumber:
+          type: string
+          description: Mobile Number
+          example: '+306971234567'
+        tanNumber:
+          type: string
+          description: TAN number
+          nullable: true
+          example: '1234'
+      additionalProperties: false
+      description: Request to generate smart pin
+    SmartPinGenerationRequestRequest:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/SmartPinGenerationRequest'
+        header:
+          $ref: '#/components/schemas/RequestHeader'
+      additionalProperties: false
+    SmartPinGenerationResponse:
+      required:
+        - smartPin
+      type: object
+      properties:
+        smartPin:
+          type: string
+          description: Smart Pin
+      additionalProperties: false
+      description: Card Activation Response
+    SmartPinGenerationResponseResponse:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/SmartPinGenerationResponse'
+        exception:
+          $ref: '#/components/schemas/ResponseMessage'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseMessage'
+          nullable: true
+        executionTime:
+          type: number
+          format: double
+      additionalProperties: false
+  securitySchemes:
+    Client-Id:
+      type: apiKey
+      description: Application's Id
+      name: Client-Id
+      in: header
+    Authorization-Code-Token:
+      type: oauth2
+      description: OAuth2 Authorization Code Flow
+      flows:
+        authorizationCode:
+          authorizationUrl: https://my.nbg.gr/identity/connect/authorize
+          tokenUrl: https://my.nbg.gr/identity/connect/token
+          scopes:
+            sandbox-prepaidcard-api-v1 offline_access: Sandbox Scope
+            prepaidcard-api-v1 offline_access: Production Scope
+    Client-Credentials-Token:
+      type: oauth2
+      description: OAuth2 Client Credentials Flow
+      flows:
+        clientCredentials:
+          tokenUrl: https://my.nbg.gr/identity/connect/token
+          scopes:
+            sandbox-prepaidcard-api-v1: Sandbox Scope
+            prepaidcard-api-v1: Production Scope
+security:
+  - Client-Id: [ ]
+    Authorization-Code-Token:
+      - sandbox-prepaidcard-api-v1
+      - prepaidcard-api-v1
+    Client-Credentials-Token:
+      - sandbox-prepaidcard-api-v1
+      - prepaidcard-api-v1
