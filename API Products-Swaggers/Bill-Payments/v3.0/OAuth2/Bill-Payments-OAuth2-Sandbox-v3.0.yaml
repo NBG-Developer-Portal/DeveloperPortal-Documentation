@@ -493,19 +493,19 @@ paths:
             application/json:
               schema:
                 $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.RequestMassCommissionsResponse
+                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.MassPaymentsResponse
             text/json:
               schema:
                 $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.RequestMassCommissionsResponse
+                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.MassPaymentsResponse
             application/xml:
               schema:
                 $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.RequestMassCommissionsResponse
+                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.MassPaymentsResponse
             text/xml:
               schema:
                 $ref: >-
-                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.RequestMassCommissionsResponse
+                  #/components/schemas/ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.MassPaymentsResponse
 
   /MassPayments/retrieveMassCommissions:
     post:
@@ -1348,7 +1348,7 @@ paths:
       tags:
         - Payments
       summary: Execute Preprocess Steps
-      description: "Execute preprocess steps that are required before a specific payment, as provided by the /Payments/paymentsList endpoint response. \r\nThe /Payments/executePreprocessStep is not required for all payments. The paymentCode corresponds to the  payment id of the /Payments/paymentsList endpoint response. The input property is different for each paymentCode.\r\n\r\n\r\nSample request:\r\n\r\n    POST /executePreprocessStep\r\n    {\r\n        \"userId\": \"acd77e31-a637-48b6-a070-ffc5d1d68e63\",         \r\n        \"paymentCode\": \"376B9E0A-E767-45E0-963C-7501864BF8AA\",\r\n        \"preprocessStepDetails\": {\r\n            \"stepId\": \"FB8CADAE-00C6-49F3-BC4B-B31DE6502FBB\",\r\n            \"input\": { \r\n                \"taxId\" : \"139181071\",\r\n                \"licensePlate\" : \"INN9015\",\r\n                \"year\" : \"2021\",\r\n                \"isCaravan\": \"0\",\r\n                \"months\": \"3\"\r\n            }\r\n        }\r\n    }"
+      description: "Execute preprocess steps that are required before a specific payment, as provided by the /Payments/paymentsList endpoint response. \r\nThe /Payments/executePreprocessStep is not required for all payments. The paymentCode corresponds to the  payment id of the /Payments/paymentsList endpoint response. The input property is different for each paymentCode.\r\n\r\n\r\nSample request:\r\n\r\n    POST /executePreprocessStep\r\n    {\r\n        \"userId\": \"acd77e31-a637-48b6-a070-ffc5d1d68e63\",         \r\n        \"paymentCode\": \"376B9E0A-E767-45E0-963C-7501864BF8AA\",\r\n        \"preprocessStepDetails\": {\r\n            \"stepId\": \"FB8CADAE-00C6-49F3-BC4B-B31DE6502FBB\",\r\n            \"input\": { \r\n                \"taxId\" : \"139181071\",\r\n                \"licensePlate\" : \"IMN9013\",\r\n                \"year\" : \"2018\",\r\n                \"isCaravan\": \"0\",\r\n                \"months\": \"12\"\r\n            }\r\n        }\r\n    }"
       operationId: Payments_executePreprocessStep
       parameters:
         - name: sandbox_id
@@ -1466,7 +1466,7 @@ paths:
       tags:
         - Payments
       summary: Execute Payment
-      description: "Executes a Payment. Required objects, fields and preprocess steps of the payment are provided by the /Payments/paymentsList endpoint response. Only the instrId request property is mandatory. Requests in the sandbox endpoint always result in transactions with status COMPLETED. If you want to simulate payment failure scenarios, you can alter the status of the transaction using the PUT /sandbox/{sandbox_id}/transactions endpoint. Furthermore, the deferredName field of the deferred object must be filled with the name of the organization that the current transaction belongs. Those values can be retrieved by the payments/paymentsList or payments/paymentsListLight endpoints.\r\n\r\n\r\nSample request:\r\n\r\n    POST /pay\r\n    {\r\n        \"userId\": \"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"paymentIdentification\": {\r\n            \"instrId\": \"138ef93b-36f6-4843-aecf-48e166d2eddb\"\r\n        },\r\n        \"paymentOrgIdentification\": {\r\n            \"id\": \"69d6ffc8-cc65-4130-a172-d2fa16b6cbe8\",\r\n            \"barcode\": null,\r\n            \"fields\": {\r\n                \"PAYMENT_CODE\" : \"1234567890\"\r\n            },\r\n            \"extraData\": {}\r\n        },\r\n        \"chargesInfo\": null,\r\n        \"settlementInfo\": {\r\n            \"ccy\": \"EUR\",\r\n            \"amount\": 21.21,\r\n            \"method\": \"ACCT\"\r\n        },\r\n        \"debtor\": {\r\n            \"name\": \"ΠΑΠΑΔΟΠΟΥΛΟΣ ΓΙΩΡΓΟΣ\",\r\n            \"debtorAccount\": {\r\n                \"iban\": \"GR7816570557954408\",\r\n                \"pan\": null\r\n            },\r\n            \"telephone\": \"2101234567\"\r\n        },\r\n        \"ultimateDebtor\":  null,\r\n        \"remittanceInfo\": null,\r\n        \"requestMachineId\": null,\r\n        \"machineId\": null,\r\n        \"isSmsOtp\": true,\r\n        \"tanNumber\": \"111111\",\r\n        \"allowDuplicate\": null,\r\n        \"comments\": \"comments\",\r\n        \"deferred\": {\r\n            \"isDeferred\": false,\r\n            \"deferredDate\": null,\r\n            \"deferredName\": \"ΔΕΗ\",\r\n            \"deferredFrequency\": null,\r\n            \"deferredTotalPayments\": null\r\n          }\r\n     }"
+      description: "Executes a Payment. Required objects, fields and preprocess steps of the payment are provided by the /Payments/paymentsList endpoint response. Only the instrId request property is mandatory. Requests in the sandbox endpoint always result in transactions with status COMPLETED. If you want to simulate payment failure scenarios, you can alter the status of the transaction using the PUT /sandbox/{sandbox_id}/transactions endpoint.\r\n\r\n\r\nSample request:\r\n\r\n    POST /pay\r\n    {\r\n        \"userId\": \"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"paymentIdentification\": {\r\n            \"instrId\": \"138ef93b-36f6-4843-aecf-48e166d2eddb\"\r\n        },\r\n        \"paymentOrgIdentification\": {\r\n            \"id\": \"69d6ffc8-cc65-4130-a172-d2fa16b6cbe8\",\r\n            \"barcode\": null,\r\n            \"fields\": {\r\n                \"PAYMENT_CODE\" : \"1234567890\"\r\n            },\r\n            \"extraData\": {}\r\n        },\r\n        \"chargesInfo\": null,\r\n        \"settlementInfo\": {\r\n            \"ccy\": \"EUR\",\r\n            \"amount\": 21.21,\r\n            \"method\": \"ACCT\"\r\n        },\r\n        \"debtor\": {\r\n            \"name\": \"ΠΑΠΑΔΟΠΟΥΛΟΣ ΓΙΩΡΓΟΣ\",\r\n            \"debtorAccount\": {\r\n                \"iban\": \"GR7816570557954408\",\r\n                \"pan\": null\r\n            },\r\n            \"telephone\": \"2101234567\"\r\n        },\r\n        \"ultimateDebtor\":  null,\r\n        \"remittanceInfo\": null,\r\n        \"requestMachineId\": null,\r\n        \"acceptDuplicate\": true,\r\n        \"machineId\": null,\r\n        \"isSmsOtp\": true,\r\n        \"tanNumber\": \"111111\"       \r\n    }"
       operationId: Payments_pay
       parameters:
         - name: sandbox_id
@@ -1481,23 +1481,23 @@ paths:
           application/json:
             schema:
               $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpOtpRequest
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentRequestEnriched
           text/json:
             schema:
               $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpOtpRequest
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentRequestEnriched
           application/xml:
             schema:
               $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpOtpRequest
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentRequestEnriched
           text/xml:
             schema:
               $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpOtpRequest
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentRequestEnriched
           application/x-www-form-urlencoded:
             schema:
               $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpOtpRequest
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentRequestEnriched
         required: true
       responses:
         '200':
@@ -1776,23 +1776,23 @@ paths:
           application/json:
             schema:
               $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpRequest
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentBpRequest
           text/json:
             schema:
               $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpRequest
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentBpRequest
           application/xml:
             schema:
               $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpRequest
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentBpRequest
           text/xml:
             schema:
               $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpRequest
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentBpRequest
           application/x-www-form-urlencoded:
             schema:
               $ref: >-
-                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpRequest
+                #/components/schemas/ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentBpRequest
         required: true
       responses:
         '200':
@@ -2062,7 +2062,7 @@ paths:
                 $ref: >-
                   #/components/schemas/ibank.Hosting.WebApi.Response.thirdpartypayments.sandbox.types.SandboxDataModel
 
-  '/sandbox/{sandbox_id}':
+  /sandbox/{sandbox_id}:
     get:
       tags:
         - Sandbox
@@ -2171,7 +2171,7 @@ paths:
         '204':
           description: No Content
 
-  '/sandbox/{sandbox_id}/users':
+  /sandbox/{sandbox_id}/users:
     post:
       tags:
         - Sandbox
@@ -2229,7 +2229,7 @@ paths:
                 $ref: >-
                   #/components/schemas/ibank.Hosting.WebApi.Response.thirdpartypayments.sandbox.types.CreateSandboxUserResponse
 
-  '/sandbox/{sandbox_id}/users/{user_id}/accounts':
+  /sandbox/{sandbox_id}/users/{user_id}/accounts:
     get:
       tags:
         - Sandbox
@@ -2333,7 +2333,7 @@ paths:
                 $ref: >-
                   #/components/schemas/ibank.Hosting.WebApi.Response.thirdpartypayments.sandbox.types.SandboxAccount
 
-  '/sandbox/{sandbox_id}/users/{user_id}/accounts/{account_id}':
+  /sandbox/{sandbox_id}/users/{user_id}/accounts/{account_id}:
     put:
       tags:
         - Sandbox
@@ -2434,7 +2434,7 @@ paths:
         '204':
           description: No Content
 
-  '/sandbox/{sandbox_id}/transactions':
+  /sandbox/{sandbox_id}/transactions:
     put:
       tags:
         - Sandbox
@@ -2501,7 +2501,7 @@ security:
 servers:
   - url: 'https://apis.nbg.gr/sandbox/billpayments/oauth2/v3.0'
     description: Sandbox Server
-  - url: 'https://services.nbg.gr/apis/billpayments/v1'
+  - url: 'https://ibankpay.nbg.gr/apis.proxy/billpaymentsapi/v1'
     description: Production Server
 components:
   requestBodies:
@@ -2591,6 +2591,8 @@ components:
           type: boolean
         TAN:
           type: string
+        agentId:
+          type: string
     ibank.ThirdPartyPayment.Types.MassPaymentsBpRequest:
       type: object
       properties:
@@ -2640,12 +2642,12 @@ components:
           format: double
           description: Payment Amount
           type: number
-    ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.RequestMassCommissionsResponse:
+    ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.MassPaymentsResponse:
       type: object
       properties:
         payload:
           $ref: >-
-            #/components/schemas/ibank.ThirdPartyPayment.Types.RequestMassCommissionsResponse
+            #/components/schemas/ibank.ThirdPartyPayment.Types.MassPaymentsResponse
         exception:
           $ref: '#/components/schemas/bUtility.ResponseMessage'
         messages:
@@ -2655,8 +2657,8 @@ components:
         executionTime:
           format: double
           type: number
-    ibank.ThirdPartyPayment.Types.RequestMassCommissionsResponse:
-      description: Mass Commission Response
+    ibank.ThirdPartyPayment.Types.MassPaymentsResponse:
+      description: Mass Payments Response
       type: object
       properties:
         receivedSuccessfully:
@@ -2830,33 +2832,33 @@ components:
         batchId:
           description: An identifier for this batch of payments
           type: string
-    ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.MassPaymentsResponse:
-      type: object
-      properties:
-        payload:
-          $ref: >-
-            #/components/schemas/ibank.ThirdPartyPayment.Types.MassPaymentsResponse
-        exception:
-          $ref: '#/components/schemas/bUtility.ResponseMessage'
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/bUtility.ResponseMessage'
-        executionTime:
-          format: double
-          type: number
-    ibank.ThirdPartyPayment.Types.MassPaymentsResponse:
-      description: Mass Payments Response
-      type: object
-      properties:
-        receivedSuccessfully:
-          description: Indication if the payments were received successfully
-          type: boolean
-        errorMessages:
-          description: Validation error messages
-          type: array
-          items:
-            type: string
+                                                                                     
+                  
+                 
+                
+                  
+                                                                                   
+                  
+                                                               
+                 
+                     
+                
+                                                                 
+                      
+                        
+                      
+                                                       
+                                         
+                  
+                 
+                             
+                                                                            
+                       
+                      
+                                                
+                     
+                
+                        
     ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.RetrieveMassPaymentsOutcomeBpRequest:
       required:
         - header
@@ -2912,7 +2914,7 @@ components:
       type: object
       properties:
         outcome:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.PaymentResponse'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentResponse'
         errorMessage:
           description: >-
             An error message that could have occured during the execution of
@@ -2921,7 +2923,7 @@ components:
         instrId:
           description: A unique identifier for this payment
           type: string
-    ibank.ThirdPartyPayment.Types.PaymentResponse:
+    ibank.ThirdParty.Types.PaymentResponse:
       type: object
       properties:
         paymentIdentification:
@@ -2957,7 +2959,7 @@ components:
           type: string
           example: 00000000-0000-0000-0000-000000000000
         clrSysRef:
-          description: 'Transactions reference number, produced from the clearance system'
+          description: Transactions reference number, produced from the clearance system
           type: string
         paymentRef:
           description: >-
@@ -2988,7 +2990,7 @@ components:
           description: Debtor's telephone
           type: string
         extraIdentities:
-          description: 'Extra identities that define the debtor, if they exist'
+          description: Extra identities that define the debtor, if they exist
           type: array
           items:
             $ref: '#/components/schemas/ibank.ThirdParty.Types.EntityIdentity'
@@ -3010,7 +3012,7 @@ components:
             /paymentsList endpoint)
           type: number
         method:
-          description: "Payment Method \r\nSupported Values:\r\n- CASH = Payment via Cash\r\n- CARD = Payment via use of Card on a POS device\r\n- ACCT = Payment directly via Account\r\n- DBCACCT = Payment directly via an Account related to an NBG Debit Card\r\n- VPOSCARD = Payment via NBG Credit Card with use of a Virtual POS\r\n- NBGCARD = Payment via NBG Credit Card\r\n- LNEXACCT: Payment directly via an Express Loan Account\r\n- CARDAUTH: Do not use this value, currently it is meant for internal purposes only"
+          description: "Payment Method \r\nSupported Values:\r\n- CASH = Payment via Cash\r\n- CARD = Payment via use of Card on a POS device\r\n- ACCT = Payment directly via Account\r\n- DBCACCT = Payment directly via an Account related to an NBG Debit Card\r\n- VPOSCARD = Payment via NBG Credit Card with use of a Virtual POS\r\n- NBGCARD = Payment via NBG Credit Card\r\n- LNEXACCT = Payment directly via an Express Loan Account\r\n- CARDAUTH = Do not use this value, currently it is meant for internal purposes only\r\n- CARDACCT = Payment directly via an Account related to an Card (e-Commerce)"
           enum:
             - CASH
             - CARD
@@ -3020,9 +3022,10 @@ components:
             - NBGCARD
             - DBCACCT
             - LNEXACCT
+            - CARDACCT
           type: string
     ibank.ThirdParty.Types.Additional:
-      description: 'Additional details, eg. account balance'
+      description: Additional details, eg. account balance
       type: object
       properties:
         ledgerBalance:
@@ -3111,7 +3114,7 @@ components:
         userId:
           type: string
         fileId:
-          description: 'The ID of the mass payments file, as provided by the File API'
+          description: The ID of the mass payments file, as provided by the File API
           type: string
         debtorName:
           description: Debtor's name
@@ -3149,11 +3152,35 @@ components:
         tanCheck:
           description: OTP Verification Number
           type: string
+        scaData:
+          $ref: '#/components/schemas/Nbg.Sca.Filter.Abstractions.ScaData'
         receivedSuccessfully:
           description: Indication if the payments were received successfully
           type: boolean
         errorMessages:
           description: Validation error messages
+          type: array
+          items:
+            type: string
+    Nbg.Sca.Filter.Abstractions.ScaData:
+      type: object
+      properties:
+        channel:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Nbg.Sca.Filter.Abstractions.SentNotificationChannelDetails
+        scaTokenExpirationInSeconds:
+          format: int32
+          type: integer
+    Nbg.Sca.Filter.Abstractions.SentNotificationChannelDetails:
+      type: object
+      properties:
+        channel:
+          type: string
+        recipients:
           type: array
           items:
             type: string
@@ -3174,7 +3201,7 @@ components:
         userId:
           type: string
         fileId:
-          description: 'The ID of the mass payments file, as provided by the File API'
+          description: The ID of the mass payments file, as provided by the File API
           type: string
     ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.RetrieveMassPaymentsWithFileOutcomeResponse:
       type: object
@@ -3268,7 +3295,7 @@ components:
         userId:
           type: string
         batchId:
-          description: 'The ID of the mass payments file, as provided by the File API'
+          description: The ID of the mass payments file, as provided by the File API
           type: string
     ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.RetrieveIndividualPaymentsStatusResponse:
       type: object
@@ -3348,7 +3375,7 @@ components:
         userId:
           type: string
         fileId:
-          description: 'The ID of the mass payments file, as provided by the File API'
+          description: The ID of the mass payments file, as provided by the File API
           type: string
     ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.RequestMassPaymentsStatusWithFileResponse:
       type: object
@@ -3394,7 +3421,7 @@ components:
         userId:
           type: string
         fileId:
-          description: 'The ID of the mass payments status file, as provided by the File API'
+          description: The ID of the mass payments status file, as provided by the File API
           type: string
     ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.RetrieveMassPaymentsStatusWithFileResponse:
       type: object
@@ -3419,7 +3446,7 @@ components:
           description: The status of the underlying processing of the request
           type: string
         fileId:
-          description: 'The ID of the mass payments status file, as provided by the File API'
+          description: The ID of the mass payments status file, as provided by the File API
           type: string
     ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.GenerateMassPaymentsSampleFileBpRequest:
       required:
@@ -3486,7 +3513,7 @@ components:
         userId:
           type: string
         fileId:
-          description: 'The ID of the mass payments file, as provided by the File API'
+          description: The ID of the mass payments file, as provided by the File API
           type: string
     ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.ValidateMassPaymentsFileResponse:
       type: object
@@ -3507,6 +3534,14 @@ components:
       description: Mass payments file validation response
       type: object
       properties:
+        rowCount:
+          format: int32
+          description: Number of payments
+          type: integer
+        totalAmount:
+          format: double
+          description: Total amount of payments
+          type: number
         areAllValid:
           description: Indication if all payments are valid
           type: boolean
@@ -3515,6 +3550,86 @@ components:
           type: array
           items:
             type: string
+    ibank.Hosting.WebApi.Request.ibank.ThirdParty.Core.Types.IsTppPaymentCoreRequest:
+      required:
+        - header
+        - payload
+      type: object
+      properties:
+        header:
+          $ref: '#/components/schemas/ibank.Hosting.WebApi.RequestHeader'
+        payload:
+          $ref: >-
+            #/components/schemas/ibank.ThirdParty.Core.Types.IsTppPaymentCoreRequest
+    ibank.ThirdParty.Core.Types.IsTppPaymentCoreRequest:
+      type: object
+      properties:
+        origin:
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.SpotMachineOrigin'
+        userId:
+          type: string
+        requestMachineId:
+          type: string
+        machineId:
+          type: string
+        paymentIdentification:
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentIdentification'
+    ibank.ThirdParty.Types.SpotMachineOrigin:
+      type: object
+      properties:
+        NetworkId:
+          format: uuid
+          type: string
+          example: 00000000-0000-0000-0000-000000000000
+        SpotId:
+          format: uuid
+          type: string
+          example: 00000000-0000-0000-0000-000000000000
+        SpotMachineId:
+          format: uuid
+          type: string
+          example: 00000000-0000-0000-0000-000000000000
+        MachineType:
+          type: string
+        MachineId:
+          type: string
+        ImpersonatorId:
+          format: uuid
+          type: string
+          example: 00000000-0000-0000-0000-000000000000
+        ImpersonatorMachineType:
+          type: string
+        NetworkMode:
+          type: string
+        UserId:
+          type: string
+        UserType:
+          type: string
+    ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.IsTppPaymentResponse:
+      type: object
+      properties:
+        payload:
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.IsTppPaymentResponse'
+        exception:
+          $ref: '#/components/schemas/bUtility.ResponseMessage'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/bUtility.ResponseMessage'
+        executionTime:
+          format: double
+          type: number
+    ibank.ThirdParty.Types.IsTppPaymentResponse:
+      type: object
+      properties:
+        isTppPayment:
+          description: Indicates whether the transaction was executed in the TPP system
+          type: boolean
+        status:
+          description: "The status of the transaction\r\nValues:\r\nPENDING:  The online transaction information has been registered in the system but there has been no confirmation of the actual payment yet. \r\nCOMPLETED: The online transaction was completed and the payment has been scheduled for clearance.\r\nFAILED: The online transaction failed to complete.\r\nCANCELLED: The previously completed online transaction has been successfully cancelled and the payment will not be scheduled for clearance.\r\nREVERTED: (Applies only to payments whose method is CARD) The transaction was initially registered in the bank's system, but due to a technical reversal request that occurred in the card transaction processing system, the payment was successfully reverted and a card transaction reversal was executed.\r\nREVFAILED: (Applies only to payments whose method is CARD)  The transaction was initially registered in the bank's system, but due to a technical reversal request that occurred in the card transaction processing system, a card transaction reversal was executed but the payment was not successfully reverted.\r\nSUSPECT: (Applies only to online TopUp transactions) The transaction was flagged as suspect, since the payment's clearance was performed in the bank's system, but an error occurred during the communication with the Provider, in order to acknowledge the successful billing. Therefore, the TopUp status is in need of further investigation.\r\nPARTIAL_PROCESS: (Applies only to only WIND TopUp transactions) The online transaction was completed and the payment's clearance was performed in the bank's system, but the Provider rejected the related transaction, so the TopUP failed.\r\nDEFERRED: The transaction has been registered in the system successfully and will be executed at the specified date."
+          type: string
+        origin:
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.SpotMachineOrigin'
     ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentsListBpRequest:
       required:
         - header
@@ -3654,7 +3769,7 @@ components:
           description: Organization is grouped with other organization with the same Master
           type: string
         legacyType:
-          description: "Organization's Type\r\nSupported values:\r\nTUP,\r\nLABOUR,\r\nNONNBG,\r\nIDEAFO,\r\nNBG"
+          description: "Organization's Type\r\nSupported values:\r\nTUP,\r\nLABOUR,\r\nNONNBG,\r\nIDEAFO,\r\nNBG,\r\nB2BPAY"
           type: string
         messages:
           description: "The messages related to the transaction's execution, that need to be displayed to the user by the client application.\r\nThe client application must take into consideration the language and the order indicated for each message"
@@ -3723,7 +3838,7 @@ components:
           type: string
         sortOrder:
           format: int32
-          description: 'The order, in which the messages should be displayed'
+          description: The order, in which the messages should be displayed
           type: integer
         type:
           description: The type of the message. Current available value is "STATIC"
@@ -3879,7 +3994,7 @@ components:
           type: integer
         precision:
           format: int32
-          description: 'Payment field''s precision, in case of a decimal field'
+          description: Payment field's precision, in case of a decimal field
           type: integer
         isMandatory:
           description: Flag indication if the field is mandatory or not for the payment
@@ -3908,7 +4023,7 @@ components:
           description: "Formating formula for the field. Has value only when the field is decimal or datetime.\r\ndatetime: The pattern in the format parameter consists of one or more custom format specifiers as described in https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings.\r\ndecimal: The pattern in the format parameter consists of one or more custom format specifiers as described in https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings."
           type: string
         formattingExample:
-          description: 'A sample value, in case a formatting formula is selected'
+          description: A sample value, in case a formatting formula is selected
           type: string
         fieldMetadata:
           description: "List of metadata related to the payment field.\r\nCan be used as an indication to the client, in case the value of the field needs to be validated based on a specific algorithm (e.g. Tax Number) or if the network needs to display a different name for the field.\r\nThese categories can be retrieved as an example, through the keys 'Name' and 'Validation' accordingly."
@@ -4050,7 +4165,7 @@ components:
           type: integer
         precision:
           format: int32
-          description: 'Precision, in case of a decimal data type'
+          description: Precision, in case of a decimal data type
           type: integer
         isMandatory:
           description: Flag indication if the element is mandatory for the step's execution
@@ -4092,7 +4207,7 @@ components:
           type: integer
         precision:
           format: int32
-          description: 'Precision, in case of a decimal data type'
+          description: Precision, in case of a decimal data type
           type: integer
         fields:
           description: Child Input fields for the step
@@ -4146,7 +4261,7 @@ components:
           type: integer
         precision:
           format: int32
-          description: 'Precision, in case of a decimal data type'
+          description: Precision, in case of a decimal data type
           type: integer
     ibank.ThirdParty.Types.PaymentPreprocessOutputObject:
       type: object
@@ -4174,7 +4289,7 @@ components:
           type: integer
         precision:
           format: int32
-          description: 'Precision, in case of a decimal data type'
+          description: Precision, in case of a decimal data type
           type: integer
         fields:
           description: Child Output fields related to the step's execution
@@ -4432,7 +4547,7 @@ components:
         executionTime:
           format: double
           type: number
-    ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpOtpRequest:
+    ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentRequestEnriched:
       required:
         - header
         - payload
@@ -4442,10 +4557,18 @@ components:
           $ref: '#/components/schemas/ibank.Hosting.WebApi.RequestHeader'
         payload:
           $ref: >-
-            #/components/schemas/ibank.ThirdPartyPayment.Types.PaymentBpOtpRequest
-    ibank.ThirdPartyPayment.Types.PaymentBpOtpRequest:
+            #/components/schemas/ibank.ThirdPartyPayment.Types.PaymentRequestEnriched
+    ibank.ThirdPartyPayment.Types.PaymentRequestEnriched:
       type: object
       properties:
+        comments:
+          description: "Payment comments. Comments will appear in approvals flow.\r\nOnly for production API."
+          type: string
+        deferred:
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.DeferredRequest'
+        allowDuplicate:
+          description: "Indication whether to accept a transaction which is identical to a previous one.\r\nOnly for production API."
+          type: boolean
         isSmsOtp:
           description: >-
             Indication for authentication via Sms Otp. It is omitted for OTP
@@ -4461,24 +4584,47 @@ components:
         paymentOrgIdentification:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentOrgIdentification'
         chargesInfo:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.ChargesInfo'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.ChargesInfo'
         settlementInfo:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.SettlementInfo'
         debtor:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.Debtor'
         remittanceInfo:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.RemittanceInfo'
-        allowDuplicate:
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.RemittanceInfo'
+        acceptDuplicate:
           description: >-
-            Indication whether to accept a transaction which is identical to a previous one. Only for production environment. The default value is null meanining that the API will check for duplicate transactions. If value is true then a duplicate transaction can be execuded.
+            Indication whether to accept a transaction which is identical to a
+            previous one, based on certain parameters defined in
+            acceptDuplicateSpecification object
           type: boolean
-        comments:
+        acceptDuplicateSpecification:
+          $ref: >-
+            #/components/schemas/ibank.ThirdParty.Types.AcceptDuplicateSpecification
+    ibank.ThirdParty.Types.DeferredRequest:
+      description: Specify Deferred Payment
+      type: object
+      properties:
+        isDeferred:
+          description: If <code>true</code> this transaction is deferred.
+          type: boolean
+        deferredDate:
+          format: date-time
           description: >-
-            Payment comments. Comments will appear in approvals flow. Only for production environment
+            Date for the deferred transaction or the first occurrence of the
+            deferred transaction.
           type: string
-        deferred:
-          $ref: '#/components/schemas/ibank.ThirdParty.Types.DeferredRequest'
-    ibank.ThirdPartyPayment.Types.ChargesInfo:
+        deferredName:
+          description: Name of the deferred transaction.
+          type: string
+        deferredFrequency:
+          format: int32
+          description: Period (not frequency) for deferred transfer.
+          type: integer
+        deferredTotalPayments:
+          format: int32
+          description: How many times will the deferred transfer trigger.
+          type: integer
+    ibank.ThirdParty.Types.ChargesInfo:
       description: Charges Extra Information
       type: object
       properties:
@@ -4489,6 +4635,7 @@ components:
             - CRED
             - SHAR
             - SLEV
+            - COMM
           type: string
         ccy:
           description: Charges currency (e.g. EUR)
@@ -4497,15 +4644,15 @@ components:
           format: double
           description: Charges amount
           type: number
-    ibank.ThirdPartyPayment.Types.RemittanceInfo:
+    ibank.ThirdParty.Types.RemittanceInfo:
       description: Payment Details
       type: object
       properties:
         unstructured:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.UnStructured'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.UnStructured'
         structured:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.Structured'
-    ibank.ThirdPartyPayment.Types.AcceptDuplicateSpecification:
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.Structured'
+    ibank.ThirdParty.Types.AcceptDuplicateSpecification:
       description: "Parameters to define what constitues a dublicate transaction in the system.\r\nIf acceptduplicate property is set to false and no paramaters are defined for the transaction, the defalt values are used."
       type: object
       properties:
@@ -4527,26 +4674,28 @@ components:
         includeCcy:
           description: "Should it take into consideration the currency used?\r\nDefault τιμή: false"
           type: boolean
-    ibank.ThirdPartyPayment.Types.UnStructured:
+    ibank.ThirdParty.Types.UnStructured:
       type: object
       properties:
         line:
-          description: 'Λεπτομέρειες Πληρωμής, πχ Αιτιολογία'
+          description: Λεπτομέρειες Πληρωμής, πχ Αιτιολογία
           type: string
-    ibank.ThirdPartyPayment.Types.Structured:
+    ibank.ThirdParty.Types.Structured:
       type: object
       properties:
         dueAmmount:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.DuePyblAmt'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.DuePyblAmt'
         discountAmount:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.DscntApldAmt'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.DscntApldAmt'
         remittedAmount:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.RmtdAmt'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.RmtdAmt'
         creditorNoteAmount:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.CdtNoteAmt'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.CdtNoteAmt'
         taxAmount:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.TaxAmt'
-    ibank.ThirdPartyPayment.Types.DuePyblAmt:
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.TaxAmt'
+        invoiceCommissionAmount:
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.InvoiceCommissionAmt'
+    ibank.ThirdParty.Types.DuePyblAmt:
       type: object
       properties:
         ccy:
@@ -4554,7 +4703,7 @@ components:
         amount:
           format: double
           type: number
-    ibank.ThirdPartyPayment.Types.DscntApldAmt:
+    ibank.ThirdParty.Types.DscntApldAmt:
       type: object
       properties:
         ccy:
@@ -4562,7 +4711,7 @@ components:
         amount:
           format: double
           type: number
-    ibank.ThirdPartyPayment.Types.RmtdAmt:
+    ibank.ThirdParty.Types.RmtdAmt:
       type: object
       properties:
         ccy:
@@ -4570,18 +4719,26 @@ components:
         amount:
           format: double
           type: number
-    ibank.ThirdPartyPayment.Types.CdtNoteAmt:
+    ibank.ThirdParty.Types.CdtNoteAmt:
       type: object
       properties:
         note:
-          description: Αιθμός Τιμολογίου ( max 35 )
+          description: Αριθμός Τιμολογίου ( max 35 )
           type: string
         ccy:
           type: string
         amount:
           format: double
           type: number
-    ibank.ThirdPartyPayment.Types.TaxAmt:
+    ibank.ThirdParty.Types.TaxAmt:
+      type: object
+      properties:
+        ccy:
+          type: string
+        amount:
+          format: double
+          type: number
+    ibank.ThirdParty.Types.InvoiceCommissionAmt:
       type: object
       properties:
         ccy:
@@ -4607,18 +4764,20 @@ components:
     ibank.ThirdPartyPayment.Types.PaymentOtpResponse:
       type: object
       properties:
-        requiresApproval:
-          description: Flag indicating if the current transaction requires approval from another corporate user in order to be executed
-          type: boolean
-        isDeferred:
-          description: Flag indicating if the trasnaction is deferred
-          type: boolean
-        isDuplicate:
-          description: Flag indicating whether the transaction is identical to a previous one. Only for production environment
-          type: boolean
+                         
+                                                                                                                                       
+                       
+                   
+                                                                     
+                       
+                    
+                                                                                                                              
+                       
         tanCheck:
           description: OTP Verification Number
           type: string
+        scaData:
+          $ref: '#/components/schemas/Nbg.Sca.Filter.Abstractions.ScaData'
         paymentIdentification:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentIdentification'
         creditor:
@@ -4661,10 +4820,10 @@ components:
         userId:
           type: string
         paymentRequest:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.PaymentBpRequest'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentBpRequest'
         cancelPaymentIdentification:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentIdentification'
-    ibank.ThirdPartyPayment.Types.PaymentBpRequest:
+    ibank.ThirdParty.Types.PaymentBpRequest:
       type: object
       properties:
         userId:
@@ -4674,13 +4833,13 @@ components:
         paymentOrgIdentification:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentOrgIdentification'
         chargesInfo:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.ChargesInfo'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.ChargesInfo'
         settlementInfo:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.SettlementInfo'
         debtor:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.Debtor'
         remittanceInfo:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.RemittanceInfo'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.RemittanceInfo'
         acceptDuplicate:
           description: >-
             Indication whether to accept a transaction which is identical to a
@@ -4689,7 +4848,7 @@ components:
           type: boolean
         acceptDuplicateSpecification:
           $ref: >-
-            #/components/schemas/ibank.ThirdPartyPayment.Types.AcceptDuplicateSpecification
+            #/components/schemas/ibank.ThirdParty.Types.AcceptDuplicateSpecification
     ibank.Hosting.WebApi.Response.ibank.ThirdPartyPayment.Types.CancelPaymentResponse:
       type: object
       properties:
@@ -4725,7 +4884,7 @@ components:
             cancelationSucceeded property
           type: boolean
         paymentResponse:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.PaymentResponse'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentResponse'
         additional:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.Additional'
     ibank.ThirdPartyPayment.Types.CancellationLimit:
@@ -4801,7 +4960,7 @@ components:
       properties:
         sendCutOffTime:
           format: date-time
-          description: 'Timit limit, when the cancellation of the transaction is permitted'
+          description: Timit limit, when the cancellation of the transaction is permitted
           type: string
         paymentOrgIdentification:
           $ref: >-
@@ -4865,30 +5024,30 @@ components:
           type: object
           additionalProperties:
             type: string
-    ibank.ThirdParty.Types.DeferredRequest:
-      description: Specify Deferred Payment
-      type: object
-      properties:
-        isDeferred:
-          description: If <code>true</code> this transaction is deferred.
-          type: boolean
-        deferredDate:
-          format: date-time
-          description: >-
-            Date for the deferred transaction or the first occurrence of the
-            deferred transaction.
-          type: string
-        deferredName:
-          description: Name of the deferred transaction.
-          type: string
-        deferredFrequency:
-          format: int32
-          description: Period (not frequency) for deferred transfer.
-          type: integer
-        deferredTotalPayments:
-          format: int32
-          description: How many times will the deferred transfer trigger.
-          type: integer
+                                           
+                                           
+                  
+                 
+                   
+                                                                         
+                       
+                     
+                           
+                         
+                                                                            
+                                 
+                      
+                     
+                                                        
+                      
+                          
+                       
+                                                                    
+                       
+                              
+                       
+                                                                         
+                       
     ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.DailyTransactionsBpRequest:
       required:
         - header
@@ -5042,7 +5201,7 @@ components:
           type: string
           example: 00000000-0000-0000-0000-000000000000
         clrSysRef:
-          description: 'Transactions reference number, produced from the clearance system'
+          description: Transactions reference number, produced from the clearance system
           type: string
         ccy:
           description: Currency (e.g. EUR)
@@ -5066,6 +5225,7 @@ components:
             - NBGCARD
             - DBCACCT
             - LNEXACCT
+            - CARDACCT
           type: string
         status:
           description: The status of the transaction
@@ -5074,7 +5234,7 @@ components:
           format: date-time
           description: Transaction's datetime
           type: string
-    ibank.Hosting.WebApi.Request.ibank.ThirdPartyPayment.Types.PaymentBpRequest:
+    ibank.Hosting.WebApi.Request.ibank.ThirdParty.Types.PaymentBpRequest:
       required:
         - header
         - payload
@@ -5083,7 +5243,7 @@ components:
         header:
           $ref: '#/components/schemas/ibank.Hosting.WebApi.RequestHeader'
         payload:
-          $ref: '#/components/schemas/ibank.ThirdPartyPayment.Types.PaymentBpRequest'
+          $ref: '#/components/schemas/ibank.ThirdParty.Types.PaymentBpRequest'
     ibank.Hosting.WebApi.Response.ibank.ThirdParty.Types.CommissionResponse:
       type: object
       properties:
@@ -5771,11 +5931,11 @@ components:
           example: 00000000-0000-0000-0000-000000000000
         txId:
           format: uuid
-          description: 'TxId of the transaction, used by HOST'
+          description: TxId of the transaction, used by HOST
           type: string
           example: 00000000-0000-0000-0000-000000000000
         instrId:
-          description: 'Unique Id of the transaction, provided by the client'
+          description: Unique Id of the transaction, provided by the client
           type: string
         endToEndId:
           description: Unique Id of the transaction provided by the bank
@@ -5815,7 +5975,7 @@ components:
           description: Transaction's debtor telephone
           type: string
         paymentType:
-          description: 'Transaction''s payment type, related to the organization'
+          description: Transaction's payment type, related to the organization
           type: string
         debitAccount:
           description: Transaction's debit account
@@ -5872,7 +6032,7 @@ components:
           type: string
         impersonator:
           format: uuid
-          description: 'Id of the mediator machine, in case of Centralized network'
+          description: Id of the mediator machine, in case of Centralized network
           type: string
           example: 00000000-0000-0000-0000-000000000000
         commSubAgent:
@@ -5939,7 +6099,7 @@ components:
           type: string
         networkId:
           format: uuid
-          description: 'The id of the network, the user will belong to'
+          description: The id of the network, the user will belong to
           type: string
           example: 00000000-0000-0000-0000-000000000000
         spotMachineType:
