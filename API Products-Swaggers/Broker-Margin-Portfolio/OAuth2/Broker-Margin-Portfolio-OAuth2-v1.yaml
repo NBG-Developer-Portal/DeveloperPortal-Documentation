@@ -28,7 +28,7 @@ info:
     \ APP that you created and subscribed in this API, and your own credentials (username,\
     \ password) that you use to sign in the NBG Technology HUB. The scopes are defined\
     \ below:\n\n**Sandbox Scopes**:\n\n\t sandbox-broker-margin-portfolio-api \n\n\
-    **Production Scopes**:\n\n\t broker-margin-portfolio-api \n\t \n     \n\
+    **Production Scopes**:\n\n\t broker-margin-portfolio-api     \n\
     **Token Endpoint**:\n\n\t https://my.nbg.gr/identity/connect/token \n\nSee more\
     \ [here](https://developer.nbg.gr/oauth-document)\n\n## Create your Sandbox \n\
     Sandboxes are self - contained testing environments that provide a simple way\
@@ -60,8 +60,8 @@ info:
     * Result:-40012, Message:PARTY_MIFID_INSTRUMENT_CATEGORY_NOTSET \n* Result:-40013,\
     \ Message:PRICE_IS_OUT_OF_LIMITS \n* Result:-40014, Message:REQUIRES_CONFIRMATION\
     \ \n* Result:-40015, Message:SAME_PORTFOLIO_NOT_ALLOWED \n* Result:-40016, Message:SAT_QUANTITY_NOT_MATCHED\
-    \ \n* Result:-40017, Message:TRADE_NOT_ALLOWED \n* Result:-40018, Message:TRADETYPE_NOT_ALLOWED_ON_DEPOSITORY_ACCOUNT\n\
-    * Result:-49999, Message:GENERIC_ERROR \n* \n## Feedback and Questions\n Have\
+    \ \n* Result:-40017, Message:TRADE_NOT_ALLOWED \n* Result:-40018, Message:TRADETYPE_NOT_ALLOWED_ON_DEPOSITORY_ACCOUNT\n* Result:-49999, Message:GENERIC_ERROR \n * Result:-40019, Message: PORTFOLIOTYPE_NOT_VALID \ \n * Result:-40020, Message: INVALID_ORDER_TYPE 
+    \n## Feedback and Questions\n Have\
     \ feedback or questions? Send it to [developer@nbg.gr](developer@nbg.gr).\n\n\
     Check out our [Sandbox Postman Collection](https://github.com/NBG-Developer-Portal/Broker-Margin-Portfolio-API/tree/main/v1/oauth)!"
   contact:
@@ -582,6 +582,8 @@ components:
       - instrument
       - clrSubAcctId
       - checkOnly
+      - portfolioType 
+      - orderType 
       type: object
       properties:
         reqId:
@@ -625,6 +627,12 @@ components:
           description: "Y -&gt; Order validation without actual entry in the application\r\
             \nΝ -&gt; The order will be entered and will take amount from the available\
             \ credit"
+          type: string
+        portfolioType:
+          description: Margin/MiniMargin
+          type: string
+        orderType:
+          description: Market/Limit/ATC/ATO
           type: string
     InsertOrderResponse:
       description: DTO of InsertOrder response
@@ -797,6 +805,7 @@ components:
       - dssAccountId
       - dssInvestorShare
       - side
+      - portfolioType
       - orderId
       - price
       - quantity
@@ -820,6 +829,9 @@ components:
           type: string
         dssInvestorShare:
           description: Investor DSS Account Number
+          type: string
+        portfolioType:
+          description: Margin/MiniMargin
           type: string
         orderId:
           description: Unique Order ID
@@ -853,6 +865,7 @@ components:
       - reqId
       - trnId
       - timestamp
+      - portfolioType
       - orderId
       - result
       type: object
@@ -867,6 +880,9 @@ components:
           type: string
         timestamp:
           description: Timestamp of the transaction's acceptance
+          type: string
+        portfolioType:
+          description: Margin/MiniMargin
           type: string
         orderId:
           description: "Unique Order ID created by Customer's System, corresponding\
@@ -940,6 +956,7 @@ components:
       - trdClientId
       - dssAccountId
       - dssInvestorShare
+      - portfolioType 
       - orderId
       type: object
       properties:
@@ -958,6 +975,9 @@ components:
           type: string
         dssInvestorShare:
           description: Investor DSS Share Code
+          type: string
+        portfolioType:
+          description: Margin/MiniMargin
           type: string
         orderId:
           description: Unique Order ID created by Customer's System
@@ -1039,6 +1059,7 @@ components:
       - trdClientId
       - dssAccountId
       - dssInvestorShare
+      - portfolioType
       - orderId
       - tradeId
       - tradeTime
@@ -1064,6 +1085,9 @@ components:
           type: string
         dssInvestorShare:
           description: Dematerialised Securities System (DSS) Investor Share Number
+          type: string
+        portfolioType:
+          description: Margin/MiniMargin
           type: string
         orderId:
           description: Unique Order ID created by Customer's System
@@ -1180,6 +1204,7 @@ components:
       - trdClientId
       - dssAccountId
       - dssInvestorShare
+      - portfolioType
       type: object
       properties:
         reqId:
@@ -1197,6 +1222,9 @@ components:
           type: string
         dssInvestorShare:
           description: Investor DSS Share Code
+          type: string
+        portfolioType:
+          description: Margin/MiniMargin
           type: string
     GetPortfolioResponse:
       description: DTO of Portfolio response
@@ -1288,6 +1316,7 @@ components:
       - trdClientId
       - dssAccountId
       - dssInvestorShare
+      - portfolioType
       type: object
       properties:
         reqId:
@@ -1305,6 +1334,9 @@ components:
           type: string
         dssInvestorShare:
           description: Investor DSS Share Code
+          type: string
+        portfolioType:
+          description: Margin/MiniMargin
           type: string
     GetBalanceResponse:
       description: DTO of Margin response
