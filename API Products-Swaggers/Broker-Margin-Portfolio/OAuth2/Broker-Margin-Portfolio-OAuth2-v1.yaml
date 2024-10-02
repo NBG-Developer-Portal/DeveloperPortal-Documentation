@@ -697,6 +697,9 @@ components:
         dssInvestorShare:
           description: Investor DSS Share Code
           type: string
+        portfolioType:
+          description: Margin/MiniMargin
+          type: string
         totalQty:
           format: double
           description: Total Quantity of the Order
@@ -956,7 +959,6 @@ components:
       - trdClientId
       - dssAccountId
       - dssInvestorShare
-      - portfolioType 
       - orderId
       type: object
       properties:
@@ -1024,6 +1026,9 @@ components:
           type: string
         dssInvestorShare:
           description: Investor DSS Share Number
+          type: string
+        portfolioType:
+          description: Margin/MiniMargin
           type: string
         lastTrnId:
           description: Latest Transaction ID of the order in NBG system
@@ -1177,6 +1182,9 @@ components:
         dssInvestorShare:
           description: Investor DSS Share Code
           type: string
+        portfolioType:
+          description: Margin/MiniMargin
+          type: string
         totalQty:
           format: double
           description: Total Quantity of the Order
@@ -1273,6 +1281,9 @@ components:
         instrument:
           description: Ticker Symbol of Instrument (English)
           type: string
+        portfolioType:
+          description: Margin/MiniMargin
+          type: string
         sod:
           format: double
           description: Initial Quantity (start-of-day)
@@ -1362,6 +1373,9 @@ components:
           type: string
         creditPolicy:
           description: Description of the credit policy for the specific customer
+          type: string
+        portfolioType:
+          description: Margin/MiniMargin
           type: string
         portfolioAmt:
           format: double
