@@ -2501,7 +2501,7 @@ security:
 servers:
   - url: 'https://apis.nbg.gr/sandbox/billpayments/oauth2/v3.0'
     description: Sandbox Server
-  - url: 'https://ibankpay.nbg.gr/apis.proxy/billpaymentsapi/v1'
+  - url: 'https://services.nbg.gr/apis/billpayments/v1'
     description: Production Server
 components:
   requestBodies:
