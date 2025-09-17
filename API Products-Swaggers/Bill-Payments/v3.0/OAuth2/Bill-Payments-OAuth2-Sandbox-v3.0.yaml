@@ -75,7 +75,56 @@ info:
 
     9. Play with the API
 
+    ## Verification of Payee (VoP) & Instant Payment Support
+    
+    The Bill Payments API now includes mandatory Verification of Payee functionality for hub organizations. This feature ensures that the payee's identity is verified before executing a payment, reducing the risk of misdirected payments.
+    
+    ### Key Implementation Details:
 
+    **1. Mandatory Preprocessing for Hub Organizations:**
+    
+    - Organizations with preprocessing step name "GET_ISSUER_NAME" (for NBG hub organizations) or "GET_ISSUER_NAME_DIAS" (for other banks' hub organizations) require mandatory payee verification
+    
+    
+    - These preprocessing steps MUST be executed before the payment can proceed
+    
+    
+    - The preprocessing step calls the Payee Verification API to retrieve the ultimate creditor's name and account details
+    
+
+    **2. Required Fields for Hub Organizations:**
+    
+    - After executing GET_ISSUER_NAME_DIAS preprocessing, the response provides `issuerName` and `creditAccount`
+    
+    
+    - These values MUST be included in the pay request as `ISSUER_NAME` and `CREDIT_ACC` fields in the `paymentOrgIdentification` object
+    
+
+    **3. Execution Behavior:**
+    
+    - A new property `executionBehavior` in payment list responses indicates the payment processing mode:
+      
+      - `Instant`: Payment is processed immediately
+      
+      - `AskForInstant`: Client must specify preference for instant processing
+      
+      - `ForceBatch`: Payment is processed in batch mode
+    
+    - When `executionBehavior` is "AskForInstant", the client must include `executionBehaviorRequested` in the pay request
+
+    ### Workflow:
+    
+    1. Call `/paymentsList` to retrieve organization details
+    
+    2. Check if preprocessing step contains "GET_ISSUER_NAME" or "GET_ISSUER_NAME_DIAS"
+    
+    3. If present, execute the mandatory preprocessing step via `/executePreprocessStep`
+    
+    4. Use the returned issuer name and credit account in the subsequent `/pay` request
+    
+    5. Include execution behavior preference if required
+  
+    
     ## Authentication and Authorization (OAuth2) 
 
     This API version uses the OAuth2 protocol for authentication and
