@@ -94,35 +94,39 @@ info:
 
     **2. Required Fields for Hub Organizations:**
     
-    - After executing GET_ISSUER_NAME_DIAS preprocessing, the response provides `issuerName` and `creditAccount`
+    - After executing GET_ISSUER_NAME_DIAS preprocessing, the response provides **issuerName** and **creditAccount**
     
     
-    - These values MUST be included in the pay request as `ISSUER_NAME` and `CREDIT_ACC` fields in the `paymentOrgIdentification` object
+    - These values MUST be included in the pay request as **ISSUER_NAME** and **CREDIT_ACC** fields in the **paymentOrgIdentification** object
     
 
     **3. Execution Behavior:**
     
-    - A new property `executionBehavior` in payment list responses indicates the payment processing mode:
+    - A new property **executionBehavior** in payment list responses indicates the payment processing mode:
       
-      - `Instant`: Payment is processed immediately
+      - **NoIPR**
       
-      - `AskForInstant`: Client must specify preference for instant processing
+      - **Instant**
       
-      - `ForceBatch`: Payment is processed in batch mode
-    
-    - When `executionBehavior` is "AskForInstant", the client must include `executionBehaviorRequested` in the pay request
+      - **ForceBatch**
+      
+      - **null**
+
+    - When calling the **/pay** endpoint, you must set **executionBehaviorRequested**:
+      - Set to "Instant" when executionBehavior is "Instant"
+      - Set to null when executionBehavior is "NoIPR", "ForceBatch", or null
 
     ### Workflow:
     
-    1. Call `/paymentsList` to retrieve organization details
+    1. Call **/paymentsList** to retrieve organization details
     
     2. Check if preprocessing step contains "GET_ISSUER_NAME" or "GET_ISSUER_NAME_DIAS"
     
-    3. If present, execute the mandatory preprocessing step via `/executePreprocessStep`
+    3. If present, execute the mandatory preprocessing step via **/executePreprocessStep**
     
-    4. Use the returned issuer name and credit account in the subsequent `/pay` request
+    4. Use the returned issuer name and credit account in the subsequent **/pay** request
     
-    5. Include execution behavior preference if required
+    5. When calling **/pay**, set executionBehaviorRequested to "Instant" if executionBehavior is "Instant", otherwise set to null
   
     
     ## Authentication and Authorization (OAuth2) 
@@ -1515,7 +1519,7 @@ paths:
       tags:
         - Payments
       summary: Execute Payment
-      description: "Executes a Payment. Required objects, fields and preprocess steps of the payment are provided by the /Payments/paymentsList endpoint response. Only the instrId request property is mandatory. Requests in the sandbox endpoint always result in transactions with status COMPLETED. If you want to simulate payment failure scenarios, you can alter the status of the transaction using the PUT /sandbox/{sandbox_id}/transactions endpoint.\r\n\r\n\r\nSample request:\r\n\r\n    POST /pay\r\n    {\r\n        \"userId\": \"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"paymentIdentification\": {\r\n            \"instrId\": \"138ef93b-36f6-4843-aecf-48e166d2eddb\"\r\n        },\r\n        \"paymentOrgIdentification\": {\r\n            \"id\": \"69d6ffc8-cc65-4130-a172-d2fa16b6cbe8\",\r\n            \"barcode\": null,\r\n            \"fields\": {\r\n                \"PAYMENT_CODE\" : \"1234567890\"\r\n            },\r\n            \"extraData\": {}\r\n        },\r\n        \"chargesInfo\": null,\r\n        \"settlementInfo\": {\r\n            \"ccy\": \"EUR\",\r\n            \"amount\": 21.21,\r\n            \"method\": \"ACCT\"\r\n        },\r\n        \"debtor\": {\r\n            \"name\": \"ΠΑΠΑΔΟΠΟΥΛΟΣ ΓΙΩΡΓΟΣ\",\r\n            \"debtorAccount\": {\r\n                \"iban\": \"GR7816570557954408\",\r\n                \"pan\": null\r\n            },\r\n            \"telephone\": \"2101234567\"\r\n        },\r\n        \"ultimateDebtor\":  null,\r\n        \"remittanceInfo\": null,\r\n        \"requestMachineId\": null,\r\n        \"acceptDuplicate\": true,\r\n        \"machineId\": null,\r\n        \"isSmsOtp\": true,\r\n        \"tanNumber\": \"111111\"       \r\n    }"
+      description: "Executes a Payment. Required objects, fields and preprocess steps of the payment are provided by the /Payments/paymentsList endpoint response. Only the instrId request property is mandatory. Requests in the sandbox endpoint always result in transactions with status COMPLETED. If you want to simulate payment failure scenarios, you can alter the status of the transaction using the PUT /sandbox/{sandbox_id}/transactions endpoint.\r\n\r\nIMPORTANT: You must send ExecutionBehaviorRequested with value 'Instant' when the organization's ExecutionBehavior is 'Instant', and null in all other cases.\r\n\r\n\r\nSample request:\r\n\r\n    POST /pay\r\n    {\r\n        \"userId\": \"acd77e31-a637-48b6-a070-ffc5d1d68e63\",\r\n        \"executionBehaviorRequested\": \"Instant\",\r\n\r\n     \"paymentIdentification\": {\r\n            \"instrId\": \"138ef93b-36f6-4843-aecf-48e166d2eddb\"\r\n        },\r\n        \"paymentOrgIdentification\": {\r\n            \"id\": \"69d6ffc8-cc65-4130-a172-d2fa16b6cbe8\",\r\n            \"barcode\": null,\r\n            \"fields\": {\r\n                \"PAYMENT_CODE\" : \"1234567890\"\r\n            },\r\n            \"extraData\": {}\r\n        },\r\n        \"chargesInfo\": null,\r\n        \"settlementInfo\": {\r\n            \"ccy\": \"EUR\",\r\n            \"amount\": 21.21,\r\n            \"method\": \"ACCT\"\r\n        },\r\n        \"debtor\": {\r\n            \"name\": \"ΠΑΠΑΔΟΠΟΥΛΟΣ ΓΙΩΡΓΟΣ\",\r\n            \"debtorAccount\": {\r\n                \"iban\": \"GR7816570557954408\",\r\n                \"pan\": null\r\n            },\r\n            \"telephone\": \"2101234567\"\r\n        },\r\n        \"ultimateDebtor\":  null,\r\n        \"remittanceInfo\": null,\r\n        \"requestMachineId\": null,\r\n        \"acceptDuplicate\": true,\r\n        \"machineId\": null,\r\n        \"isSmsOtp\": true,\r\n        \"tanNumber\": \"111111\"       \r\n    }"
       operationId: Payments_pay
       parameters:
         - name: sandbox_id
@@ -3799,6 +3803,10 @@ components:
             Flag indicating if the payment's clearance occurs via an online
             procedure or not
           type: boolean
+        executionBehavior:
+          description: >-
+            Indicates the payment processing mode.
+          type: string
         supportsBarcode:
           description: Flag indication if organization supports the use of barcode
           type: boolean
@@ -4612,6 +4620,12 @@ components:
       properties:
         comments:
           description: "Payment comments. Comments will appear in approvals flow.\r\nOnly for production API."
+          type: string
+        executionBehaviorRequested:
+          description: >-
+            Required based on the executionBehavior value from paymentsList:
+            - Set to "Instant" when executionBehavior is "Instant"
+            - Set to null when executionBehavior is "NoIPR", "ForceBatch", or null
           type: string
         deferred:
           $ref: '#/components/schemas/ibank.ThirdParty.Types.DeferredRequest'
