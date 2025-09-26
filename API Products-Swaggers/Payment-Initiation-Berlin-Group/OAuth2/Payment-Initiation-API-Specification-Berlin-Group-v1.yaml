@@ -4382,7 +4382,9 @@ components:
             - MTCH: Matched - The party information matches exactly
             - NMTC: Not Matched - The party information does not match
             - CMTC: Partial Matched - The party information partially matches
-            - NOAP: Not Found - The party information was not found
+            - NOAP: Not Applicable - VoP is not applicable
+            - TECH: Technical error
+            - CNOR: Creditor bank is not registered
         partyIdMatch:
           type: string
           description: |
@@ -4390,7 +4392,9 @@ components:
             - MTCH: Matched - The party information matches exactly
             - NMTC: Not Matched - The party information does not match
             - CMTC: Partial Matched - The party information partially matches
-            - NOAP: Not Found - The party information was not found
+            - NOAP: Not Applicable - VoP is not applicable
+            - TECH: Technical error
+            - CNOR: Creditor bank is not registered
         matchedName:
           type: string
           description: The name that was matched during verification
@@ -4418,7 +4422,7 @@ components:
             - MTCH: Matched - The party information matches exactly
             - NMTC: Not Matched - The party information does not match
             - CMTC: Partial Matched - The party information partially matches
-            - NOAP: Not Found - The party information was not found
+            - NOAP: Not Applicable - VoP is not applicable
             - TECH: Technical error
             - CNOR: Creditor bank is not registered
         warnings:
