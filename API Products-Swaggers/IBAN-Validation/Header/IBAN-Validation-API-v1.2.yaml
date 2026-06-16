@@ -1,4 +1,4 @@
-swagger: '2.0'
+openapi: '3.0.1'
 info:
   title: IBAN Validation API
   version: v1.2
@@ -22,22 +22,22 @@ info:
     1. **Login/Register** to the NBG Technology HUB
 
     2. Go to **"APPS"**
-    
+
     3. Select your Organization and go to step 4. If you want to create a new Organization click **\"CREATE AN ORGANIZATION\"** and follow the steps below:
         1. Enter the title of your Organization
         2. Enter a short description of your Organization (optional)
         3. Click **"SUBMIT"**
 
-    4. Select the Organization of choice and click **"ADD AN APPLICATION"** 
+    4. Select the Organization of choice and click **"ADD AN APPLICATION"**
           1. Fill in the forms (title and short description)
-          2. Check **\"Authorization Code\" and \"Client Credentials\"** 
+          2. Check **\"Authorization Code\" and \"Client Credentials\"**
           3. Enter the **OAuth Redirect and Post Logout URIs** (these are the URIs that we will redirect the user upon logging in and logging out respectively)
-              
+
               You can use the following redirect URL to easily test the API through the portal: *https://developer.nbg.gr/oauth2/redoc-callback*
           4. Click **"SUBMIT"**
           5. Store the APPs **"Client ID"** and **"Client Secret"**
     5. Go to **"API PRODUCTS"** and select the **IBAN VALIDATION API**
-    
+
     6. Click **\"START USING THIS API\"**, choose your app and click
     **"SUBSCRIBE"**
 
@@ -45,6 +45,31 @@ info:
 
     8. Play with the API
 
+    ## Authentication and Authorization (OAuth2)
+    
+    This API version uses the OAuth2 protocol for authentication and authorization, which means that a Bearer (access token) should be acquired. An access token can be retrieved using the client_id and client_secret of the APP that you created and subscribed in this API, and your own credentials (username, password) that you use to sign in the NBG Technology HUB. The scopes are defined below:
+      
+    **Authorization Endpoint:** 
+        https://my.nbg.gr/identity/connect/authorize
+    **Token Endpoint:** 
+        https://my.nbg.gr/identity/connect/token
+    
+    ### Authorization Code ###
+    
+    **Sandbox Scopes:** 
+    sandbox-iban-validation-api-v1 offline_access
+    
+    **Production Scopes:** 
+    iban-validation-api-v1 offline_access
+    
+    ### Client Credentials ###
+
+    **Sandbox Scopes:** 
+      sandbox-iban-validation-api-v1
+    **Production Scopes:**
+      iban-validation-api-v1
+    
+    See more [here](https://developer.nbg.gr/oauth-document)
 
     ## Create your Sandbox
 
@@ -77,13 +102,13 @@ info:
     5. provider = The provider name (NBG)
 
 
-    Get to know the Sandbox Operations in the related section. 
+    Get to know the Sandbox Operations in the related section.
 
 
     ## Start Testing
 
     Once you have your sandbox_id, you can start invoking the rest of the
-    operations by providing all the mandatory information in the http header. 
+    operations by providing all the mandatory information in the http header.
 
 
     ## Important notes
@@ -117,28 +142,28 @@ info:
     Collection](https://github.com/NBG-Developer-Portal/IBAN-Validation-API)!
 
 
-    ------------------------------------------------------------------------------------------ 
+    ------------------------------------------------------------------------------------------
 
 
     Created by [**NBG**](https://www.nbg.gr/).
 
 
-    ------------------------------------------------------------------------------------------ 
+    ------------------------------------------------------------------------------------------
 
     ------------------------------------------------------------------------------------------
 
 
 
-     # Entities 
+     # Entities
 
      Below, the main entities are documented.
-     <a name=IbanValidity></a> 
-    ## IbanValidity 
+     <a name=IbanValidity></a>
+    ## IbanValidity
 
-    IBAN validity information 
+    IBAN validity information
 
 
-    ### Attributes 
+    ### Attributes
 
 
     | Name| Description| Values|
@@ -149,13 +174,13 @@ info:
 
     | nbgIban| The input was an NBG IBAN| boolean|
 
-     <a name=IbanInfo></a> 
-    ## IbanInfo 
+     <a name=IbanInfo></a>
+    ## IbanInfo
 
-    IBAN information 
+    IBAN information
 
 
-    ### Attributes 
+    ### Attributes
 
 
     | Name| Description| Values|
@@ -164,13 +189,13 @@ info:
 
     | iban| IBAN value| string|
 
-     <a name=ApiError></a> 
-    ## ApiError 
+     <a name=ApiError></a>
+    ## ApiError
 
-    API error information 
+    API error information
 
 
-    ### Attributes 
+    ### Attributes
 
 
     | Name| Description| Values|
@@ -179,12 +204,12 @@ info:
 
     | error| error description| string|
 
-     <a name=SandboxRequest></a> 
-    ## SandboxRequest 
+     <a name=SandboxRequest></a>
+    ## SandboxRequest
 
 
 
-    ### Attributes 
+    ### Attributes
 
 
     | Name| Description| Values|
@@ -193,12 +218,12 @@ info:
 
     | sandboxId| -| string|
 
-     <a name=SandboxDataModel></a> 
-    ## SandboxDataModel 
+     <a name=SandboxDataModel></a>
+    ## SandboxDataModel
 
 
 
-    ### Attributes 
+    ### Attributes
 
 
     | Name| Description| Values|
@@ -209,12 +234,12 @@ info:
 
     | users| -| array|
 
-     <a name=SandboxUser></a> 
-    ## SandboxUser 
+     <a name=SandboxUser></a>
+    ## SandboxUser
 
 
 
-    ### Attributes 
+    ### Attributes
 
 
     | Name| Description| Values|
@@ -227,38 +252,58 @@ info:
 
     | Provider| -| string|
   contact: {}
-host: apis.nbg.gr
-basePath: /sandbox/ibanvalidation/headers/v1.2
-schemes:
-  - https
+
+servers:
+  - url: https://services.nbg.gr/apis/ibanvalidation/v1.2
+    description: Production
+  - url: https://apis.nbg.gr/sandbox/ibanvalidation/headers/v1.2
+    description: Sandbox
+security:
+  - Client-Id: []
+    Client-Credentials-Token:
+      - sandbox-iban-validation-api-v1
+      - iban-validation-api-v1
+
 paths:
   /sandbox:
     post:
-      consumes:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-        - application/x-www-form-urlencoded
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
       tags:
         - Sandbox
-      parameters:
-        - name: request
-          schema:
-            $ref: '#/definitions/SandboxRequest'
-          in: body
-          required: true
+      operationId: Sandbox_CreateSandbox
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SandboxRequest'
       responses:
         '200':
           description: OK
-          schema:
-            $ref: '#/definitions/SandboxDataModel'
-      operationId: Sandbox_CreateSandbox
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
       x-code-samples:
         - lang: C
           source: >-
@@ -447,25 +492,31 @@ paths:
               --data '{"sandboxId":"<ADD STRING VALUE>"}'
   '/sandbox/{sandbox_id}':
     get:
-      consumes: []
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
       tags:
         - Sandbox
+      operationId: Sandbox_ExportSandbox
       parameters:
         - name: sandbox_id
           in: path
           required: true
-          type: string
+          schema:
+            type: string
       responses:
         '200':
           description: OK
-          schema:
-            $ref: '#/definitions/SandboxDataModel'
-      operationId: Sandbox_ExportSandbox
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
       x-code-samples:
         - lang: C
           source: >-
@@ -621,35 +672,49 @@ paths:
               --header 'client-id: SOME_APIKEY_VALUE' \
               --header 'content-type: application/json'
     put:
-      consumes:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-        - application/x-www-form-urlencoded
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
       tags:
         - Sandbox
+      operationId: Sandbox_ImportSandbox
       parameters:
         - name: sandbox_id
           in: path
           required: true
-          type: string
-        - name: request
           schema:
-            $ref: '#/definitions/SandboxDataModel'
-          in: body
-          required: true
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SandboxDataModel'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SandboxDataModel'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/SandboxDataModel'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/SandboxDataModel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SandboxDataModel'
       responses:
         '200':
           description: OK
-          schema:
-            $ref: '#/definitions/SandboxDataModel'
-      operationId: Sandbox_ImportSandbox
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/SandboxDataModel'
       x-code-samples:
         - lang: C
           source: >-
@@ -856,19 +921,18 @@ paths:
               --header 'content-type: application/json' \
               --data '{"sandboxId":"<ADD STRING VALUE>","users":[{"Username":"<ADD STRING VALUE>","ProviderId":"<ADD STRING VALUE>","Provider":"<ADD STRING VALUE>"}]}'
     delete:
-      consumes: []
-      produces: []
       tags:
         - Sandbox
+      operationId: Sandbox_DeleteSandbox
       parameters:
         - name: sandbox_id
           in: path
           required: true
-          type: string
+          schema:
+            type: string
       responses:
         '204':
           description: No Content
-      operationId: Sandbox_DeleteSandbox
       x-code-samples:
         - lang: C
           source: >-
@@ -1011,29 +1075,31 @@ paths:
               --header 'client-id: SOME_APIKEY_VALUE'
   '/accounts/{account_number}/iban':
     get:
-      consumes: []
-      produces:
-        - application/json
       tags:
         - Account
+      summary: Get the IBAN of an NBG account
+      description: Returns the IBAN of an NBG account.
+      operationId: Utilities_AccountIban
       parameters:
         - name: account_number
           description: NBG account (11 digits)
           in: path
           required: true
-          type: string
+          schema:
+            type: string
       responses:
         '200':
           description: OK
-          schema:
-            $ref: '#/definitions/IbanInfo'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IbanInfo'
         '400':
           description: "- IAU-20001: Incorrect Account Format.\r\n- IAU-20002: Invalid Account Number."
-          schema:
-            $ref: '#/definitions/ApiError'
-      operationId: Utilities_AccountIban
-      summary: Get the IBAN of an NBG account
-      description: Returns the IBAN of an NBG account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
       x-code-samples:
         - lang: C
           source: >-
@@ -1190,27 +1256,27 @@ paths:
               --header 'content-type: application/json'
   '/iban/{iban}/check':
     get:
-      consumes: []
-      produces:
-        - application/json
       tags:
         - IBAN
+      summary: Validate IBAN
+      description: Checks that an IBAN is valid and corresponds to an NBG account.
+      operationId: Utilities_IbanValidity
       parameters:
         - name: iban
           description: IBAN number to check
           in: path
           required: true
-          type: string
+          schema:
+            type: string
       responses:
         '200':
           description: OK
-          schema:
-            $ref: '#/definitions/IbanValidity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IbanValidity'
         '400':
           description: ''
-      operationId: Utilities_IbanValidity
-      summary: Validate IBAN
-      description: Checks that an IBAN is valid and corresponds to an NBG account.
       x-code-samples:
         - lang: C
           source: >-
@@ -1365,77 +1431,86 @@ paths:
               --url https://apis.nbg.gr/sandbox/ibanvalidation/headers/v1.2/iban/%7Biban%7D/check \
               --header 'client-id: SOME_APIKEY_VALUE' \
               --header 'content-type: application/json'
-definitions:
-  IbanValidity:
-    description: IBAN validity information
-    type: object
-    properties:
-      valid:
-        description: The input was an IBAN
-        type: boolean
-        example: true
-      nbgIban:
-        description: The input was an NBG IBAN
-        type: boolean
-        example: true
-    example:
-      valid: true
-      nbgIban: true
-  IbanInfo:
-    description: IBAN information
-    type: object
-    properties:
-      iban:
-        description: IBAN value
-        type: string
-        example: GRXXXXXXXXXXXXXXXXXXX
-    example:
-      iban: GRXXXXXXXXXXXXXXXXXXX
-  ApiError:
-    description: API error information
-    type: object
-    properties:
-      error:
-        description: error description
-        type: string
-        example: 'IAU-20001: Incorrect Account Format.'
-  SandboxRequest:
-    required:
-      - sandboxId
-    type: object
-    properties:
-      sandboxId:
-        type: string
-  SandboxDataModel:
-    type: object
-    properties:
-      sandboxId:
-        type: string
-      users:
-        type: array
-        items:
-          type: object
-          properties:
-            Username:
-              type: string
-            ProviderId:
-              type: string
-            Provider:
-              type: string
-  SandboxUser:
-    type: object
-    properties:
-      Username:
-        type: string
-      ProviderId:
-        type: string
-      Provider:
-        type: string
-securityDefinitions:
-  Client-Id:
-    type: apiKey
-    description: Application's Id
-    name: Client-Id
-    in: header
-security:
-  - Client-Id: []
+
+components:
+  schemas:
+    IbanValidity:
+      description: IBAN validity information
+      type: object
+      properties:
+        valid:
+          description: The input was an IBAN
+          type: boolean
+          example: true
+        nbgIban:
+          description: The input was an NBG IBAN
+          type: boolean
+          example: true
+      example:
+        valid: true
+        nbgIban: true
+    IbanInfo:
+      description: IBAN information
+      type: object
+      properties:
+        iban:
+          description: IBAN value
+          type: string
+          example: GRXXXXXXXXXXXXXXXXXXX
+      example:
+        iban: GRXXXXXXXXXXXXXXXXXXX
+    ApiError:
+      description: API error information
+      type: object
+      properties:
+        error:
+          description: error description
+          type: string
+          example: 'IAU-20001: Incorrect Account Format.'
+    SandboxRequest:
+      required:
+        - sandboxId
+      type: object
+      properties:
+        sandboxId:
+          type: string
+    SandboxDataModel:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              Username:
+                type: string
+              ProviderId:
+                type: string
+              Provider:
+                type: string
+    SandboxUser:
+      type: object
+      properties:
+        Username:
+          type: string
+        ProviderId:
+          type: string
+        Provider:
+          type: string
+  securitySchemes:
+    Client-Id:
+      type: apiKey
+      description: Application's Id
+      name: Client-Id
+      in: header
+    Client-Credentials-Token:
+      type: oauth2
+      description: OAuth2 Client Credentials Flow
+      flows:
+        clientCredentials:
+          tokenUrl: https://my.nbg.gr/identity/connect/token
+          scopes:
+            sandbox-iban-validation-api-v1: Sandbox Scope
+            iban-validation-api-v1: Production Scope
